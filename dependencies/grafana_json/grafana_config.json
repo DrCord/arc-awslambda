@@ -1,0 +1,54 @@
+{
+    "folders":{
+        "dev": {
+            "fleet": {
+                "id": 223,
+                "uid": "-NrY5bWZz",
+                "title": "Fleet"
+            },
+            "vin": {
+                "id": 220,
+                "uid": "ExVc5bWZk",
+                "title": "VIN"
+            }
+        },
+        "staging": {
+            "fleet": {
+                "id": 224,
+                "uid": "tWWP5bZWk",
+                "title": "Fleet"
+            },
+            "vin": {
+                "id": 221,
+                "uid": "lmAc5xZWz",
+                "title": "VIN"
+            }
+        },
+        "prod": {
+            "fleet": {
+                "id": 225,
+                "uid": "uBDP5bZWk",
+                "title": "Fleet"
+            },
+            "vin": {
+                "id": 222,
+                "uid": "jEQ5cxWWk",
+                "title": "VIN"
+            }
+        }
+    },
+    "datasources":{
+        "dev": {
+            "name": "DEV-InfluxDB",
+            "address": "http://10.223.31.239:90"
+        },
+        "staging": {
+            "name": "STAGE-InfluxDB",
+            "address": "http://10.223.17.253:90"
+        },
+        "prod": {
+            "name": "InfluxDB",
+            "address": "http://10.223.24.102:90"
+        }
+    }
+}

@@ -1,0 +1,351 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Notify - Start",
+  "States": {
+    "Notify - Start": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Cluster Rename - Start",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Check DB Cluster Exists"
+    },
+    "Check DB Cluster Exists": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_exists:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_cluster_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Does DB Cluster Exist?",
+      "ResultPath": "$.db_exists",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Check DB Cluster Exists - Set Status Data",
+          "ResultPath": "$.db_exists"
+        }
+      ]
+    },
+    "Fail - Check DB Cluster Exists - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_exists": "fail",
+        "db_available": null,
+        "db_rename": null,
+        "db_renamed": null
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Does DB Cluster Exist?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_exists.data.db_exists",
+          "BooleanEquals": false,
+          "Next": "Notify - DB Does Not Exist"
+        }
+      ],
+      "Default": "Check DB Cluster Availability"
+    },
+    "Notify - DB Does Not Exist": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Cluster Rename - Does not Exist",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "WARNING",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "DB Does Not Exist - Set Status Data"
+    },
+    "DB Does Not Exist - Set Status Data": {
+      "Type": "Pass",
+      "End": true,
+      "Result": {
+        "db_exists": false,
+        "db_available": null,
+        "db_rename": null,
+        "db_renamed": null
+      },
+      "ResultPath": "$.status"
+    },
+    "Check DB Cluster Availability": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_available:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_cluster_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is DB Cluster Available?",
+      "ResultPath": "$.db_available",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Check DB Cluster Availability - Set Status Data",
+          "ResultPath": "$.db_available"
+        }
+      ]
+    },
+    "Fail - Check DB Cluster Availability - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_exists": "success",
+        "db_available": "fail",
+        "db_rename": null,
+        "db_renamed": null
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Is DB Cluster Available?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_available.data.db_available",
+          "BooleanEquals": true,
+          "Next": "Rename - DB Cluster"
+        }
+      ],
+      "Default": "Wait for DB Cluster Availability"
+    },
+    "Wait for DB Cluster Availability": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check DB Cluster Availability"
+    },
+    "Rename - DB Cluster": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_cluster_rename:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_cluster_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Wait for DB Cluster Rename Completion",
+      "ResultPath": "$.db_rename",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - DB Cluster Rename - Set Status Data",
+          "ResultPath": "$.db_rename"
+        }
+      ]
+    },
+    "Fail - DB Cluster Rename - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_exists": "success",
+        "db_available": "success",
+        "db_rename": "fail",
+        "db_renamed": null
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Wait for DB Cluster Rename Completion": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check DB Cluster Renamed"
+    },
+    "Check DB Cluster Renamed": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_exists:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_cluster_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is DB Cluster Renamed?",
+      "ResultPath": "$.db_renamed",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Check DB Cluster Renamed - Set Status Data",
+          "ResultPath": "$.db_renamed"
+        }
+      ]
+    },
+    "Fail - Check DB Cluster Renamed - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_exists": "success",
+        "db_available": "success",
+        "db_rename": "success",
+        "db_renamed": "fail"
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Is DB Cluster Renamed?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_renamed.data.db_exists",
+          "BooleanEquals": false,
+          "Next": "Notify - Complete"
+        }
+      ],
+      "Default": "Wait for DB Cluster Rename Completion"
+    },
+    "Notify - Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Cluster Rename - Complete",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Success - Set Status Data"
+    },
+    "Success - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_exists": "success",
+        "db_available": "success",
+        "db_rename": "success",
+        "db_renamed": "success"
+      },
+      "ResultPath": "$.status",
+      "End": true
+    }
+  }
+}

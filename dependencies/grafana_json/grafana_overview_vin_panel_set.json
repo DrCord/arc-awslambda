@@ -1,0 +1,376 @@
+[
+    {
+        "content": "<div style=\"width: 100%; height: 100%;\"><div style=\"padding-top: 30px; display: flex; flex-direction: column; align-items: center;\"><h3 style=\"font-size: 18px; text-align:center;\"'>replacetext_vin</h3><h4><a style=\"text-decoration: none; font-size: 14px;\" href=\"replacetext_url_base/d/replacetext_vin/replacetext_vin?orgId=1\">View Detailed Dashboard &#128279;</a></h4></div></div>",
+        "gridPos": {
+            "h": "replace_panel_height",
+            "w": "replace_panel_width",
+            "x": "replace_x_column",
+            "y": "replaceval_0"
+        },
+        "id": "replacetext_panel_id",
+        "links": [
+            {
+                "title": "View Detailed Dashboard",
+                "url": "replacetext_url_base/d/replacetext_vin/replacetext_vin?orgId=1"
+            }
+        ],
+        "mode": "html",
+        "title": "",
+        "transparent": false,
+        "type": "text"
+    },
+    {
+        "cacheTimeout": null,
+        "colorBackground": false,
+        "colorValue": false,
+        "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+        ],
+        "datasource": "replacetext_datasource",
+        "fieldConfig": {
+            "defaults": {
+                "decimals": 2,
+                "noValue": "No Data",
+                "thresholds": {
+                    "steps": [
+                        {
+                            "color": "dark-red",
+                            "value":"null"
+                        },
+                        {
+                            "color": "green",
+                            "value": 1
+                        }
+                    ]
+                },
+                "unit": "none"
+            }
+        },
+        "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+        },
+        "gridPos": {
+            "h": "replace_panel_height",
+            "w": "replace_panel_width",
+            "x": "replace_x_column",
+            "y": "replaceval_8"
+        },
+        "id": "replacetext_panel_id",
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+            {
+                "name": "value to text",
+                "value": 1
+            },
+            {
+                "name": "range to text",
+                "value": 2
+            }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "rangeMaps": [
+            {
+                "from": "null",
+                "text": "No Data",
+                "to": "null"
+            }
+        ],
+        "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+        },
+        "tableColumn": "",
+        "targets": [
+            {
+                "groupBy": [
+                    {
+                        "params": [
+                            "$__interval"
+                        ],
+                        "type": "time"
+                    },
+                    {
+                        "params": [
+                            "null"
+                        ],
+                        "type": "fill"
+                    }
+                ],
+                "orderByTime": "ASC",
+                "policy": "default",
+                "query": "SELECT last(\"odometer\") as ODOMETER FROM \"telemetry\" WHERE (\"vin\" ='replacetext_vin')",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                    [
+                        {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                        },
+                        {
+                            "params": [],
+                            "type": "mean"
+                        }
+                    ]
+                ],
+                "tags": []
+            }
+        ],
+        "thresholds": "",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Odometer (km)",
+        "type": "stat",
+        "valueFontSize": "60%",
+        "valueMaps": [
+            {
+                "op": "=",
+                "text": "No Data",
+                "value": "null"
+            }
+        ],
+        "valueName": "odometer"
+    },
+    {
+        "cacheTimeout": null,
+        "colorBackground": false,
+        "colorValue": false,
+        "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+        ],
+        "datasource": "replacetext_datasource",
+        "fieldConfig": {
+            "defaults": {
+                "noValue": "No Data",
+                "thresholds": {
+                    "steps": [
+                        {
+                            "color": "dark-red",
+                            "value": null
+                        },
+                        {
+                            "color": "green",
+                            "value": 1
+                        }
+                    ]
+                }
+            }
+        },
+        "format": "none",
+        "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+        },
+        "gridPos": {
+            "h": "replace_panel_height",
+            "w": "replace_panel_width",
+            "x": "replace_x_column",
+            "y": "replaceval_12"
+        },
+        "id": "replacetext_panel_id",
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+            {
+                "name": "value to text",
+                "value": 1
+            },
+            {
+                "name": "range to text",
+                "value": 2
+            }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "options": {
+            "reduceOptions": {
+                "fields": "/^Time$/"
+            }
+        },
+        "postfix": "",
+        "postfixFontSize": "30%",
+        "prefix": "",
+        "prefixFontSize": "30%",
+        "rangeMaps": [
+            {
+                "from": "null",
+                "text": "No Data",
+                "to": "null"
+            }
+        ],
+        "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+        },
+        "tableColumn": "Time",
+        "targets": [
+            {
+                "groupBy": [
+                    {
+                        "params": [
+                            "$__interval"
+                        ],
+                        "type": "time"
+                    },
+                    {
+                        "params": [
+                            "null"
+                        ],
+                        "type": "fill"
+                    }
+                ],
+                "orderByTime": "ASC",
+                "policy": "default",
+                "query": "SELECT time as time, * FROM \"telemetry\" WHERE (\"vin\" ='replacetext_vin') ORDER BY time DESC LIMIT 1",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "table",
+                "select": [
+                    [
+                        {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                        },
+                        {
+                            "params": [],
+                            "type": "mean"
+                        }
+                    ]
+                ],
+                "tags": []
+            }
+        ],
+        "thresholds": "",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Last Reported Telemetry Time",
+        "type": "stat",
+        "valueFontSize": "80%",
+        "valueMaps": [
+            {
+                "op": "=",
+                "text": "No Data",
+                "value": "null"
+            }
+        ],
+        "valueName": "avg"
+    },
+    {
+        "datasource": "replacetext_datasource",
+        "fieldConfig": {
+            "defaults": {
+                "decimals": 0,
+                "noValue": "No Data",
+                "thresholds": {
+                    "steps": [
+                        {
+                          "color": "#F2495C",
+                          "index": 0,
+                          "value": null
+                        },
+                        {
+                          "color": "#FF9830",
+                          "index": 1,
+                          "value": 10
+                        },
+                        {
+                          "color": "#73BF69",
+                          "index": 2,
+                          "value": 25
+                        },
+                        {
+                            "color": "#C4162A",
+                            "index": 3,
+                            "value": 91.5
+                        }
+                    ]
+                },
+                "unit": "percent"
+            }
+        },
+        "gridPos": {
+            "h": "replace_panel_height",
+            "w": "replace_panel_width",
+            "x": "replace_x_column",
+            "y": "replaceval_16"
+        },
+        "id": "replacetext_panel_id",
+        "links": [],
+        "targets": [
+          {
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "telemetry",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"bms_pack_soc\" as Value FROM \"telemetry\" WHERE (\"vin\" = 'replacetext_vin') AND $timeFilter\n",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "bms_pack_soc"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "vin",
+                "operator": "=",
+                "value": "replacetext_vin"
+              }
+            ]
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "State of Charge",
+        "type": "gauge"
+    }
+]

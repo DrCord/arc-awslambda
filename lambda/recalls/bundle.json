@@ -1,0 +1,96 @@
+{
+  "name": "recalls",
+  "vpc": "main",
+  "lambdas": {
+    "recall_add_vehicle": {
+      "tests": [
+        "test_recall_add_vehicle"
+      ]
+    },
+    "recall_create": {
+      "tests": [
+        "test_recall_create"
+      ]
+    },
+    "recall_delete": {
+      "tests": [
+        "test_recall_delete"
+      ]
+    },
+    "recall_edit": {
+      "tests": [
+        "test_recall_edit"
+      ]
+    },
+    "recall_edit_vehicle": {
+      "tests": [
+        "test_recall_edit_vehicle"
+      ]
+    },
+    "recall_get": {
+      "tests": [
+        "test_recall_get"
+      ]
+    },
+    "recall_get_updated": {
+      "tests": [
+        "test_recall_get_updated"
+      ]
+    },
+    "recall_get_vehicle": {
+      "tests": [
+        "test_recall_get_vehicle"
+      ]
+    },
+    "recall_list": {
+      "tests": [
+        "test_recall_list"
+      ]
+    },
+    "recall_list_vehicle": {
+      "tests": [
+        "test_recall_list_vehicle"
+      ]
+    },
+    "recall_remove_vehicle": {
+      "tests": [
+        "test_recall_remove_vehicle"
+      ]
+    },
+    "recall_service_vehicle": {
+      "tests": [
+        "test_recall_service_vehicle"
+      ]
+    },
+    "recall_set_updated": {
+      "tests": [
+        "test_recall_set_updated"
+      ]
+    },
+    "remedy_create": {
+      "tests": [
+        "test_remedy_create"
+      ]
+    },
+    "remedy_delete": {
+      "tests": [
+        "test_remedy_delete"
+      ]
+    },
+    "remedy_edit": {
+      "tests": [
+        "test_remedy_edit"
+      ]
+    },
+    "remedy_get": {
+      "tests": [
+        "test_remedy_get"
+      ]
+    },
+    "remedy_list": {
+      "tests": [
+        "test_remedy_list"
+      ]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "input": {
+    "run_env": "dev",
+    "replication_target_env": "staging",
+    "db_cluster_identifier": "tel-authkey-db-staging-auroradbcluster-retired-20220701-172018",
+    "db_instance_identifier": "taz1h40irkeopr-retired-20220701-172055"
+  }
+}

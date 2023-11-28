@@ -1,0 +1,9 @@
+{
+  "input": {
+    "state_machine": "Replicate-DB-Cluster-Remove-Protection",
+    "run_env": "dev",
+    "db_identifier": "tel-authkey-db-staging-auroradbcluster-retired-20220701-172018",
+    "replication_target_env": "staging"
+  },
+  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID": "arn:aws:states:us-west-2:511596272857:execution:Replicate-DB-Remove-Retired:37197408-0f25-0ebc-2842-8f0989b168b7_58131d71-b8b4-2cd7-e7ca-1204a35dd947"
+}

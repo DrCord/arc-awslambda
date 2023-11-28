@@ -1,0 +1,20 @@
+{
+    "colors": {
+        "Royal Blue": "1b28d0",
+        "Silver Spaceship": "96c0be",
+        "Grabber Orange": "FFA500",
+        "Zebra Wrap": "FFFFFF",
+        "Marina Blue": "64b4d2",
+        "Flat Black": "5a5a5a",
+        "Hotrod Red": "ff0000",
+        "Coastal Blue": "2c9d91",
+        "Carbon Black": "5a5a5a",
+        "Yellow": "ffff00"
+    },
+    "groups_palette": [
+        "1b28d0",
+        "96c0be",
+        "FFA500",
+        "64b4d2"
+    ]
+}

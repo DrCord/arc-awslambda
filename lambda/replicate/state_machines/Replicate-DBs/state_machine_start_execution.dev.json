@@ -1,0 +1,24 @@
+{
+  "input": {
+    "run_env": "dev",
+    "replication_target_env": "dev",
+    "authkey": {
+      "prod": {
+        "db_cluster_identifier": "tel-authkey-db-prod-auroradbcluster-gp0nmqa9ii2t"
+      },
+      "target": {
+        "db_cluster_identifier": "tel-authkey-db-dev-auroradbcluster-1h1zls0pm3zn0",
+        "db_instance_identifier": "ta1h858bdayn0w3"
+      }
+    },
+    "main": {
+      "prod": {
+        "db_cluster_identifier": "tel-main-db-prod-auroradbcluster-1kkvd236ktt8q"
+      },
+      "target": {
+        "db_cluster_identifier": "tel-main-db-dev-auroradbcluster-1pg6l9kfl9qdb",
+        "db_instance_identifier": "ta15hrvemqo89ft"
+      }
+    }
+  }
+}

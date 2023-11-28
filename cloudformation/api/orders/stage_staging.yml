@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Staging Stage - Orders App API
+
+Parameters:
+  ApiGatewayDeployment:
+    Type: String
+  RestApiId: 
+    Type: String
+
+Resources:
+  apiGatewayStageStaging:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      StageName: staging
+      Description: Staging Stage
+      RestApiId: !Ref RestApiId
+      DeploymentId: !Ref ApiGatewayDeployment
+      MethodSettings:
+        - HttpMethod: "*"
+          LoggingLevel: "ERROR"
+          MetricsEnabled: True
+          ResourcePath: "/*"
+      Variables:
+          func_orders_order_add_payment: orders_order_add_payment:staging
+          func_orders_order_create: orders_order_create:staging
+          func_orders_order_get: orders_order_get:staging
+          func_orders_orders_list: orders_orders_list:staging

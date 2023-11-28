@@ -1,0 +1,71 @@
+{
+  "name": "authorities",
+  "vpc": "authkey",
+  "lambdas": {
+    "authkey_vehicle_get": {
+      "tests": [
+        "test_authkey_vehicle_get"
+      ]
+    },
+    "create_authority": {
+      "tests": [
+        "test_create_authority"
+      ]
+    },
+    "delete_authority": {
+      "tests": [
+        "test_delete_authority"
+      ]
+    },
+    "factory_pin_generate": {
+      "tests": [
+        "test_factory_pin_generate"
+      ]
+    },
+    "get_authority": {
+      "tests": [
+        "test_get_authority"
+      ]
+    },
+    "get_trusted_keys": {
+      "tests": [
+        "test_get_trusted_keys"
+      ]
+    },
+    "list_authorities": {
+      "tests": [
+        "test_list_authorities"
+      ]
+    },
+    "list_vehicles": {
+      "tests": [
+        "test_list_vehicles"
+      ]
+    },
+    "provision_vehicle_authority": {
+      "tests": [
+        "test_provision_vehicle_authority"
+      ]
+    },
+    "rekey_authority": {
+      "tests": [
+        "test_rekey_authority"
+      ]
+    },
+    "sign_vehicle_token": {
+      "tests": [
+        "test_sign_vehicle_token"
+      ]
+    },
+    "unprovision_vehicle_arcimoto_authority": {
+      "tests": [
+        "test_unprovision_vehicle_arcimoto_authority"
+      ]
+    },
+    "unprovision_vehicle_authority": {
+      "tests": [
+        "test_unprovision_vehicle_authority"
+      ]
+    }
+  }
+}

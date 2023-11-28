@@ -1,0 +1,17 @@
+{
+    "dev": {
+        "read" : "dev-telemetryam-read",
+        "write": "dev-telemetryam-write",
+        "sysadmin": "dev-telemetryam-sysadmin"
+    },
+    "staging": {
+        "read" : "staging-telemetryam-read",
+        "write": "staging-telemetryam-write",
+        "sysadmin": "staging-telemetryam-sysadmin"
+    },
+    "prod": {
+        "read" : "telemetryam-read",
+        "write": "telemetryam-write",
+        "sysadmin": "telemetryam-sysadmin"
+    }
+}

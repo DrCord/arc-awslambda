@@ -1,0 +1,611 @@
+[
+    {
+        "cards": {
+            "cardHSpacing": 2,
+            "cardMinWidth": 5,
+            "cardRound": null,
+            "cardVSpacing": 2
+        },
+        "color": {
+            "cardColor": "#b4ff00",
+            "colorScale": "sqrt",
+            "colorScheme": "interpolateRdYlGn",
+            "defaultColor": "#757575",
+            "exponent": 0.5,
+            "max": 1,
+            "min": 0,
+            "mode": "spectrum",
+            "thresholds": []
+        },
+        "data": {
+            "decimals": null,
+            "unitFormat": "short"
+        },
+        "datasource": "replacetext_datasource",
+        "gridPos": {
+            "h": 12,
+            "w": 12,
+            "x": "replacetext_x1",
+            "y": "replacetext_y1"
+        },
+        "highlightCards": true,
+        "id": "replacetext_panel_id",
+        "legend": {
+            "show": true
+        },
+        "links": [],
+        "nullPointMode": "as empty",
+        "targets": [
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"brake_fault\") AS \"brake_fault\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            },
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"lv_fault\") AS \"LV_fault\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            },
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"hv_fault\") AS \"HV_fault\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            },
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"bms_dtc_p0a0a_internal_heatsink_thermistor_fault\") AS \"bms_dtc_p0a0a_internal_heatsink_thermistor_fault\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "M",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            },
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"bms_dtc_p0a0f_cell_bank_fault\") AS \"bms_dtc_p0a0f_cell_bank_fault\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "N",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            },
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"bms_dtc_p0a10_pack_too_hot_fault\") AS \"bms_dtc_p0a10_pack_too_hot_fault\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "H",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            },
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"bms_dtc_p0a80_weak_cell_fault\") AS \"bms_dtc_p0a80_weak_cell_fault\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "I",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            },
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"bms_dtc_p0a9c_thermistor_fault\") AS \"bms_dtc_p0a9c_thermistor_fault\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "J",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            },
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"bms_dtc_p0aa6_high_voltage_isolation_fault\") AS \"bms_dtc_p0aa6_high_voltage_isolation_fault\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "K",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Boolean Faults",
+        "tooltip": {
+            "extraInfo": "",
+            "freezeOnClick": false,
+            "items": [],
+            "show": true,
+            "showExtraInfo": false,
+            "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": true,
+        "xAxis": {
+            "labelFormat": "%a %m/%d",
+            "minBucketWidthToShowWeekends": 4,
+            "show": true,
+            "showCrosshair": true,
+            "showWeekends": true
+        },
+        "yAxis": {
+            "show": true,
+            "showCrosshair": false
+        },
+        "yAxisSort": "metrics"
+    },
+    {
+        "cards": {
+            "cardHSpacing": 2,
+            "cardMinWidth": 5,
+            "cardRound": null,
+            "cardVSpacing": 2
+        },
+        "color": {
+            "cardColor": "#b4ff00",
+            "colorScale": "sqrt",
+            "colorScheme": "interpolateRdYlGn",
+            "defaultColor": "#757575",
+            "exponent": 0.5,
+            "max": 255,
+            "min": 0,
+            "mode": "spectrum",
+            "thresholds": []
+        },
+        "data": {
+            "decimals": null,
+            "unitFormat": "short"
+        },
+        "datasource": "replacetext_datasource",
+        "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": "replacetext_x2",
+            "y": "replacetext_y1"
+        },
+        "highlightCards": true,
+        "id": "replacetext_panel_id",
+        "legend": {
+            "show": true
+        },
+        "links": [],
+        "nullPointMode": "as empty",
+        "targets": [
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"controller_1_fault_level\") AS \"controller_1_fault_level\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            },
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"controller_2_fault_level\") AS \"controller_2_fault_level\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "E",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            },
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"controller_1_fault_code\") AS \"controller_1_fault_code\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "F",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            },
+            {
+            "groupBy": [
+                {
+                "params": [
+                    "$__interval"
+                ],
+                "type": "time"
+                },
+                {
+                "params": [
+                    "null"
+                ],
+                "type": "fill"
+                }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"controller_2_fault_code\") AS \"controller_2_fault_code\" FROM \"telemetry\" WHERE $timeFilter AND \"vin\"='$VIN' GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "G",
+            "resultFormat": "time_series",
+            "select": [
+                [
+                {
+                    "params": [
+                    "value"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "params": [],
+                    "type": "mean"
+                }
+                ]
+            ],
+            "tags": []
+            }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Byte Code Faults",
+        "tooltip": {
+            "extraInfo": "",
+            "freezeOnClick": false,
+            "items": [],
+            "show": true,
+            "showExtraInfo": false,
+            "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": true,
+        "xAxis": {
+            "labelFormat": "%a %m/%d",
+            "minBucketWidthToShowWeekends": 4,
+            "show": true,
+            "showCrosshair": true,
+            "showWeekends": true
+        },
+        "yAxis": {
+            "show": true,
+            "showCrosshair": false
+        },
+        "yAxisSort": "metrics"
+    }
+]

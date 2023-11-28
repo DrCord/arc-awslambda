@@ -1,0 +1,9 @@
+{
+  "input": {
+    "env": "prod",
+    "vehicle_groups": [
+      4, 9, 11, 12, 13
+    ],
+    "output_yrisk_s3_bucket": true
+  }
+}

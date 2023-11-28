@@ -1,0 +1,32 @@
+{
+    "dev" : {
+        "customer_pipeline" : "contacts-lifecycle-pipeline",
+        "dealstage_ordered" : "26727689",
+        "dealstage_pendingfailed" : "checkout_pending",
+        "dealstage_preproduction" : "26727690",
+        "dealtype" : "newbusiness",
+        "lineitemtodeallink" : "20",
+        "pipeline" : "75e28846-ad0d-4be2-a027-5e1da6590b98",
+        "reservationid" : "1553935535"
+    },
+    "staging": {
+        "customer_pipeline" : "contacts-lifecycle-pipeline",
+        "dealstage_ordered" : "26727689",
+        "dealstage_pendingfailed" : "checkout_pending",
+        "dealstage_preproduction" : "26727690",
+        "dealtype" : "newbusiness",
+        "lineitemtodeallink" : "20",
+        "pipeline" : "75e28846-ad0d-4be2-a027-5e1da6590b98",
+        "reservationid" : "1553935535"
+    },
+    "prod" :{
+        "customer_pipeline" : "contacts-lifecycle-pipeline",
+        "dealstage_ordered" : "26727689",
+        "dealstage_pendingfailed" : "checkout_pending",
+        "dealstage_preproduction" : "26727690",
+        "dealtype" : "newbusiness",
+        "lineitemtodeallink" : "20",
+        "pipeline" : "75e28846-ad0d-4be2-a027-5e1da6590b98", 
+        "reservationid" : "1492917930"
+    }
+}

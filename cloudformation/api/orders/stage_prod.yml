@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Production Stage - Orders App API
+
+Parameters:
+  ApiGatewayDeployment:
+    Type: String
+  RestApiId: 
+    Type: String
+
+Resources:
+  apiGatewayStageProduction:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      StageName: prod
+      Description: Production Stage
+      RestApiId: !Ref RestApiId
+      DeploymentId: !Ref ApiGatewayDeployment
+      MethodSettings:
+        - HttpMethod: "*"
+          LoggingLevel: "ERROR"
+          MetricsEnabled: True
+          ResourcePath: "/*"
+      Variables:
+          func_orders_order_add_payment: orders_order_add_payment:prod
+          func_orders_order_create: orders_order_create:prod
+          func_orders_order_get: orders_order_get:prod
+          func_orders_orders_list: orders_orders_list:prod

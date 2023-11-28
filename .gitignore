@@ -1,0 +1,10 @@
+.DS_Store
+*.pyc
+build
+env
+lambda.zip
+node_modules
+payload.json
+/test-reports
+/python38_updates/test-reports/*
+/utility/tests-run/test-reports/*

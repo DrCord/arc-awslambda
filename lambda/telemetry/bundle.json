@@ -1,0 +1,69 @@
+{
+  "name": "telemetry",
+  "vpc": "telemetry",
+  "lambdas": {
+    "add_telemetry_definition": {
+      "tests": [
+        "test_add_telemetry_definition"
+      ]
+    },
+    "get_telemetry_definition": {
+      "tests": [
+        "test_get_telemetry_definition"
+      ]
+    },
+    "get_telemetry_metrics_keys": {
+      "tests": [
+        "test_get_telemetry_metrics_keys"
+      ]
+    },
+    "get_telemetry_points": {
+      "tests": [
+        "test_get_telemetry_points"
+      ]
+    },
+    "set_telemetry_points": {
+      "tests": [
+        "test_set_telemetry_points"
+      ]
+    },
+    "set_telemetry_version": {
+      "tests": [
+        "test_set_telemetry_version"
+      ]
+    },
+    "telemetry_ingest_timestream": {
+      "tests": [
+        "test_telemetry_ingest_timestream"
+      ]
+    },
+    "telemetry_points_get_defaults": {
+      "tests": [
+        "test_telemetry_points_get_defaults"
+      ]
+    },
+    "telemetry_report_vehicles_overcharge": {
+      "tests": [
+        "test_telemetry_report_vehicles_overcharge"
+      ]
+    },
+    "telemetry_vehicles_timestream_get": {
+      "tests": [
+        "test_telemetry_vehicles_timestream_get"
+      ]
+    },
+    "telemetry_vpc_ingest_influx": {
+      "tests": [
+        "test_telemetry_vpc_ingest_influx"
+      ]
+    },
+    "unpack_telemetry_message": {
+      "tests": []
+    },
+    "vehicles_telemetry_get": {
+      "tests": [
+        "test_vehicles_telemetry_get"
+      ]
+    }
+  }
+}

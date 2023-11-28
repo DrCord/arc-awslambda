@@ -1,0 +1,166 @@
+{
+  "name": "users",
+  "vpc": "users",
+  "lambdas": {
+    "users_ability_grant": {
+      "tests": [
+        "test_users_ability_grant"
+      ]
+    },
+    "users_add_permission_to_group": {
+      "tests": [
+        "test_users_add_permission_to_group"
+      ]
+    },
+    "users_add_preference_to_user": {
+      "tests": [
+        "test_users_add_preference_to_user"
+      ]
+    },
+    "users_add_user_to_group": {
+      "tests": [
+        "test_users_add_user_to_group"
+      ]
+    },
+    "users_create_user": {
+      "tests": [
+        "test_users_create_user"
+      ]
+    },
+    "users_delete_user": {
+      "tests": [
+        "test_users_delete_user"
+      ]
+    },
+    "users_disable_user": {
+      "tests": [
+        "test_users_disable_user"
+      ]
+    },
+    "users_enable_user": {
+      "tests": [
+        "test_users_enable_user"
+      ]
+    },
+    "users_group_create": {
+      "tests": [
+        "test_users_group_create"
+      ]
+    },
+    "users_group_delete": {
+      "tests": [
+        "test_users_group_delete"
+      ]
+    },
+    "users_group_get": {
+      "tests": [
+        "test_users_group_get"
+      ]
+    },
+    "users_groups_list": {
+      "tests": [
+        "test_users_groups_list"
+      ]
+    },
+    "users_permissions_abilities_list": {
+      "tests": [
+        "test_users_permissions_abilities_list"
+      ]
+    },
+    "users_permissions_ability_create": {
+      "tests": [
+        "test_users_permissions_ability_create"
+      ]
+    },
+    "users_permissions_ability_delete": {
+      "tests": [
+        "test_users_permissions_ability_delete"
+      ]
+    },
+    "users_permissions_ability_edit": {
+      "tests": [
+        "test_users_permissions_ability_edit"
+      ]
+    },
+    "users_permissions_ability_get": {
+      "tests": [
+        "test_users_permissions_ability_get"
+      ]
+    },
+    "users_permissions_list": {
+      "tests": [
+        "test_users_permissions_list"
+      ]
+    },
+    "users_preferences_list": {
+      "tests": [
+        "test_users_preferences_list"
+      ]
+    },
+    "users_profile_get": {
+      "tests": [
+        "test_users_profile_get"
+      ]
+    },
+    "users_profile_update": {
+      "tests": [
+        "test_users_profile_update"
+      ]
+    },
+    "users_remove_permission_from_group": {
+      "tests": [
+        "test_users_remove_permission_from_group"
+      ]
+    },
+    "users_remove_user_from_group": {
+      "tests": [
+        "test_users_remove_user_from_group"
+      ]
+    },
+    "users_resend_user_invite": {
+      "tests": [
+        "test_users_resend_user_invite"
+      ]
+    },
+    "users_user_get": {
+      "tests": [
+        "test_users_user_get"
+      ]
+    },
+    "users_user_mfa_sms_disable": {
+      "tests": [
+        "test_users_user_mfa_sms_disable"
+      ]
+    },
+    "users_user_mfa_sms_enable": {
+      "tests": [
+        "test_users_user_mfa_sms_enable"
+      ]
+    },
+    "users_user_mfa_totp_associate_token": {
+      "tests": [
+        "test_users_user_mfa_totp_associate_token"
+      ]
+    },
+    "users_user_mfa_totp_disable": {
+      "tests": [
+        "test_users_user_mfa_totp_disable"
+      ]
+    },
+    "users_user_mfa_totp_enable": {
+      "tests": [
+        "test_users_user_mfa_totp_enable"
+      ]
+    },
+    "users_user_mfa_totp_verify_token": {
+      "tests": [
+        "test_users_user_mfa_totp_verify_token"
+      ]
+    },
+    "users_users_list": {
+      "tests": [
+        "test_users_users_list"
+      ]
+    }
+  }
+}

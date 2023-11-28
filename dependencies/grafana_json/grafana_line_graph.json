@@ -1,0 +1,192 @@
+{
+  "datasource": "DYNAMIC_DATASOURCE",
+  "fieldConfig": {
+      "defaults": {
+          "color": {
+              "mode": "palette-classic"
+          },
+          "custom": {
+              "axisLabel": "DYNAMIC_YLABEL",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 6,
+              "scaleDistribution": {
+                  "type": "linear"
+              },
+              "showPoints": "always",
+              "spanNulls": true,
+              "stacking": {
+                  "group": "A",
+                  "mode": "none"
+              },
+              "thresholdsStyle": {
+                  "mode": "off"
+              }
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                  {
+                      "color": "green",
+                      "value": null
+                  },
+                  {
+                      "color": "red",
+                      "value": 80
+                  }
+              ]
+          },
+          "unit": "short"
+      },
+      "overrides": [
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "?column?"
+          },
+          "properties": [
+            {
+              "id": "color",
+              "value": {
+                "fixedColor": "#fce2de",
+                "mode": "fixed"
+              }
+            }
+          ]
+        },
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "ping"
+          },
+          "properties": [
+            {
+              "id": "color",
+              "value": {
+                "fixedColor": "#fce2de",
+                "mode": "fixed"
+              }
+            }
+          ]
+        },
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "DYNAMIC-NAME"
+          },
+          "properties": [
+            {
+              "id": "color",
+              "value": {
+                "fixedColor": "DYNAMIC-COLOR",
+                "mode": "fixed"
+              }
+            }
+          ]
+        }
+      ]
+  },
+  "gridPos": {
+      "h": "DYNAMIC_HEIGHT",
+      "w": "DYNAMIC_WIDTH",
+      "x": "DYNAMIC_X_POSITION",
+      "y": "DYNAMIC_Y_POSITION"
+  },
+  "id": 1,
+  "links": [],
+  "options": {
+      "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+      },
+      "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+      }
+  },
+  "pluginVersion": "9.0.4",
+    "targets": [
+      {
+        "alias": "DYNAMIC_QUERY_ALIAS_1",
+        "format": "time_series",
+        "groupBy": [
+          {
+            "params": ["$__interval"],
+            "type": "time"
+          },
+          {
+            "params": ["null"],
+            "type": "fill"
+          }
+        ],
+        "orderByTime": "ASC",
+        "policy": "default",
+        "query": "DYNAMIC_QUERY_1",
+        "rawQuery": true,
+        "rawSql": "DYNAMIC_RAW_SQL_1",
+        "refId": "A",
+        "resultFormat": "time_series",
+        "select": [
+          [
+            {
+              "params": ["value"],
+              "type": "field"
+            },
+            {
+              "params": [],
+              "type": "mean"
+            }
+          ]
+        ],
+        "tags": []
+      },
+      {
+        "alias": "DYNAMIC_QUERY_ALIAS_2",
+        "format": "time_series",
+        "groupBy": [
+          {
+            "params": ["$__interval"],
+            "type": "time"
+          },
+          {
+            "params": ["null"],
+            "type": "fill"
+          }
+        ],
+        "orderByTime": "ASC",
+        "policy": "default",
+        "query": "DYNAMIC_QUERY_2",
+        "rawQuery": true,
+        "rawSql": "DYNAMIC_RAW_SQL_2",
+        "refId": "A",
+        "resultFormat": "time_series",
+        "select": [
+          [
+            {
+              "params": ["value"],
+              "type": "field"
+            },
+            {
+              "params": [],
+              "type": "mean"
+            }
+          ]
+        ],
+        "tags": []
+      }
+    ],
+    "title": "DYNAMIC_TITLE",
+    "type": "timeseries"
+  }

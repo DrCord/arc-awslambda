@@ -1,0 +1,231 @@
+{
+  "Comment": "Y-Risk monthly vehicle telemetry export",
+  "StartAt": "List Fleets",
+  "States": {
+    "List Fleets": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('yrisk_fleets_list:{}', $.input.env)",
+        "Payload.$": "$"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "List Vehicles",
+      "ResultPath": "$.fleets_db_data",
+      "ResultSelector": {
+        "vehicle_groups.$": "$.Payload.vehicle_groups"
+      }
+    },
+    "List Vehicles": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('yrisk_vehicles_list:{}', $.input.env)",
+        "Payload.$": "$"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Loop Over Vehicles",
+      "ResultPath": "$.vehicles_db_data",
+      "ResultSelector": {
+        "vehicles.$": "$.Payload.vehicles"
+      }
+    },
+    "Loop Over Vehicles": {
+      "Type": "Map",
+      "Iterator": {
+        "StartAt": "Get Vehicle Telemetry",
+        "States": {
+          "Get Vehicle Telemetry": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+              "Payload.$": "$",
+              "FunctionName.$": "States.Format('yrisk_vehicle_telemetry_get:{}', $.env)"
+            },
+            "Retry": [
+              {
+                "ErrorEquals": [
+                  "Lambda.ServiceException",
+                  "Lambda.AWSLambdaException",
+                  "Lambda.SdkClientException"
+                ],
+                "IntervalSeconds": 2,
+                "MaxAttempts": 6,
+                "BackoffRate": 2
+              }
+            ],
+            "End": true,
+            "ResultSelector": {
+              "vin.$": "$.Payload.vin",
+              "start.$": "$.Payload.start",
+              "end.$": "$.Payload.end",
+              "odometer.$": "$.Payload.odometer"
+            }
+          }
+        }
+      },
+      "ItemsPath": "$.vehicles_db_data.vehicles",
+      "Parameters": {
+        "vin.$": "$$.Map.Item.Value.vin",
+        "env.$": "$.input.env"
+      },
+      "ResultPath": "$.vehicles_telemetry_data",
+      "Next": "Assemble Output",
+      "MaxConcurrency": 40
+    },
+    "Assemble Output": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('yrisk_output_assemble:{}', $.input.env)",
+        "Payload.$": "$"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Save Data to S3 - Arcimoto",
+      "ResultPath": "$.json_data",
+      "ResultSelector": {
+        "start.$": "$.Payload.start",
+        "end.$": "$.Payload.end",
+        "vehicles.$": "$.Payload.vehicles"
+      }
+    },
+    "Save Data to S3 - Arcimoto": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('yrisk_data_to_s3:{}', $.input.env)",
+        "Payload": {
+          "s3_bucket": "arcimoto-yrisk",
+          "json_data.$": "$.json_data"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Choice",
+      "ResultPath": "$.save_data_to_s3"
+    },
+    "Choice": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.input.output_yrisk_s3_bucket",
+          "BooleanEquals": true,
+          "Next": "Save Data to S3 - Y-Risk"
+        }
+      ],
+      "Default": "Notify"
+    },
+    "Notify": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('yrisk_notify:{}', $.input.env)",
+        "Payload.$": "$"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Notify Email",
+      "ResultPath": "$.notify"
+    },
+    "Notify Email": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('yrisk_notify_email:{}', $.input.env)",
+        "Payload.$": "$"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "End": true,
+      "ResultPath": "$.notify_email"
+    },
+    "Save Data to S3 - Y-Risk": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('yrisk_data_to_s3:{}', $.input.env)",
+        "Payload": {
+          "s3_bucket": "y-risk-client-exposure-data",
+          "json_data.$": "$.json_data"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": "$.save_data_to_s3",
+      "Next": "Notify"
+    }
+  }
+}

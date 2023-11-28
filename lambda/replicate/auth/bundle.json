@@ -1,0 +1,12 @@
+{
+  "name": "replicate",
+  "vpc": "authkey",
+  "lambdas": {
+    "replicate_authkey_db_prefix_vins": {
+      "tests": []
+    },
+    "replicate_authkey_db_users_restore": {
+      "tests": []
+    }
+  }
+}

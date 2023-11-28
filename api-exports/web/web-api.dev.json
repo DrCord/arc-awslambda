@@ -1,0 +1,54 @@
+{
+  "basePath": "/web",
+  "definitions": {
+    "Empty": {
+      "title": "Empty Schema",
+      "type": "object"
+    }
+  },
+  "host": "dev.api.arcimoto.com",
+  "info": {
+    "description": "Mock endpoints for hosting single page applications",
+    "title": "Web",
+    "version": "2022-04-20T20:01:47Z"
+  },
+  "paths": {
+    "/v1/palantir": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "text/html"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "responseTemplates": {
+                "text/html": "<!DOCTYPE html>\r\n<html lang=en>\r\n<head>\r\n\t<meta charset=utf-8>\r\n\t<meta http-equiv=X-UA-Compatible content=\"IE=edge\">\r\n\t<meta name=viewport content=\"width=device-width,initial-scale=1\">\r\n\t<link rel=icon href=\"https://arcimoto-palantir.s3-us-west-2.amazonaws.com/dev/favicon.png\">\r\n\t<title>Arcimoto Palantir - dev</title>\r\n\t<link href=\"https://arcimoto-palantir.s3-us-west-2.amazonaws.com/dev/js/chunk-vendors.js\" rel=preload as=script>\r\n\t<link rel=stylesheet href=\"//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900,400italic|Material+Icons|Bilbo\">\r\n\t<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css\">\r\n</head>\r\n<body>\r\n\t<noscript>\r\n\t\t<strong>Arcimoto Palantir doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>\r\n\t</noscript>\r\n\t<div id=app></div>\r\n\t<script src=https://arcimoto-palantir.s3-us-west-2.amazonaws.com/dev/js/chunk-vendors.js></script>\r\n\t<script type=\"text/javascript\">\r\n\t\t// cache busting - prevent stale versions of app from being used\r\n\t\t(function(){ \r\n\t\t\t var randomNum = Math.random();\r\n\t\t\t var e = document.getElementsByTagName(\"script\")[0];\r\n\t\t\t var d = document.createElement(\"script\");\r\n\t\t\t d.src = \"https://arcimoto-palantir.s3-us-west-2.amazonaws.com/$context.stage/js/app.js?x=\" + randomNum + \"\";\r\n\t\t\t d.type = \"text/javascript\"; \r\n\t\t\t d.async = true;\r\n\t\t\t d.defer = true;\r\n\t\t\t e.parentNode.insertBefore(d,e);\r\n\t\t })();\r\n  </script>\r\n<script async defer src=\"https://cdnjs.cloudflare.com/ajax/libs/masonry/4.0.0/masonry.pkgd.min.js\"></script>\r\n<script async defer src=\"https://cdnjs.cloudflare.com/ajax/libs/markerclustererplus/2.1.4/markerclusterer.js\"></script>\r\n</body>\r\n</html>"
+              },
+              "statusCode": "200"
+            }
+          },
+          "type": "mock"
+        }
+      }
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0"
+}

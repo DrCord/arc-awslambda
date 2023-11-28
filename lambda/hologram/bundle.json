@@ -1,0 +1,21 @@
+{
+  "name": "hologram",
+  "vpc": "none",
+  "lambdas": {
+    "hologram_change_plan": {
+      "tests": [
+        "test_hologram_change_plan"
+      ]
+    },
+    "hologram_check_plans": {
+      "tests": [
+        "test_hologram_check_plans"
+      ]
+    },
+    "update_hologram": {
+      "tests": [
+        "test_update_hologram"
+      ]
+    }
+  }
+}

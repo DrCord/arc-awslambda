@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Y-Risk Output Data",
+  "description": "The assembled/processed output from the state machine that is written to S3",
+  "type": "object",
+  "properties": {
+    "start": {
+      "description": "The output period start timestamp",
+      "type": "string"
+    },
+    "end": {
+      "description": "The output period end timestamp",
+      "type": "string"
+    },
+    "vehicles": {
+      "description": "List of vehicle objects",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Vehicle: coverage, model, odometer and location data",
+        "properties": {
+          "coverage": {
+            "type": "string"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "location_code": {
+                "type": ["string", "null"]
+              }
+            },
+            "required": ["name", "city", "state", "location_code"]
+          },
+          "model": {
+            "type": "string"
+          },
+          "telemetry": {
+            "type": "object",
+            "properties": {
+              "odometer": {
+                "type": ["object", "string"],
+                "properties": {
+                  "start": {
+                    "type": "object",
+                    "properties": {
+                      "point": {
+                        "type": "number"
+                      },
+                      "time": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["point", "time"]
+                  },
+                  "end": {
+                    "type": "object",
+                    "properties": {
+                      "point": {
+                        "type": "number"
+                      },
+                      "time": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["point", "time"]
+                  }
+                },
+                "required": ["start", "end"]
+              }
+            },
+            "required": ["odometer"]
+          },
+          "vin": {
+            "type": "string"
+          },
+          "department_code": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": ["coverage", "location", "model", "telemetry", "vin", "department_code"]
+      }
+    }
+  },
+  "required": [ "start", "end", "vehicles" ]
+}

@@ -1,0 +1,5 @@
+aws cloudformation create-stack \
+  --stack-name TEL-Telemetry \
+  --template-url "https://arcimoto-cloudformation.s3.us-west-2.amazonaws.com/vpc/VPC-3AZs.yml" \
+  --parameters \
+    ParameterKey=ClassB,ParameterValue=223

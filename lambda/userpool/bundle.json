@@ -1,0 +1,11 @@
+{
+  "name": "userpool",
+  "vpc": "none",
+  "lambdas": {
+    "userpool_trigger_custom_message": {
+      "tests": [
+        "test_userpool_trigger_custom_message"
+      ]
+    }
+  }
+}

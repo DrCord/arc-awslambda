@@ -1,0 +1,61 @@
+{
+  "name": "locations",
+  "vpc": "main",
+  "lambdas":{
+    "locations_accounting_location_code_create": {
+      "tests": [
+        "test_locations_accounting_location_code_create"
+      ]
+    },
+    "locations_accounting_location_code_delete": {
+        "tests": [
+          "test_locations_accounting_location_code_delete"
+        ]
+    },
+    "locations_accounting_location_codes_list": {
+          "tests": [
+            "test_locations_accounting_location_codes_list"
+          ]
+    },
+    "locations_address_types_list": {
+      "tests": [
+        "test_locations_address_types_list"
+      ]
+    },
+    "locations_countries_list": {
+      "tests": [
+        "test_locations_countries_list"
+      ]
+    },
+    "locations_location_accounting_location_code_set": {
+      "tests": [
+        "test_locations_location_accounting_location_code_set"
+      ]
+    },
+    "locations_location_create": {
+      "tests": [
+        "test_locations_location_create"
+      ]
+    },
+    "locations_location_delete": {
+      "tests": [
+        "test_locations_location_delete"
+      ]
+    },
+    "locations_location_get": {
+      "tests": [
+        "test_locations_location_get"
+      ]
+    },
+    "locations_location_update": {
+      "tests": [
+        "test_locations_location_update"
+      ]
+    },
+    "locations_locations_list": {
+      "tests": [
+        "test_locations_locations_list"
+      ]
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "firmware",
+  "vpc": "main",
+  "lambdas": {
+    "firmware_version_get": {
+      "tests": [
+        "test_firmware_version_get"
+      ]
+    },
+    "firmware_version_get_release_data": {
+      "tests": [
+        "test_firmware_version_get_release_data"
+      ]
+    },
+    "firmware_version_set_release_data": {
+      "tests": [
+        "test_firmware_version_set_release_data"
+      ]
+    },
+    "firmware_version_vin_get": {
+      "tests": [
+        "test_firmware_version_vin_get"
+      ]
+    },
+    "firmware_version_vin_set": {
+      "tests": [
+        "test_firmware_version_vin_set"
+      ]
+    },
+    "get_commit_info": {
+      "tests": [
+        "test_get_commit_info"
+      ]
+    }
+  }
+}

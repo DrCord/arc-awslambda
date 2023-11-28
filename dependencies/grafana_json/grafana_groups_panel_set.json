@@ -1,0 +1,17 @@
+[
+    {
+        "content": "<div style=\"width: 100%; height: 100%;\"><div style=\"padding-top: 30px; display: flex; flex-direction: column; align-items: center;\"><h3 style=\"font-size: 18px; text-align:center;\"'>replacetext_name</h3><h4><a style=\"text-decoration: none; font-size: 14px;\" href=\"/d/replacetext_uid_1/replacetext_title_1?orgId=1\">Fleet Overview &#128279;</a></h4><h4><a style=\"text-decoration: none; font-size: 14px;\" href=\"/d/replacetext_uid_2/replacetext_title_2?orgId=1\">Fleet Telemetry &#128279;</a></h4></div></div>",
+        "gridPos": {
+            "h": 5,
+            "w": 4,
+            "x": "replacetext_x_offset_1",
+            "y": "replacetext_y_offset_1"
+        },
+        "id": "replacetext_panel_id_1",
+        "links": [],
+        "mode": "html",
+        "title": "",
+        "transparent": false,
+        "type": "text"
+    }
+]

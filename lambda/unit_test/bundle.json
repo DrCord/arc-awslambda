@@ -1,0 +1,31 @@
+{
+  "name": "unit_test",
+  "vpc": "none",
+  "lambdas": {
+    "unit_test_bundles_get_lambdas": {
+      "tests": [
+        "test_unit_test_bundles_get_lambdas"
+      ]
+    },
+    "unit_test_lambda_get_tests": {
+      "tests": [
+        "test_unit_test_lambda_get_tests"
+      ]
+    },
+    "unit_test_lambda_run_tests": {
+      "tests": [
+        "test_unit_test_lambda_run_tests"
+      ]
+    },
+    "unit_test_lambdas_tests_report": {
+      "tests": [
+        "test_unit_test_lambdas_tests_report"
+      ]
+    },
+    "unit_test_notify": {
+      "tests": [
+        "test_unit_test_notify"
+      ]
+    }
+  }
+}

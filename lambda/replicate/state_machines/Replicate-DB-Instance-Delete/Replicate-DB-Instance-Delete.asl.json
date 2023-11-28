@@ -1,0 +1,291 @@
+{
+  "Comment": "Delete RDS DB Instance and wait for deletion completion",
+  "StartAt": "Notify - Start",
+  "States": {
+    "Notify - Start": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Cluster Delete - Start",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Next": "Check DB Instance Exists"
+    },
+    "Check DB Instance Exists": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_exists:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_instance_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Does DB Instance Exist?",
+      "ResultPath": "$.db_exists",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DB-Instance-Delete",
+          "ResultPath": "$.db_exists"
+        }
+      ]
+    },
+    "Does DB Instance Exist?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_exists.data.db_exists",
+          "BooleanEquals": false,
+          "Next": "Notify - DB Instance Does Not Exist"
+        }
+      ],
+      "Default": "Check DB Instance Availability"
+    },
+    "Notify - DB Instance Does Not Exist": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Instance Delete - Does not Exist",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "WARNING",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "End": true
+    },
+    "Check DB Instance Availability": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_available:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_instance_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is DB Instance Available?",
+      "ResultPath": "$.db_available",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DB-Instance-Delete",
+          "ResultPath": "$.db_available"
+        }
+      ]
+    },
+    "Is DB Instance Available?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_available.data.db_available",
+          "BooleanEquals": true,
+          "Next": "DB Instance Delete"
+        }
+      ],
+      "Default": "Wait for DB Instance Availability"
+    },
+    "Wait for DB Instance Availability": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check DB Instance Availability"
+    },
+    "DB Instance Delete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_instance_delete:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_instance_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Wait for DB Instance Delete Completion",
+      "ResultPath": "$.db_delete",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DB-Instance-Delete",
+          "ResultPath": "$.db_delete"
+        }
+      ]
+    },
+    "Wait for DB Instance Delete Completion": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check DB Instance Deleted"
+    },
+    "Check DB Instance Deleted": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_exists:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_instance_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is DB Instance Deletion Complete?",
+      "ResultPath": "$.db_deleted",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DB-Instance-Delete",
+          "ResultPath": "$.db_deleted"
+        }
+      ]
+    },
+    "Is DB Instance Deletion Complete?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_deleted.data.db_exists",
+          "BooleanEquals": false,
+          "Next": "Notify - Complete"
+        }
+      ],
+      "Default": "Wait for DB Instance Delete Completion"
+    },
+    "Notify - Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Instance Delete - Complete",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "End": true
+    },
+    "Fail - Replicate-DB-Instance-Delete": {
+      "Type": "Fail"
+    }
+  }
+}

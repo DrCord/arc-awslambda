@@ -1,0 +1,417 @@
+{
+  "Comment": "Lambdas - Run tests for lambdas of input bundle(s)",
+  "StartAt": "Notify Start",
+  "States": {
+    "Notify Start": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "unit_test_notify",
+        "Payload": {
+          "event": "Start",
+          "event_data": {
+            "bundles.$": "$.input.bundles"
+          }
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Wait - After Notify Start"
+    },
+    "Wait - After Notify Start": {
+      "Type": "Wait",
+      "Seconds": 1,
+      "Next": "Lambdas - List All to Test",
+      "Comment": "Wait after notifications to help them land in the right order."
+    },
+    "Lambdas - List All to Test": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "unit_test_bundles_get_lambdas"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Notify - Lambdas to Test",
+      "ResultPath": "$.lambdas_to_test",
+      "ResultSelector": {
+        "lambdas_to_test.$": "$.Payload"
+      },
+      "InputPath": "$.input",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Notify Failure",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "Notify - Lambdas to Test": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "unit_test_notify",
+        "Payload": {
+          "event": "Lists of Bundles of Lambdas to Test",
+          "event_data": {
+            "lambdas_to_test.$": "$.lambdas_to_test.lambdas_to_test.lambdas_bundled"
+          }
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Wait - After Notify Lambdas to Test"
+    },
+    "Wait - After Notify Lambdas to Test": {
+      "Type": "Wait",
+      "Seconds": 1,
+      "Next": "Test Bundle",
+      "Comment": "Wait after notifications to help them land in the right order."
+    },
+    "Test Bundle": {
+      "Type": "Map",
+      "Next": "Lambdas Tests Report Notify",
+      "Iterator": {
+        "StartAt": "Test Lambdas",
+        "States": {
+          "Test Lambdas": {
+            "Type": "Map",
+            "Iterator": {
+              "StartAt": "Notify Lambda Tests Start",
+              "States": {
+                "Notify Lambda Tests Start": {
+                  "Type": "Task",
+                  "Resource": "arn:aws:states:::lambda:invoke",
+                  "Parameters": {
+                    "FunctionName": "unit_test_notify",
+                    "Payload": {
+                      "event": "Start: Test Lambda",
+                      "message_addendum.$": "$.lambda_name"
+                    }
+                  },
+                  "Retry": [
+                    {
+                      "ErrorEquals": [
+                        "Lambda.ServiceException",
+                        "Lambda.AWSLambdaException",
+                        "Lambda.SdkClientException"
+                      ],
+                      "IntervalSeconds": 2,
+                      "MaxAttempts": 6,
+                      "BackoffRate": 2
+                    }
+                  ],
+                  "ResultPath": null,
+                  "Next": "Wait - After Notify Lambda Tests Start"
+                },
+                "Wait - After Notify Lambda Tests Start": {
+                  "Type": "Wait",
+                  "Seconds": 1,
+                  "Next": "Lambda - Get Tests",
+                  "Comment": "Wait after notifications to help them land in the right order."
+                },
+                "Lambda - Get Tests": {
+                  "Type": "Task",
+                  "Resource": "arn:aws:states:::lambda:invoke",
+                  "Parameters": {
+                    "Payload.$": "$",
+                    "FunctionName": "unit_test_lambda_get_tests"
+                  },
+                  "Retry": [
+                    {
+                      "ErrorEquals": [
+                        "Lambda.ServiceException",
+                        "Lambda.AWSLambdaException",
+                        "Lambda.SdkClientException"
+                      ],
+                      "IntervalSeconds": 2,
+                      "MaxAttempts": 6,
+                      "BackoffRate": 2,
+                      "Comment": "Exceptions"
+                    },
+                    {
+                      "ErrorEquals": [
+                        "Lambda.Unknown"
+                      ],
+                      "BackoffRate": 1,
+                      "IntervalSeconds": 1,
+                      "MaxAttempts": 1,
+                      "Comment": "Timeouts"
+                    }
+                  ],
+                  "ResultSelector": {
+                    "lambda_tests.$": "$.Payload"
+                  },
+                  "ResultPath": "$.lambda_tests",
+                  "Next": "Lambda - Run Tests",
+                  "Catch": [
+                    {
+                      "ErrorEquals": [
+                        "States.ALL"
+                      ],
+                      "Comment": "All",
+                      "Next": "Notify Test Exception",
+                      "ResultPath": "$.test_results.test_results.test_results[0]"
+                    }
+                  ]
+                },
+                "Lambda - Run Tests": {
+                  "Type": "Task",
+                  "Resource": "arn:aws:states:::lambda:invoke",
+                  "TimeoutSeconds": 105,
+                  "Parameters": {
+                    "FunctionName": "unit_test_lambda_run_tests",
+                    "Payload": {
+                      "lambda_name.$": "$.lambda_name",
+                      "lambda_tests.$": "$.lambda_tests.lambda_tests.lambda_tests"
+                    }
+                  },
+                  "Retry": [
+                    {
+                      "ErrorEquals": [
+                        "Lambda.ServiceException",
+                        "Lambda.AWSLambdaException",
+                        "Lambda.SdkClientException"
+                      ],
+                      "IntervalSeconds": 2,
+                      "MaxAttempts": 6,
+                      "BackoffRate": 2,
+                      "Comment": "Exceptions"
+                    },
+                    {
+                      "ErrorEquals": [
+                        "Lambda.Unknown"
+                      ],
+                      "BackoffRate": 1,
+                      "IntervalSeconds": 1,
+                      "MaxAttempts": 2,
+                      "Comment": "Timeouts"
+                    }
+                  ],
+                  "Catch": [
+                    {
+                      "ErrorEquals": [
+                        "States.ALL"
+                      ],
+                      "Next": "Notify Test Exception",
+                      "ResultPath": "$.test_results.test_results.test_results[0]",
+                      "Comment": "All"
+                    }
+                  ],
+                  "ResultSelector": {
+                    "test_results.$": "$.Payload"
+                  },
+                  "ResultPath": "$.test_results",
+                  "Next": "Notify Lambda Tests Complete"
+                },
+                "Notify Lambda Tests Complete": {
+                  "Type": "Task",
+                  "Resource": "arn:aws:states:::lambda:invoke",
+                  "Parameters": {
+                    "FunctionName": "unit_test_notify",
+                    "Payload": {
+                      "event": "Complete: Test Lambda",
+                      "message_addendum.$": "$.lambda_name"
+                    }
+                  },
+                  "Retry": [
+                    {
+                      "ErrorEquals": [
+                        "Lambda.ServiceException",
+                        "Lambda.AWSLambdaException",
+                        "Lambda.SdkClientException"
+                      ],
+                      "IntervalSeconds": 2,
+                      "MaxAttempts": 6,
+                      "BackoffRate": 2
+                    }
+                  ],
+                  "ResultPath": null,
+                  "Next": "Wait - After Notify Tests Complete"
+                },
+                "Wait - After Notify Tests Complete": {
+                  "Type": "Wait",
+                  "Seconds": 1,
+                  "Comment": "Wait after notifications to help them land in the right order.",
+                  "End": true
+                },
+                "Notify Test Exception": {
+                  "Type": "Task",
+                  "Resource": "arn:aws:states:::lambda:invoke",
+                  "Parameters": {
+                    "FunctionName": "unit_test_notify",
+                    "Payload": {
+                      "event": "Test Failure: Exception",
+                      "event_data": {
+                        "lambda_name.$": "$.lambda_name",
+                        "test_results.$": "$.test_results.test_results"
+                      },
+                      "severity": "ERROR"
+                    }
+                  },
+                  "Retry": [
+                    {
+                      "ErrorEquals": [
+                        "Lambda.ServiceException",
+                        "Lambda.AWSLambdaException",
+                        "Lambda.SdkClientException"
+                      ],
+                      "IntervalSeconds": 2,
+                      "MaxAttempts": 6,
+                      "BackoffRate": 2
+                    }
+                  ],
+                  "ResultPath": null,
+                  "Next": "Wait - After Notify Test Exception"
+                },
+                "Wait - After Notify Test Exception": {
+                  "Type": "Wait",
+                  "Seconds": 1,
+                  "Next": "Notify Lambda Tests Complete",
+                  "Comment": "Wait after notifications to help them land in the right order."
+                }
+              }
+            },
+            "ItemsPath": "$.lambdas",
+            "ResultPath": "$.lambda_tests",
+            "Parameters": {
+              "lambda_name.$": "$$.Map.Item.Value"
+            },
+            "MaxConcurrency": 1,
+            "End": true
+          }
+        }
+      },
+      "ItemsPath": "$.lambdas_to_test.lambdas_to_test.lambdas_bundled",
+      "ResultPath": "$.lambda_tests"
+    },
+    "Notify Failure": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "unit_test_notify",
+        "Payload": {
+          "event": "FAILURE",
+          "event_data.$": "$.error",
+          "severity": "ERROR"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "End": true
+    },
+    "Lambdas Tests Report Notify": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "unit_test_lambdas_tests_report",
+        "Payload": {
+          "lambdas_tests_results.$": "$.lambda_tests",
+          "message_addendum": "All Lambdas - Tests"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": "$.test_report_lambdas",
+      "ResultSelector": {
+        "results.$": "$.Payload"
+      },
+      "Next": "Wait - After Tests Report Notify",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Notify Failure",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "Wait - After Tests Report Notify": {
+      "Type": "Wait",
+      "Seconds": 1,
+      "Comment": "Wait after notifications to help them land in the right order.",
+      "Next": "Notify Complete"
+    },
+    "Notify Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "unit_test_notify",
+        "Payload": {
+          "event": "Complete"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "End": true
+    }
+  }
+}

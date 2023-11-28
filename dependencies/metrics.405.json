@@ -1,0 +1,714 @@
+{
+	"vehicle_started": {
+		"address": 257,
+		"byte_list": [
+			{
+				"start_bit": 2
+			}
+		]
+	},
+	"vehicle_direction_state": {
+		"type": "int",
+		"address": 257,
+		"byte_list": [
+			{
+				"start_bit": 4,
+				"num_bits": 2
+			}
+		]
+	},
+	"brake_fault": {
+		"address": 257,
+		"byte_list": [
+			{
+				"byte_num": 2
+			}
+		]
+	},
+	"lv_fault": {
+		"address": 257,
+		"byte_list": [
+			{
+				"byte_num": 2,
+				"start_bit": 2
+			}
+		]
+	},
+	"hv_fault": {
+		"address": 257,
+		"byte_list": [
+			{
+				"byte_num": 2,
+				"start_bit": 3
+			}
+		]
+	},
+	"left_driver_seat_belt_not_secured": {
+		"address": 257,
+		"byte_list": [
+			{
+				"byte_num": 2,
+				"start_bit": 4
+			}
+		]
+	},
+	"right_driver_seat_belt_not_secured": {
+		"address": 257,
+		"byte_list": [
+			{
+				"byte_num": 2,
+				"start_bit": 5
+			}
+		]
+	},
+	"drivetrain_overtemp": {
+		"address": 257,
+		"byte_list": [
+			{
+				"byte_num": 2,
+				"start_bit": 7
+			}
+		]
+	},
+	"left_passenger_seat_belt_not_secured": {
+		"address": 257,
+		"byte_list": [
+			{
+				"byte_num": 3,
+				"start_bit": 4
+			}
+		]
+	},
+	"right_passenger_seat_belt_not_secured": {
+		"address": 257,
+		"byte_list": [
+			{
+				"byte_num": 3,
+				"start_bit": 5
+			}
+		]
+	},
+	"epsu_current": {
+		"type": "float",
+		"scale": 1048576,
+		"offset": 0,
+		"address": 266,
+		"byte_list": [
+			{
+
+			},
+			{
+				"byte_num": 1
+			},
+			{
+				"byte_num": 2
+			},
+			{
+				"byte_num": 3
+			}
+		]
+	},
+	"epsu_unit_temperature": {
+		"type": "float",
+		"scale": 1,
+		"offset": -40,
+		"address": 266,
+		"byte_list": [
+			{
+				"byte_num": 4
+			}
+		]
+	},
+	"epsu_encoder_temperature": {
+		"type": "float",
+		"scale": 1,
+		"offset": -40,
+		"address": 266,
+		"byte_list": [
+			{
+				"byte_num": 5
+			}
+		]
+	},
+	"controller_1_motor_temperature": {
+		"type": "int",
+		"address": 267,
+		"byte_list": [
+			{
+
+			}
+		]
+	},
+	"controller_2_motor_temperature": {
+		"type": "int",
+		"address": 267,
+		"byte_list": [
+			{
+				"byte_num": 1
+			}
+		]
+	},
+	"controller_1_inverter_temperature": {
+		"type": "int",
+		"address": 267,
+		"byte_list": [
+			{
+				"byte_num": 2
+			}
+		]
+	},
+	"controller_2_inverter_temperature": {
+		"type": "int",
+		"address": 267,
+		"byte_list": [
+			{
+				"byte_num": 3
+			}
+		]
+	},
+	"controller_1_fault_level": {
+		"type": "int",
+		"address": 267,
+		"byte_list": [
+			{
+				"byte_num": 4
+			}
+		]
+	},
+	"controller_1_fault_code": {
+		"type": "int",
+		"address": 267,
+		"byte_list": [
+			{
+				"byte_num": 5
+			}
+		]
+	},
+	"controller_2_fault_level": {
+		"type": "int",
+		"address": 267,
+		"byte_list": [
+			{
+				"byte_num": 6
+			}
+		]
+	},
+	"controller_2_fault_code": {
+		"type": "int",
+		"address": 267,
+		"byte_list": [
+			{
+				"byte_num": 7
+			}
+		]
+	},
+	"speed": {
+		"type": "float",
+		"scale": 10,
+		"address": 268,
+		"byte_list": [
+			{
+
+			},
+			{
+				"byte_num": 1
+			}
+		]
+	},
+	"steering_angle": {
+		"type": "int",
+		"address": 268,
+		"byte_list": [
+			{
+				"byte_num": 2
+			},
+			{
+				"byte_num": 3
+			}
+		]
+	},
+	"odometer": {
+		"type": "float",
+		"scale": 100,
+		"address": 268,
+		"byte_list": [
+			{
+				"byte_num": 6
+			},
+			{
+				"byte_num": 7
+			},
+			{
+				"byte_num": 4
+			},
+			{
+				"byte_num": 5
+			}
+		]
+	},
+	"fio_coolant_level_switch_status": {
+		"address": 272,
+		"byte_list": [
+			{
+				"start_bit": 7
+			}
+		]
+	},
+	"fio_blinker_left": {
+		"type": "int",
+		"address": 272,
+		"byte_list": [
+			{
+				"byte_num": 3,
+				"start_bit": 4,
+				"num_bits": 2
+			}
+		]
+	},
+	"fio_blinker_right": {
+		"type": "int",
+		"address": 272,
+		"byte_list": [
+			{
+				"byte_num": 4,
+				"start_bit": 4,
+				"num_bits": 2
+			}
+		]
+	},
+	"rio_blinker_left_error": {
+		"address": 288,
+		"byte_list": [
+			{
+				"byte_num": 1,
+				"start_bit": 0,
+				"num_bits": 2
+			}
+		]
+	},
+	"rio_blinker_right_error": {
+		"address": 288,
+		"byte_list": [
+			{
+				"byte_num": 1,
+				"start_bit": 4,
+				"num_bits": 2
+			}
+		]
+	},
+  "rio_seatbelt_passenger_left": {
+		"address": 288,
+		"byte_list": [
+			{
+				"byte_num": 4
+			}
+		]
+	},
+	"rio_seatbelt_passenger_right": {
+		"address": 288,
+		"byte_list": [
+			{
+				"byte_num": 4,
+				"start_bit": 1
+			}
+		]
+	},
+  "rio_chmsl": {
+		"type": "int",
+		"address": 288,
+		"byte_list": [
+			{
+				"byte_num": 2,
+				"num_bits": 2
+			}
+		]
+	},
+	"rio_reverse_light": {
+		"type": "int",
+		"address": 288,
+		"byte_list": [
+			{
+				"byte_num": 2,
+				"start_bit": 2,
+				"num_bits": 2
+			}
+		]
+	},
+	"rio_license_light": {
+		"type": "int",
+		"address": 288,
+		"byte_list": [
+			{
+				"byte_num": 2,
+				"start_bit": 4,
+				"num_bits": 2
+			}
+		]
+  },
+  "rio_seat_heat_front": {
+		"type": "int",
+		"address": 288,
+		"byte_list": [
+			{
+				"byte_num": 3,
+				"num_bits": 2
+			}
+		]
+	},
+	"rio_seat_heat_rear": {
+		"type": "int",
+		"address": 288,
+		"byte_list": [
+			{
+				"byte_num": 3,
+				"start_bit": 2,
+				"num_bits": 2
+			}
+		]
+	},
+	"charger_output_short_protection": {
+		"address": 782,
+		"byte_list": [
+			{
+				"byte_num": 5
+			}
+		]
+	},
+	"charger_hardware_failure": {
+		"address": 782,
+		"byte_list": [
+			{
+				"byte_num": 5,
+				"start_bit": 3
+			}
+		]
+	},
+	"charger_output_overcurrent_protection": {
+		"address": 782,
+		"byte_list": [
+			{
+				"byte_num": 5,
+				"start_bit": 4
+			}
+		]
+	},
+	"charger_output_overvoltage_protection": {
+		"address": 782,
+		"byte_list": [
+			{
+				"byte_num": 5,
+				"start_bit": 5
+			}
+		]
+	},
+	"charger_pfc_over_temperature_protection": {
+		"address": 782,
+		"byte_list": [
+			{
+				"byte_num": 6,
+				"start_bit": 3
+			}
+		]
+	},
+	"bms_pack_soc": {
+		"type": "float",
+		"scale": 2,
+		"address": 1024,
+		"byte_list": [
+			{
+
+			}
+		]
+	},
+	"bms_pack_current": {
+		"type": "int",
+		"address": 1024,
+		"byte_list": [
+			{
+				"byte_num": 1
+			},
+			{
+				"byte_num": 2
+			}
+		]
+	},
+	"bms_pack_instantaneous_voltage": {
+		"type": "int",
+		"address": 1024,
+		"byte_list": [
+			{
+				"byte_num": 3
+			},
+			{
+				"byte_num": 4
+			}
+		]
+	},
+	"bms_pack_health": {
+		"type": "int",
+		"address": 1024,
+		"byte_list": [
+			{
+				"byte_num": 7
+			}
+		]
+	},
+	"bms_multi_purpose_enable": {
+		"address": 1025,
+		"byte_list": [
+			{
+
+			}
+		]
+	},
+	"bms_discharge_relay": {
+		"address": 1025,
+		"byte_list": [
+			{
+				"start_bit": 2
+			}
+		]
+	},
+	"bms_charge_relay": {
+		"address": 1025,
+		"byte_list": [
+			{
+				"start_bit": 3
+			}
+		]
+	},
+	"bms_charger_safety": {
+		"address": 1025,
+		"byte_list": [
+			{
+				"start_bit": 4
+			}
+		]
+	},
+	"bms_total_pack_cycles": {
+		"type": "int",
+		"address": 1025,
+		"byte_list": [
+			{
+				"byte_num": 1
+			},
+			{
+				"byte_num": 2
+			}
+		]
+	},
+	"bms_pack_dcl": {
+		"type": "int",
+		"address": 1026,
+		"byte_list": [
+			{
+
+			},
+			{
+				"byte_num": 1
+			}
+		]
+	},
+	"bms_pack_ccl": {
+		"type": "int",
+		"address": 1026,
+		"byte_list": [
+			{
+				"byte_num": 2
+			},
+			{
+				"byte_num": 3
+			}
+		]
+	},
+	"bms_ccl_reduced_high_cell_resistance": {
+		"address": 1026,
+		"byte_list": [
+			{
+				"byte_num": 4,
+				"start_bit": 2
+			}
+		]
+	},
+	"bms_dtc_p0a0a_internal_heatsink_thermistor_fault": {
+		"address": 1026,
+		"byte_list": [
+			{
+				"byte_num": 6
+			}
+		]
+	},
+	"bms_dtc_p0a0f_cell_bank_fault": {
+		"address": 1026,
+		"byte_list": [
+			{
+				"byte_num": 6,
+				"start_bit": 5
+			}
+		]
+	},
+	"bms_dtc_p0a10_pack_too_hot_fault": {
+		"address": 1026,
+		"byte_list": [
+			{
+				"byte_num": 6,
+				"start_bit": 6
+			}
+		]
+	},
+	"bms_dtc_p0a80_weak_cell_fault": {
+		"address": 1026,
+		"byte_list": [
+			{
+				"byte_num": 7,
+				"start_bit": 1
+			}
+		]
+	},
+	"bms_dtc_p0a9c_thermistor_fault": {
+		"address": 1026,
+		"byte_list": [
+			{
+				"byte_num": 7,
+				"start_bit": 3
+			}
+		]
+	},
+	"bms_dtc_p0aa6_high_voltage_isolation_fault": {
+		"address": 1026,
+		"byte_list": [
+			{
+				"byte_num": 7,
+				"start_bit": 4
+			}
+		]
+	},
+	"bms_low_cell_voltage": {
+		"type": "int",
+		"address": 1027,
+		"byte_list": [
+			{
+
+			},
+			{
+				"byte_num": 1
+			}
+		]
+	},
+	"bms_high_cell_voltage": {
+		"type": "int",
+		"address": 1027,
+		"byte_list": [
+			{
+				"byte_num": 3
+			},
+			{
+				"byte_num": 4
+			}
+		]
+	},
+	"bms_j1772_plug_state": {
+		"type": "int",
+		"address": 1028,
+		"byte_list": [
+			{
+				"byte_num": 6
+			}
+		]
+	},
+	"lv_voltage_1": {
+		"type": "int",
+		"address": 1617,
+		"byte_list": [
+			{
+
+			}
+		]
+	},
+	"lv_voltage_2": {
+		"type": "int",
+		"address": 1617,
+		"byte_list": [
+			{
+				"byte_num": 1
+			}
+		]
+	},
+	"lv_voltage_3": {
+		"type": "int",
+		"address": 1617,
+		"byte_list": [
+			{
+				"byte_num": 2
+			}
+		]
+	},
+	"lv_voltage_4": {
+		"type": "int",
+		"address": 1617,
+		"byte_list": [
+			{
+				"byte_num": 3
+			}
+		]
+	},
+	"lv_current_1": {
+		"type": "int",
+		"address": 1617,
+		"byte_list": [
+			{
+				"byte_num": 4
+			}
+		]
+	},
+	"lv_current_2": {
+		"type": "int",
+		"address": 1617,
+		"byte_list": [
+			{
+				"byte_num": 5
+			}
+		]
+	},
+	"lv_current_3": {
+		"type": "int",
+		"address": 1617,
+		"byte_list": [
+			{
+				"byte_num": 6
+			}
+		]
+	},
+	"lv_current_4": {
+		"type": "int",
+		"address": 1617,
+		"byte_list": [
+			{
+				"byte_num": 7
+			}
+		]
+	},
+	"humidity": {
+		"type": "int"
+	},
+	"ambient_temp": {
+		"type": "float",
+		"scale": 10
+	},
+	"gps_altitude": {
+		"type": "float"
+	},
+	"gps_position": {
+		"type": "string"
+	},
+	"gearbox_temp": {
+		"type": "int",
+		"address": 261,
+		"offset": -40,
+		"byte_list": [
+			{
+				"byte_num": 6
+			}
+		]
+	}
+}

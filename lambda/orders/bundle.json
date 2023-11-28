@@ -1,0 +1,76 @@
+{
+  "name": "orders",
+  "vpc": "main",
+  "lambdas": {
+    "orders_order_add_error_payment_notifier": {
+      "tests": [
+        "test_orders_order_add_error_payment_notifier"
+      ]
+    },
+    "orders_order_add_payment": {
+      "tests": [
+        "test_orders_order_add_payment"
+      ]
+    },
+    "orders_order_add_success_payment_notifier": {
+      "tests": [
+        "test_orders_order_add_success_payment_notifier"
+      ]
+    },
+    "orders_order_archive": {
+      "tests": [
+        "test_orders_order_archive"
+      ]
+    },
+    "orders_order_create": {
+      "tests": [
+        "test_orders_order_create"
+      ]
+    },
+    "orders_order_crm_update": {
+      "tests": [
+        "test_orders_order_crm_update"
+      ]
+    },
+    "orders_order_delete": {
+      "tests": [
+        "test_orders_order_delete"
+      ]
+    },
+    "orders_order_get": {
+      "tests": [
+        "test_orders_order_get"
+      ]
+    },
+    "orders_order_queue_crm_update": {
+      "tests": [
+        "test_orders_order_queue_crm_update"
+      ]
+    },
+    "orders_order_queue_payment_error_cx": {
+      "tests": [
+        "test_orders_order_queue_payment_error_cx"
+      ]
+    },
+    "orders_order_queue_payment_success_customer": {
+      "tests": [
+        "test_orders_order_queue_payment_success_customer"
+      ]
+    },
+    "orders_order_queue_payment_success_cx": {
+      "tests": [
+        "test_orders_order_queue_payment_success_cx"
+      ]
+    },
+    "orders_order_ses_email": {
+      "tests": [
+        "test_orders_order_ses_email"
+      ]
+    },
+    "orders_orders_list": {
+      "tests": [
+        "test_orders_orders_list"
+      ]
+    }
+  }
+}

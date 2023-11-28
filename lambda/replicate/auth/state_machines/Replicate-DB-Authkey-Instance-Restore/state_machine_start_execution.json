@@ -1,0 +1,17 @@
+{
+  "input": {
+    "db_type": "authkey",
+    "state_machine": "Replicate-DB-Authkey-Instance-Restore",
+    "run_env": "dev",
+    "source": {
+      "db_cluster_identifier": "tel-authkey-db-prod-auroradbcluster-gp0nmqa9ii2t"
+    },
+    "db_identifier": "taz1h40irkeopr",
+    "replication_target_env": "staging",
+    "target": {
+      "db_cluster_identifier": "tel-authkey-db-staging-auroradbcluster-1nzlavkvjvmb2",
+      "db_instance_identifier": "taz1h40irkeopr"
+    }
+  },
+  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID": "arn:aws:states:us-west-2:511596272857:execution:Replicate-DB-Type-Prod-to-ENV:3aea362b-bb6b-4c41-a151-f431321bd804"
+}

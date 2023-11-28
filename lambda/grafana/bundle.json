@@ -1,0 +1,21 @@
+{
+  "name": "grafana",
+  "vpc": "telemetry",
+  "lambdas": {
+    "provision_grafana_groups": {
+      "tests": [
+        "test_provision_grafana_groups"
+      ]
+    },
+    "provision_grafana_overview": {
+      "tests": [
+        "test_provision_grafana_overview"
+      ]
+    },
+    "provision_grafana_vehicle": {
+      "tests": [
+        "test_provision_grafana_vehicle"
+      ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": "reef",
+  "vpc": "reef",
+  "lambdas": {
+    "reef_managed_session_end": {
+      "tests": [
+        "test_reef_managed_session_end"
+      ]
+    },
+    "reef_managed_session_get": {
+      "tests": [
+        "test_reef_managed_session_get"
+      ]
+    },
+    "reef_managed_session_list": {
+      "tests": [
+        "test_reef_managed_session_list"
+      ]
+    },
+    "reef_managed_session_start": {
+      "tests": [
+        "test_reef_managed_session_start"
+      ]
+    },
+    "reef_managed_session_telemetry_get": {
+      "tests": [
+        "test_reef_managed_session_telemetry_get"
+      ]
+    },
+    "reef_sheer_id_verify_dl": {
+      "tests": [
+        "test_reef_sheer_id_verify_dl"
+      ]
+    },
+    "reef_vehicle_shadow_synchronized": {
+      "tests": [
+        "test_reef_vehicle_shadow_synchronized"
+      ]
+    }
+  }
+}

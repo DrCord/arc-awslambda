@@ -1,0 +1,12 @@
+aws cloudformation create-stack \
+  --stack-name TEL-Telemetry-Peering-Telemetry-Accepter-Tag \
+  --template-url "https://arcimoto-cloudformation.s3.us-west-2.amazonaws.com/vpc/VPCPeering-Accepter-Tag.cfn.yaml" \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --parameters \
+    ParameterKey=PeerName,ParameterValue=tel-telemetry-to-users \
+    ParameterKey=VPCPeeringConnectionId,ParameterValue=pcx-07313d8baa925b6f9 \
+    ParameterKey=LambdaLogsCloudWatchKMSKey,ParameterValue="" \
+    ParameterKey=LambdaFunctionName,ParameterValue=CR-TagVpcPeeringConnections-Telemetry \
+  --tags \
+    Key="Cost Center",Value="Telematics" \
+    Key="VPC",Value="Telemetry"

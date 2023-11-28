@@ -1,0 +1,15 @@
+aws cloudformation create-stack \
+  --stack-name TEL-Users-Bastion-Prod \
+  --template-url "https://arcimoto-cloudformation.s3.us-west-2.amazonaws.com/vpc/VPC-SSH-Bastion.yml" \
+  --capabilities CAPABILITY_IAM \
+  --parameters \
+    ParameterKey=ParentVPCStack,ParameterValue=TEL-Users \
+    ParameterKey=EnableTCPForwarding,ParameterValue=true \
+    ParameterKey=NotificationList,ParameterValue="bastion-users-vpc-prod@arcimoto.com" \
+    ParameterKey=KeyPairName,ParameterValue="vpc-users-bastion-prod" \
+    ParameterKey=RemoteAccessCIDR,ParameterValue="24.20.7.0/32" \
+  --tags \
+    Key="Cost Center",Value="Telematics" \
+    Key="VPC",Value="Users" \
+    Key="Environment",Value="Prod" \
+    Key="Purview",Value="Security"

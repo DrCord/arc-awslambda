@@ -1,0 +1,528 @@
+{
+  "basePath": "/prod",
+  "definitions": {
+    "Empty": {
+      "title": "Empty Schema",
+      "type": "object"
+    },
+    "Error": {
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "Error Schema",
+      "type": "object"
+    }
+  },
+  "host": "c4sbssekn3.execute-api.us-west-2.amazonaws.com",
+  "info": {
+    "description": "REEF Integration",
+    "title": "Reef",
+    "version": "2021-06-11T23:32:44Z"
+  },
+  "paths": {
+    "/v1/managed-sessions": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "when_no_templates",
+          "requestTemplates": {
+            "application/json": "#set($inputRoot = $input.path('$'))\n{ }"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:511596272857:function:${stageVariables.func_reef_managed_session_list}/invocations"
+        }
+      }
+    },
+    "/v1/managed-sessions/vehicles/{vin}": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vin",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "400": {
+            "description": "400 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "401 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "404 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "when_no_templates",
+          "requestTemplates": {
+            "application/json": "{\n    \"vin\": \"$input.params('vin')\"\n}"
+          },
+          "responses": {
+            "(.*Input validation failed.*)": {
+              "statusCode": "400"
+            },
+            "(.*Invalid.*)": {
+              "statusCode": "404"
+            },
+            "(.*Unauthorized.*)": {
+              "statusCode": "401"
+            },
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:511596272857:function:${stageVariables.func_reef_managed_session_get}/invocations"
+        }
+      }
+    },
+    "/v1/managed-sessions/vehicles/{vin}/end": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vin",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "400": {
+            "description": "400 response"
+          },
+          "401": {
+            "description": "401 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "404 response"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "when_no_templates",
+          "requestTemplates": {
+            "application/json": "{\n    \"atoms\":[\n    \t{\n    \t\t\"lambda\":\"reef_managed_session_end\",\n    \t\t\"output\": {\n    \t\t    \"id\": \"id\",\n    \t\t    \"initialization\": \"initialization\",\n    \t\t    \"completion\": \"completion\"\n    \t\t}\n    \t},\n    \t{\n    \t\t\"lambda\":\"update_shadow_document\"\n    \t}\n    ],\n    \"input\":{\n    \t\"vin\": \"$input.params('vin')\"\n    }\n}"
+          },
+          "responses": {
+            "(.*Input validation failed.*)": {
+              "statusCode": "400"
+            },
+            "(.*Invalid.*)": {
+              "statusCode": "404"
+            },
+            "(.*Unauthorized.*)": {
+              "statusCode": "401"
+            },
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:511596272857:function:${stageVariables.func_step_wrapper}/invocations"
+        }
+      }
+    },
+    "/v1/managed-sessions/vehicles/{vin}/start": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vin",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "400": {
+            "description": "400 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "401 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "404 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "when_no_templates",
+          "requestTemplates": {
+            "application/json": "{\n    \"atoms\":[\n    \t{\n    \t\t\"lambda\":\"reef_managed_session_start\",\n    \t\t\"output\": {\n    \t\t    \"id\": \"id\",\n    \t\t    \"pin\": \"pin\"\n    \t\t}\n    \t},\n    \t{\n    \t\t\"lambda\":\"update_shadow_document\"\n    \t}\n    ],\n    \"input\":{\n    \t\"vin\": \"$input.params('vin')\",\n    \t\"verification_id\" : $input.json('verification_id')\n    }\n}\n"
+          },
+          "responses": {
+            "(.*Input validation failed.*)": {
+              "statusCode": "400"
+            },
+            "(.*Invalid.*)": {
+              "statusCode": "404"
+            },
+            "(.*Unauthorized.*)": {
+              "statusCode": "401"
+            },
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:511596272857:function:${stageVariables.func_step_wrapper}/invocations"
+        }
+      }
+    },
+    "/v1/managed-sessions/vehicles/{vin}/synchronized": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vin",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "400": {
+            "description": "400 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "401 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "404 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "500 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "when_no_templates",
+          "requestTemplates": {
+            "application/json": "{\n    \"vin\" : \"$input.params('vin')\"\n}"
+          },
+          "responses": {
+            "(,*Unauthorized.*)": {
+              "statusCode": "401"
+            },
+            "(.*Input validation failed.*)": {
+              "statusCode": "400"
+            },
+            "(.*Invalid.*)": {
+              "statusCode": "404"
+            },
+            "(.*Unable.*)": {
+              "statusCode": "500"
+            },
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:511596272857:function:${stageVariables.func_reef_vehicle_shadow_synchronized}/invocations"
+        }
+      }
+    },
+    "/v1/managed-sessions/verify-dl": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "400": {
+            "description": "400 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "500 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "when_no_templates",
+          "requestTemplates": {
+            "application/json": "\n{\n    \"first_name\" : $input.json('first_name'),\n    \"last_name\" : $input.json('last_name'),\n    \"email\" : $input.json('email'),\n    \"drivers_license_number\" : $input.json('drivers_license_number'),\n    \"state\" : $input.json('state')\n}\n"
+          },
+          "responses": {
+            "(.*Input validation failed.*)": {
+              "statusCode": "400"
+            },
+            "(.*Unable.*)": {
+              "statusCode": "500"
+            },
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:511596272857:function:${stageVariables.func_reef_sheer_id_verify_dl}/invocations"
+        }
+      }
+    },
+    "/v1/managed-sessions/{id}": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "400": {
+            "description": "400 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "401 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "when_no_templates",
+          "requestTemplates": {
+            "application/json": "{\n    \"id\": $input.params('id') \n}"
+          },
+          "responses": {
+            "(.*Input validation failed.*)": {
+              "statusCode": "400"
+            },
+            "(.*Unauthorized.*)": {
+              "statusCode": "401"
+            },
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:511596272857:function:${stageVariables.func_reef_managed_session_get}/invocations"
+        }
+      }
+    },
+    "/v1/managed-sessions/{id}/telemetry": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "400": {
+            "description": "400 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "401 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "404 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "500 response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "when_no_templates",
+          "requestTemplates": {
+            "application/json": "{\n    \"managed_session_id\": $input.params('id')\n}"
+          },
+          "responses": {
+            "(.*Input validation failed.*)": {
+              "statusCode": "400"
+            },
+            "(.*Invalid.*)": {
+              "statusCode": "404"
+            },
+            "(.*Unable.*)": {
+              "statusCode": "500"
+            },
+            "(.*Unauthorized.*)": {
+              "statusCode": "401"
+            },
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:511596272857:function:${stageVariables.func_reef_managed_session_telemetry_get}/invocations"
+        }
+      }
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "x-amazon-apigateway-endpoint-configuration": {
+    "disableExecuteApiEndpoint": true
+  }
+}

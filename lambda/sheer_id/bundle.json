@@ -1,0 +1,11 @@
+{
+  "name": "sheer_id",
+  "vpc": "main",
+  "lambdas": {
+    "sheer_id_verify_dl": {
+      "tests": [
+        "test_sheer_id_verify_dl"
+      ]
+    }
+  }
+}

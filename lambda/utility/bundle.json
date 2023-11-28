@@ -1,0 +1,46 @@
+{
+  "name": "utility",
+  "vpc": "main",
+  "lambdas": {
+    "message_broker": {
+      "tests": [
+        "test_message_broker"
+      ]
+    },
+    "print_label_request": {
+      "tests": [
+        "test_print_label_request"
+      ]
+    },
+    "slack_notification": {
+      "tests": [
+        "test_slack_notification"
+      ]
+    },
+    "step_wrapper": {
+      "tests": [
+        "test_step_wrapper"
+      ]
+    },
+    "step_wrapper_palantir": {
+      "tests": [
+        "test_step_wrapper_palantir"
+      ]
+    },
+    "utility_controlled_docs_masterlist_export":{
+      "tests": [
+        "test_utility_controlled_docs_masterlist_export"
+      ]
+    },
+    "utility_cwl_set_retention": {
+      "tests": [
+        "test_utility_cwl_set_retention"
+      ]
+    },
+    "utility_email_alert_error": {
+      "tests": [
+        "test_utility_email_alert_error"
+      ]
+    }
+  }
+}

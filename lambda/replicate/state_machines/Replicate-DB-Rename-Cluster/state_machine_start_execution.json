@@ -1,0 +1,9 @@
+{
+  "input": {
+    "state_machine": "Replicate-DB-Rename-Cluster",
+    "run_env": "dev",
+    "db_identifier": "tel-main-db-staging-auroradbcluster-6nt-retired-20220701-200931",
+    "replication_target_env": "$.input.replication_target_env"
+  },
+  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID": "arn:aws:states:us-west-2:511596272857:execution:Replicate-DBs-ENV-Undo:f02f0775-c21e-499a-84d9-494540f0565b"
+}

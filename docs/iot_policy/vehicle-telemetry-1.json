@@ -1,0 +1,27 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "iot:Publish",
+            "Resource": [
+                "arn:aws:iot:us-west-2:511596272857:topic//vehicles/${iot:Connection.Thing.ThingName}/telemetry/defs/get",
+                "arn:aws:iot:us-west-2:511596272857:topic//vehicles/${iot:Connection.Thing.ThingName}/telemetry"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iot:Subscribe",
+            "Resource": [
+                "arn:aws:iot:us-west-2:511596272857:topicfilter//vehicles/${iot:Connection.Thing.ThingName}/telemetry/defs"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iot:REceive",
+            "Resource": [
+                "arn:aws:iot:us-west-2:511596272857:topic//vehicles/${iot:Connection.Thing.ThingName}/telemetry/defs"
+            ]
+        }
+    ]
+}

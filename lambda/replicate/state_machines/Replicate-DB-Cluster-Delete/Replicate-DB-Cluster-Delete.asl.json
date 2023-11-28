@@ -1,0 +1,291 @@
+{
+  "Comment": "Delete RDS DB Cluster and wait for deletion completion",
+  "StartAt": "Notify - Start",
+  "States": {
+    "Notify - Start": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Cluster Delete - Start",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Next": "Check DB Cluster Exists"
+    },
+    "Check DB Cluster Exists": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_exists:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_cluster_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Does DB Cluster Exist?",
+      "ResultPath": "$.db_exists",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DB-Cluster-Delete",
+          "ResultPath": "$.db_exists"
+        }
+      ]
+    },
+    "Does DB Cluster Exist?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_exists.data.db_exists",
+          "BooleanEquals": false,
+          "Next": "Notify - DB Cluster Does Not Exist"
+        }
+      ],
+      "Default": "Check DB Cluster Availability"
+    },
+    "Notify - DB Cluster Does Not Exist": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Cluster Delete - Does not Exist",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "WARNING",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "End": true
+    },
+    "Check DB Cluster Availability": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_available:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_cluster_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is DB Cluster Available?",
+      "ResultPath": "$.db_available",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DB-Cluster-Delete",
+          "ResultPath": "$.db_available"
+        }
+      ]
+    },
+    "Is DB Cluster Available?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_available.data.db_available",
+          "BooleanEquals": true,
+          "Next": "DB Cluster Delete"
+        }
+      ],
+      "Default": "Wait for DB Cluster Availability"
+    },
+    "Wait for DB Cluster Availability": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check DB Cluster Availability"
+    },
+    "DB Cluster Delete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_cluster_delete:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_cluster_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Wait for DB Cluster Delete Completion",
+      "ResultPath": "$.db_delete",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DB-Cluster-Delete",
+          "ResultPath": "$.db_delete"
+        }
+      ]
+    },
+    "Wait for DB Cluster Delete Completion": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check DB Cluster Deleted"
+    },
+    "Check DB Cluster Deleted": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_exists:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_cluster_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is DB Cluster Deletion Complete?",
+      "ResultPath": "$.db_deleted",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DB-Cluster-Delete",
+          "ResultPath": "$.db_deleted"
+        }
+      ]
+    },
+    "Is DB Cluster Deletion Complete?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_deleted.data.db_exists",
+          "BooleanEquals": false,
+          "Next": "Notify - Complete"
+        }
+      ],
+      "Default": "Wait for DB Cluster Delete Completion"
+    },
+    "Notify - Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Cluster Delete - Complete",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "End": true
+    },
+    "Fail - Replicate-DB-Cluster-Delete": {
+      "Type": "Fail"
+    }
+  }
+}

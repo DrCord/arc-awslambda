@@ -1,0 +1,426 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Order and Reservation Email</title>
+    <style>
+        /* -------------------------------------
+            GLOBAL RESETS
+        ------------------------------------- */
+        /*All the styling goes here*/
+        .h { 
+            background-color: rgb(90, 91, 92) ;
+            vertical-align: center;
+            color: white
+            }
+        img {
+            border: none;
+            -ms-interpolation-mode: bicubic;
+            max-width: 100%;
+        }
+        body {
+            background-color: #f6f6f6;
+            font-family: sans-serif;
+            -webkit-font-smoothing: antialiased;
+            font-size: 14px;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+        table {
+            border-collapse: separate;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+            width: 100%; }
+            table td {
+            font-family: sans-serif;
+            font-size: 14px;
+            vertical-align: top;
+        }
+        /* -------------------------------------
+            BODY & CONTAINER
+        ------------------------------------- */
+        .body {
+            background-color: #f6f6f6;
+            width: 100%;
+        }
+        /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+        .container {
+            display: block;
+            margin: 0 auto !important;
+            /* makes it centered */
+            max-width: 580px;
+            padding: 10px;
+            width: 580px;
+        }
+        /* This should also be a block element, so that it will fill 100% of the .container */
+        .content {
+            box-sizing: border-box;
+            display: block;
+            margin: 0 auto;
+            max-width: 580px;
+            padding: 10px;
+        }
+        /* -------------------------------------
+            HEADER, FOOTER, MAIN
+        ------------------------------------- */
+        .wrapper {
+            box-sizing: border-box;
+            padding: 20px;
+        }
+        .content-block {
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+        .footer {
+            clear: both;
+            margin-top: 10px;
+            text-align: center;
+            width: 100%;
+        }
+            .footer td,
+            .footer p,
+            .footer span,
+            .footer a {
+            color: #999999;
+            font-size: 12px;
+            text-align: center;
+        }
+        /* -------------------------------------
+            TYPOGRAPHY
+        ------------------------------------- */
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: #000000;
+            font-family: sans-serif;
+            font-weight: 400;
+            line-height: 1.4;
+            margin: 0;
+            margin-bottom: 30px;
+            text-align: center
+        }
+        h1 {
+            font-size: 35px;
+            font-weight: 300;
+            text-align: center;
+            text-transform: capitalize;
+        }
+        p,
+        ul,
+        ol {
+            font-family: sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            margin: 0;
+            margin-bottom: 15px;
+        }
+            p li,
+            ul li,
+            ol li {
+            list-style-position: inside;
+            margin-left: 5px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: underline;
+        }
+        .last {
+            margin-bottom: 0;
+        }
+        .first {
+            margin-top: 0;
+        }
+        .align-center {
+            text-align: center;
+        }
+        .align-right {
+            text-align: right;
+        }
+        .align-left {
+            text-align: left;
+        }
+        .clear {
+            clear: both;
+        }
+        .mt0 {
+            margin-top: 0;
+        }
+        .mb0 {
+            margin-bottom: 0;
+        }
+        .powered-by a {
+            text-decoration: none;
+        }
+        hr {
+            border: 0;
+            border-bottom: 1px solid black;
+            margin: 20px 0;
+        }
+        table.details,
+        td.details {
+            padding: 10px ;
+            border-spacing: 0px !important;
+            border-collapse: collapse;
+        }
+        td.details{
+            border: 1px solid black;
+        }
+        p.str {
+            font-weight: bold;
+            margin: 0;
+        }
+        .error {
+            background-color: rgb(252, 19, 66);
+        }
+        .indent {
+            text-indent: 15px;
+            margin: 0;
+        }
+        .ital {
+          font-style: italic;
+        }
+        @media only screen and (max-width: 620px) {
+            table.body h1 {
+                font-size: 28px !important;
+                margin-bottom: 10px !important;
+            }
+            table.body p,
+            table.body ul,
+            table.body ol,
+            table.body td,
+            table.body span,
+            table.body a {
+            font-size: 16px !important;
+            }
+            table.body .wrapper,
+            table.body .article {
+            padding: 10px !important;
+            }
+            table.body .content {
+            padding: 0 !important;
+            }
+            table.body .container {
+                padding: 0 !important;
+                width: 100% !important;
+            }
+            table.body .img-responsive {
+                height: auto !important;
+                max-width: 100% !important;
+                width: auto !important;
+            }
+        }
+        @media all {
+            .apple-link a {
+                color: inherit !important;
+                font-family: inherit !important;
+                font-size: inherit !important;
+                font-weight: inherit !important;
+                line-height: inherit !important;
+                text-decoration: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
+    <tr>
+        <td>&nbsp;</td>
+        <td class="container">
+        <div class="content">
+            <!-- START CENTERED WHITE CONTAINER -->
+            <table role="presentation" class="main">
+            <!-- START MAIN CONTENT AREA -->
+            </tr>
+            <tr>
+                <td>
+                    <img src="https://cdn.arcimoto.com/wp/20200917093915/arcimoto-logo-wings-transparent.png" alt="Logo" border="0" style="display:block" />
+                </td>
+            </tr>
+            <tr>
+            <td class="h">
+                <p></p>
+                <h2 class="h">New Customer Order #{{order_id}} {{#if payment.error}}(Payment Error){{/if}}</h2>
+            </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="indent">You've received an order from {{Customer.firstName}} {{Customer.lastName}} ({{Customer.email}})</p>
+                    {{#if payment.error}}
+                    <p class="indent error">{{payment.paymentMethod}} failed! {{payment.provider}} transaction {{payment.transactionId}}| error: {{payment.error}}</p>
+                    {{/if}}
+                    {{#if payment.held}}
+                    <p class="indent error"> The payment for this order is ON HOLD! Confirm this transaction ({{ payment.transactionId }}) with accounting before processing this order.</p>
+                    {{/if}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="details">
+                        <tr>
+                            <td class="align-left details">
+                                <p class="str">Billing Address</p>
+                                {{BillingAddress.firstName}} {{BillingAddress.lastName}}<br />
+                                {{BillingAddress.address1}}<br />
+                                {{#if BillingAddress.address2}}
+                                {{BillingAddress.address2}}<br />
+                                {{/if}}
+                                {{BillingAddress.city}}, {{BillingAddress.state}} {{BillingAddress.postalCode}} {{BillingAddress.country}}<br />
+                                {{Customer.phone}}<br />
+                                {{Customer.email}}
+                            </td>
+                            <td class="align-left details">                        
+                                <p class="str">Shipping Address</p>
+                                {{ShippingAddress.firstName}} {{ShippingAddress.lastName}}<br />
+                                {{ShippingAddress.address1}}<br />
+                                {{#if ShippingAddress.address2}}
+                                {{ShippingAddress.address2}}<br />
+                                {{/if}}
+                                {{ShippingAddress.city}}, {{ShippingAddress.state}} {{ShippingAddress.postalCode}} {{ShippingAddress.country}}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div><strong>Delivery Method</strong></div>
+                    <div class="indent">{{Order.deliveryMethod}}</div>
+                    <div><strong>How Did I hear about Arcimoto</strong></div>
+                    <div class="indent">{{Order.howDidYouHear}}</div>
+                    <div><strong>Referral Code</strong></div>
+                    <div class="indent">{{Order.referralCode}}</div>
+                    <div><strong>Notes</strong></div>
+                    <div class="indent">{{Order.customerNotes}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td><hr /></td>
+            </tr>
+            {{#if payment.error}}
+            {{else}}
+            <tr>
+                <td><p class="str">Customer Confirmation Email</p></td>
+            </tr>
+            <tr>
+                <td><img src="https://cdn.arcimoto.com/wp/20200917093915/arcimoto-logo-wings-transparent.png" alt="Logo" border="0" style="display:block" /></td>
+            </tr>
+            <tr>
+                <td class="h">
+                    <p></p>
+                    <h2 class="h">Thank you for your reservation</h2>
+                </td>
+            </tr>
+            {{/if}}
+            <tr>
+                <td class="wrapper">
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td>
+                            {{#if payment.error}}{{else}}
+                            <p>Dear {{Customer.firstName}},</p>
+                            <p>
+                                <strong>Your {{Order.modelName}} reservation is confirmed!</strong> We anticipate your vehicle will be completed within the next {{Order.deliveryLeadTime}}. As we near the completion of your vehicle, we will reach out again to arrange delivery and to collect final payment.<br><br>
+                                Need financing? Check out some of our <a href="https://www.arcimoto.com/finance">recommended financing options here</a>.
+                                <br><br>
+                                A member of our customer experience team will contact you within the next 24 hours to start planning for your delivery experience. Please contact <a href="mailto:info@arcimoto.com">info@arcimoto.com</a> for any questions regarding your order.
+                                <br><br>
+                                We look forward to getting you on the road in your new {{Order.modelName}}!
+                                <br><br>
+                                From the beginning, our mission has been a big one: to catalyze the shift to a sustainable transportation system. That goal has never been more important than it is today. Every mile matters, and we thank you for your support. The future is fun!<br><br>
+                                Sincerely,<br>
+                                Team Arcimoto
+                            </p>
+                            <hr>
+                            <p><strong>Order Details</strong></p>
+                            <p>
+                                <strong>Billing Address</strong><br />
+                                {{BillingAddress.firstName}} {{BillingAddress.lastName}}<br />
+                                {{BillingAddress.address1}}<br />
+                                {{#if BillingAddress.address2}}
+                                {{BillingAddress.address2}}<br />
+                                {{/if}}
+                                {{BillingAddress.city}}, {{BillingAddress.state}} {{BillingAddress.postalCode}}<br />
+                                {{Customer.phone}}
+                            </p>
+                            {{/if}}
+                        <p><strong>Reservation #{{order_id}}</strong></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="details">
+                                {{#each Order.meta}}
+                                <tr>
+                                    <td class="align-left details">{{keyLabel}}<br />--<strong>{{description}}</strong></td>
+                                    <td class="align-right details">{{unitPrice}}</td>
+                                </tr>
+                                {{/each}}
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>&nbsp;</p>
+                            <table class="body">
+                                <tr>
+                                    <td class="align-left">Estimated Total Charges</td>
+                                    <td class="align-right">{{estimatedPrice}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span class="ital">Additional charges may apply including but not limited to: 
+                                      destination and documentation fees, taxes, and registration.</span> <a href="https://www.arcimoto.com/reservation-agreement">See full terms and conditions here</a>.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="align-left">Total Due Now</td>
+                                    <td class="align-right">{{payment.amount}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="align-left">Selected Payment Method</td>
+                                    <td class="align-right"><strong>{{payment.paymentMethod}}</strong><br />
+                                        {{payment.alert}}
+                                        {{#if payment.error}}
+                                        <p class="indent error"> A payment processing error occurred: {{payment.error}}</p>
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="align-left">Transaction ID</td>
+                                    <td class="align-right"><strong>{{payment.transactionId}}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="align-left">Transaction Status</td>
+                                    <td class="align-right"><strong>{{payment.status}}</strong></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+            <!-- END MAIN CONTENT AREA -->
+            </table>
+            <!-- END CENTERED WHITE CONTAINER -->
+            <!-- START FOOTER -->
+            <div class="footer">
+            <table role="presentation"  cellpadding="0" cellspacing="0">
+                <tr>
+                <td class="content-block">
+                    <span class="apple-link">&copy; Arcimoto Inc. {{currentYear}}</span>
+                </td>
+                </tr>
+            </table>
+            </div>
+            <!-- END FOOTER -->
+        </div>
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+    </table>
+</body>
+</html>

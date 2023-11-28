@@ -1,0 +1,35 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "iot:Publish",
+            "Resource": [
+                "arn:aws:iot:us-west-2:511596272857:topic//vehicles/${iot:Connection.Thing.ThingName}/shadow",
+                "arn:aws:iot:us-west-2:511596272857:topic//vehicles/${iot:Connection.Thing.ThingName}/shadow/desired/get",
+                "arn:aws:iot:us-west-2:511596272857:topic//vehicles/${iot:Connection.Thing.ThingName}/register",
+                "arn:aws:iot:us-west-2:511596272857:topic//$aws/things/${iot:Connection.Thing.ThingName}/shadow/get"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iot:Subscribe",
+            "Resource": [
+                "arn:aws:iot:us-west-2:511596272857:topicfilter/$aws/things/${iot:Connection.Thing.ThingName}/shadow/get/accepted",
+                "arn:aws:iot:us-west-2:511596272857:topicfilter/$aws/things/${iot:Connection.Thing.ThingName}/shadow/get/rejected",
+                "arn:aws:iot:us-west-2:511596272857:topicfilter/$aws/things/${iot:Connection.Thing.ThingName}/shadow/update/delta",
+                "arn:aws:iot:us-west-2:511596272857:topicfilter//vehicles/${iot:Connection.Thing.ThingName}/shadow/desired"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iot:Receive",
+            "Resource": [
+                "arn:aws:iot:us-west-2:511596272857:topic/$aws/things/${iot:Connection.Thing.ThingName}/shadow/get/accepted",
+                "arn:aws:iot:us-west-2:511596272857:topic/$aws/things/${iot:Connection.Thing.ThingName}/shadow/get/rejected",
+                "arn:aws:iot:us-west-2:511596272857:topic/$aws/things/${iot:Connection.Thing.ThingName}/shadow/update/delta",
+                "arn:aws:iot:us-west-2:511596272857:topic//vehicles/${iot:Connection.Thing.ThingName}/shadow/desired"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,101 @@
+{
+  "name": "fleets",
+  "vpc": "main",
+  "lambdas": {
+    "add_vehicle_to_group": {
+      "tests": [
+        "test_add_vehicle_to_group"
+      ]
+    },
+    "create_vehicle_group": {
+      "tests": [
+        "test_create_vehicle_group"
+      ]
+    },
+    "delete_vehicle_group": {
+      "tests": [
+        "test_delete_vehicle_group"
+      ]
+    },
+    "fleets_accounting_department_code_create": {
+      "tests": [
+        "test_fleets_accounting_department_code_create"
+      ]
+    },
+    "fleets_accounting_department_code_delete": {
+      "tests": [
+        "test_fleets_accounting_department_code_delete"
+      ]
+    },
+    "fleets_accounting_department_codes_list": {
+      "tests": [
+        "test_fleets_accounting_department_codes_list"
+      ]
+    },
+    "fleets_fleet_update": {
+      "tests": [
+        "test_fleets_fleet_update"
+      ]
+    },
+    "fleets_statistics_get": {
+      "tests": [
+        "test_fleets_statistics_get"
+      ]
+    },
+    "fleets_vehicle_group_accounting_department_code_set": {
+      "tests": [
+        "test_fleets_vehicle_group_accounting_department_code_set"
+      ]
+    },
+    "fleets_vehicle_group_add_user": {
+      "tests": [
+        "test_fleets_vehicle_group_add_user"
+      ]
+    },
+    "fleets_vehicle_group_location_set": {
+      "tests": [
+        "test_fleets_vehicle_group_location_set"
+      ]
+    },
+    "fleets_vehicle_group_remove_user": {
+      "tests": [
+        "test_fleets_vehicle_group_remove_user"
+      ]
+    },
+    "fleets_vehicle_group_type_set": {
+      "tests": [
+        "test_fleets_vehicle_group_type_set"
+      ]
+    },
+    "fleets_vehicle_group_types_list": {
+      "tests": [
+        "test_fleets_vehicle_group_types_list"
+      ]
+    },
+    "get_vehicle_group": {
+      "tests": [
+        "test_get_vehicle_group"
+      ]
+    },
+    "list_vehicle_groups": {
+      "tests": [
+        "test_list_vehicle_groups"
+      ]
+    },
+    "remove_vehicle_from_arcimoto_group": {
+      "tests": [
+        "test_remove_vehicle_from_arcimoto_group"
+      ]
+    },
+    "remove_vehicle_from_group": {
+      "tests": [
+        "test_remove_vehicle_from_group"
+      ]
+    },
+    "user_groups_get": {
+      "tests": [
+        "test_user_groups_get"
+      ]
+    }
+  }
+}

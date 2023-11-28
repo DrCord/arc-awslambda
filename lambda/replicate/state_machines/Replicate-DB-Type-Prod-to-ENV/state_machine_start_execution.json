@@ -1,0 +1,15 @@
+{
+  "input": {
+    "db_type": "main",
+    "run_env": "dev",
+    "source": {
+      "db_cluster_identifier": "tel-main-db-prod-auroradbcluster-1kkvd236ktt8q"
+    },
+    "replication_target_env": "staging",
+    "target": {
+      "db_cluster_identifier": "tel-main-db-staging-auroradbcluster-6ntob7x6ajn5",
+      "db_instance_identifier": "ta1rn3qhtdvcpg5"
+    }
+  },
+  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID": "arn:aws:states:us-west-2:511596272857:execution:Replicate-DBs:4a777074-f848-4410-a054-dbc83b6fcba9"
+}

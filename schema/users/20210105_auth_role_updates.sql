@@ -1,0 +1,2 @@
+GRANT SELECT ON user_preferences TO user_permission_check;
+GRANT SELECT ON user_profile_join_user_preferences TO user_permission_check;

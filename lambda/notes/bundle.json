@@ -1,0 +1,21 @@
+{
+  "name": "recalls",
+  "vpc": "main",
+  "lambdas": {
+    "note_create": {
+      "tests": [
+        "test_note_create"
+      ]
+    },
+    "note_delete": {
+      "tests": [
+        "test_note_delete"
+      ]
+    },
+    "notes_get": {
+      "tests": [
+        "test_notes_get"
+      ]
+    }
+  }
+}

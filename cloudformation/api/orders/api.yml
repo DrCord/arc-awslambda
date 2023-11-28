@@ -1,0 +1,75 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Orders Reservations API
+
+Resources:
+  apiGateway:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: Orders and Reservations API Built via Cloudformation Template
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: Orders
+
+  # /v1
+  apiResourceV1:
+    Type: AWS::ApiGateway::Resource
+    Properties: 
+      ParentId: !GetAtt apiGateway.RootResourceId
+      PathPart: v1
+      RestApiId: !Ref apiGateway
+
+  apiSectionOrders:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: https://s3.amazonaws.com/arcimoto-cloudformation/orders-api/api_orders.yml
+      Parameters:
+        ParentResourceId: !Ref apiResourceV1
+        RestApiId: !Ref apiGateway  
+
+  # create stages and deploy
+  # dev stage
+  apiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: # this needs to depend on the last Method created or every method
+      - apiSectionOrders
+    Properties:
+      RestApiId: !Ref apiGateway
+      StageName: dev
+      StageDescription:
+        MethodSettings:
+          - LoggingLevel: "INFO"
+            HttpMethod: "*"
+            MetricsEnabled: True
+            ResourcePath: "/*"
+        Variables:     
+          func_orders_order_add_payment: orders_order_add_payment:dev
+          func_orders_order_create: orders_order_create:dev
+          func_orders_order_get: orders_order_get:dev
+          func_orders_orders_list: orders_orders_list:dev
+  
+   # create staging stage and set to intial deployment
+  apiGatewayStageStaging:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: https://s3.amazonaws.com/arcimoto-cloudformation/orders-api/stage_staging.yml
+      Parameters:
+        ApiGatewayDeployment: !Ref apiGatewayDeployment
+        RestApiId: !Ref apiGateway
+
+  # create prod stage and set to initial deployment
+  apiGatewayStageProduction:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: https://s3.amazonaws.com/arcimoto-cloudformation/orders-api/stage_prod.yml
+      Parameters:
+        ApiGatewayDeployment: !Ref apiGatewayDeployment
+        RestApiId: !Ref apiGateway
+
+Outputs:
+  apiGatewayInvokeURLDev:
+    Value: !Sub https://${apiGateway}.execute-api.${AWS::Region}.amazonaws.com/dev
+  apiGatewayInvokeURLStaging:
+    Value: !Sub https://${apiGateway}.execute-api.${AWS::Region}.amazonaws.com/staging
+  apiGatewayInvokeURLProd:
+    Value: !Sub https://${apiGateway}.execute-api.${AWS::Region}.amazonaws.com/prod

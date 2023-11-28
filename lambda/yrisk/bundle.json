@@ -1,0 +1,46 @@
+{
+  "name": "yrisk",
+  "vpc": "yrisk",
+  "lambdas": {
+    "yrisk_data_s3_verify": {
+      "tests": [
+        "test_yrisk_data_s3_verify"
+      ]
+    },
+    "yrisk_data_to_s3": {
+      "tests": [
+        "test_yrisk_data_to_s3"
+      ]
+    },
+    "yrisk_fleets_list": {
+      "tests": [
+        "test_yrisk_fleets_list"
+      ]
+    },
+    "yrisk_notify": {
+      "tests": [
+        "test_yrisk_notify"
+      ]
+    },
+    "yrisk_notify_email": {
+      "tests": [
+        "test_yrisk_notify_email"
+      ]
+    },
+    "yrisk_output_assemble": {
+      "tests": [
+        "test_yrisk_output_assemble"
+      ]
+    },
+    "yrisk_vehicle_telemetry_get": {
+      "tests": [
+        "test_yrisk_vehicle_telemetry_get"
+      ]
+    },
+    "yrisk_vehicles_list": {
+      "tests": [
+        "test_yrisk_vehicles_list"
+      ]
+    }
+  }
+}

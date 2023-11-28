@@ -1,0 +1,12 @@
+{
+  "name": "replicate",
+  "vpc": "main",
+  "lambdas": {
+    "replicate_main_db_prefix_vins": {
+      "tests": []
+    },
+    "replicate_main_db_users_restore": {
+      "tests": []
+    }
+  }
+}

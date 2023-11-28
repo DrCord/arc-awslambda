@@ -1,0 +1,11 @@
+aws cloudformation create-stack \
+  --stack-name TEL-Main-Peering-Users-Accepter-Tag \
+  --template-url "https://arcimoto-cloudformation.s3.us-west-2.amazonaws.com/vpc/VPCPeering-Accepter-Tag.cfn.yaml" \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --parameters \
+    ParameterKey=PeerName,ParameterValue=tel-main-to-users \
+    ParameterKey=VPCPeeringConnectionId,ParameterValue=pcx-02c990d4802bf5c51 \
+    ParameterKey=LambdaLogsCloudWatchKMSKey,ParameterValue="" \
+  --tags \
+    Key="Cost Center",Value="Telematics" \
+    Key="VPC",Value="Main"

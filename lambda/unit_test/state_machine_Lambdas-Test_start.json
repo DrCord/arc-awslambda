@@ -1,0 +1,29 @@
+{
+  "input": {
+    "bundles": [
+      "alarms",
+      "authorities",
+      "backfill",
+      "debug",
+      "firmware",
+      "fleets",
+      "grafana",
+      "hologram",
+      "locations",
+      "managed_session",
+      "notes",
+      "orders",
+      "recalls",
+      "reef",
+      "replicate",
+      "sheer_id",
+      "telemetry",
+      "tests",
+      "userpool",
+      "users",
+      "utility",
+      "vehicles",
+      "yrisk"
+    ]
+  }
+}

@@ -1,0 +1,335 @@
+{
+  "StartAt": "Notify - Start",
+  "States": {
+    "Notify - Start": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Cluster Clone - Start",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Next": "Check Source DB Cluster Availability"
+    },
+    "Check Source DB Cluster Availability": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_available:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_cluster_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": "$.db_source_available",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Next": "Is Source DB Cluster Available?",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Check DB Source Availability - Set Status Data",
+          "ResultPath": "$.db_source_available"
+        }
+      ]
+    },
+    "Fail - Check DB Source Availability - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_source_available": "fail",
+        "db_target_name_exists": null,
+        "db_cluster_clone": null,
+        "db_cluster_clone_available": null
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Is Source DB Cluster Available?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_source_available.data.db_available",
+          "BooleanEquals": true,
+          "Next": "Wait to Check Target DB Cluster Name Exists"
+        }
+      ],
+      "Default": "Wait to Check Source DB Cluster Availability"
+    },
+    "Check Target DB Cluster Name Exists": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_exists:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_cluster_identifier.$": "$.input.target.db_cluster_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": "$.db_target_name_exists",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Next": "Does Target DB Cluster Name Exist?",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Check DB Target Name Exists - Set Status Data",
+          "ResultPath": "$.db_target_name_exists"
+        }
+      ]
+    },
+    "Fail - Check DB Target Name Exists - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_source_available": "success",
+        "db_target_name_exists": "fail",
+        "db_cluster_clone": null,
+        "db_cluster_clone_available": null
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Does Target DB Cluster Name Exist?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_target_name_exists.data.db_exists",
+          "BooleanEquals": false,
+          "Next": "Wait - Prevent DB Clone Name Collision"
+        }
+      ],
+      "Default": "Wait to Check Target DB Cluster Name Exists"
+    },
+    "Wait - Prevent DB Clone Name Collision": {
+      "Type": "Wait",
+      "Seconds": 15,
+      "Next": "Clone DB Cluster",
+      "Comment": "Even after testing if the target name exists sometimes this collides initially, so giving it room to breath."
+    },
+    "Wait to Check Target DB Cluster Name Exists": {
+      "Type": "Wait",
+      "Seconds": 10,
+      "Next": "Check Target DB Cluster Name Exists"
+    },
+    "Wait to Check Source DB Cluster Availability": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check Source DB Cluster Availability"
+    },
+    "Clone DB Cluster": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_cluster_clone:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_type.$": "$.input.db_type"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2,
+          "Comment": "Lambda Specific"
+        },
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "BackoffRate": 1.7,
+          "IntervalSeconds": 5,
+          "MaxAttempts": 5,
+          "Comment": "All"
+        }
+      ],
+      "ResultPath": "$.db_cluster_clone",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Next": "Wait for DB Cluster Clone Availability",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - DB Cluster Clone - Set Status Data",
+          "ResultPath": "$.db_cluster_clone"
+        }
+      ]
+    },
+    "Fail - DB Cluster Clone - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_source_available": "success",
+        "db_target_name_exists": "success",
+        "db_cluster_clone": "fail",
+        "db_cluster_clone_available": null
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Wait for DB Cluster Clone Availability": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check DB Cluster Clone Availability"
+    },
+    "Check DB Cluster Clone Availability": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_available:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_cluster_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is DB Cluster Clone Available?",
+      "ResultPath": "$.db_clone_available",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - DB Cluster Clone Available - Set Status Data",
+          "ResultPath": "$.db_clone_available"
+        }
+      ]
+    },
+    "Fail - DB Cluster Clone Available - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_source_available": "success",
+        "db_target_name_exists": "success",
+        "db_cluster_clone": "success",
+        "db_cluster_clone_available": "fail"
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Is DB Cluster Clone Available?": {
+      "Type": "Choice",
+      "Default": "Wait for DB Cluster Clone Availability",
+      "Choices": [
+        {
+          "Variable": "$.db_clone_available.data.db_available",
+          "BooleanEquals": true,
+          "Next": "Notify - Complete"
+        }
+      ]
+    },
+    "Notify - Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Cluster Clone - Complete",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Success - Set Status Data"
+    },
+    "Success - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_source_available": "success",
+        "db_target_name_exists": "success",
+        "db_cluster_clone": "success",
+        "db_cluster_clone_available": "success"
+      },
+      "ResultPath": "$.status",
+      "End": true
+    }
+  }
+}

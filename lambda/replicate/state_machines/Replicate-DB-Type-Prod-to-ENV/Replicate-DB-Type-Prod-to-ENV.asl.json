@@ -1,0 +1,437 @@
+{
+  "StartAt": "Replicate-DB-Rename-Cluster",
+  "States": {
+    "Replicate-DB-Rename-Cluster": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Rename-Cluster",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.input.target.db_cluster_identifier",
+            "source.$": "$.input.source",
+            "target.$": "$.input.target",
+            "db_type.$": "$.input.db_type",
+            "state_machine": "Replicate-DB-Rename-Cluster"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "Next": "Was DB Cluster Rename Successful?",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - DB Rename Cluster- Set Status Data",
+          "ResultPath": "$.db_cluster_rename"
+        }
+      ],
+      "ResultSelector": {
+        "data.$": "$.Output"
+      },
+      "ResultPath": "$.db_cluster_rename"
+    },
+    "Was DB Cluster Rename Successful?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Or": [
+            {
+              "Variable": "$.db_cluster_rename.data.status.db_exists",
+              "BooleanEquals": false
+            },
+            {
+              "Or": [
+                {
+                  "Variable": "$.db_cluster_rename.data.status.db_exists",
+                  "StringEquals": "fail"
+                },
+                {
+                  "Variable": "$.db_cluster_rename.data.status.db_available",
+                  "StringEquals": "fail"
+                },
+                {
+                  "Variable": "$.db_cluster_rename.data.status.db_rename",
+                  "StringEquals": "fail"
+                },
+                {
+                  "Variable": "$.db_cluster_rename.data.status.db_renamed",
+                  "StringEquals": "fail"
+                }
+              ]
+            }
+          ],
+          "Next": "Fail - DB Rename Cluster- Set Status Data"
+        }
+      ],
+      "Default": "Replicate-DB-Rename-Instance"
+    },
+    "Fail - DB Rename Cluster- Set Status Data": {
+      "Type": "Pass",
+      "ResultPath": "$.status",
+      "Result": {
+        "cluster_rename": "fail",
+        "instance_rename": null,
+        "cluster_clone": null,
+        "cluster_create_instance": null,
+        "instance_restore": null
+      },
+      "End": true
+    },
+    "Fail - DB Instance Restore - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "cluster_rename": "success",
+        "instance_rename": "success",
+        "cluster_clone": "success",
+        "cluster_create_instance": "success",
+        "instance_restore": "fail"
+      },
+      "End": true,
+      "ResultPath": "$.status"
+    },
+    "Replicate-DB-Rename-Instance": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Rename-Instance",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.input.target.db_instance_identifier",
+            "source.$": "$.input.source",
+            "target.$": "$.input.target",
+            "db_type.$": "$.input.db_type",
+            "state_machine": "Replicate-DB-Rename-Instance"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "Next": "Was DB Instance Rename Successful?",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - DB Rename Instance - Set Status Data",
+          "ResultPath": "$.db_instance_rename"
+        }
+      ],
+      "ResultSelector": {
+        "data.$": "$.Output"
+      },
+      "ResultPath": "$.db_instance_rename"
+    },
+    "Was DB Instance Rename Successful?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Or": [
+            {
+              "Variable": "$.db_instance_rename.data.status.db_exists",
+              "BooleanEquals": false
+            },
+            {
+              "Variable": "$.db_instance_rename.data.status.db_exists",
+              "StringEquals": "fail"
+            },
+            {
+              "Variable": "$.db_instance_rename.data.status.db_available",
+              "StringEquals": "fail"
+            },
+            {
+              "Variable": "$.db_instance_rename.data.status.db_rename",
+              "StringEquals": "fail"
+            },
+            {
+              "Variable": "$.db_instance_rename.data.status.db_renamed",
+              "StringEquals": "fail"
+            }
+          ],
+          "Next": "Fail - DB Rename Instance - Set Status Data"
+        }
+      ],
+      "Default": "Replicate-DB-Clone-Cluster"
+    },
+    "Fail - DB Rename Instance - Set Status Data": {
+      "Type": "Pass",
+      "ResultPath": "$.status",
+      "Result": {
+        "cluster_rename": "success",
+        "instance_rename": "fail",
+        "cluster_clone": null,
+        "cluster_create_instance": null,
+        "instance_restore": null
+      },
+      "End": true
+    },
+    "Replicate-DB-Clone-Cluster": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Clone-Cluster",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.input.source.db_cluster_identifier",
+            "source.$": "$.input.source",
+            "target.$": "$.input.target",
+            "db_type.$": "$.input.db_type",
+            "state_machine": "Replicate-DB-Clone-Cluster"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "Next": "Was DB Cluster Clone Successful?",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - DB Cluster Clone - Set Status Data",
+          "ResultPath": "$.db_cluster_clone"
+        }
+      ],
+      "ResultSelector": {
+        "data.$": "$.Output"
+      },
+      "ResultPath": "$.db_cluster_clone"
+    },
+    "Was DB Cluster Clone Successful?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Or": [
+            {
+              "Variable": "$.db_cluster_clone.data.status.db_source_available",
+              "StringEquals": "fail"
+            },
+            {
+              "Variable": "$.db_cluster_clone.data.status.db_target_name_exists",
+              "StringEquals": "fail"
+            },
+            {
+              "Variable": "$.db_cluster_clone.data.status.db_cluster_clone",
+              "StringEquals": "fail"
+            },
+            {
+              "Variable": "$.db_cluster_clone.data.status.db_cluster_clone_available",
+              "StringEquals": "fail"
+            }
+          ],
+          "Next": "Fail - DB Cluster Clone - Set Status Data"
+        }
+      ],
+      "Default": "Replicate-DB-Cluster-Create-Instance"
+    },
+    "Fail - DB Cluster Clone - Set Status Data": {
+      "Type": "Pass",
+      "ResultPath": "$.status",
+      "Result": {
+        "cluster_rename": "success",
+        "instance_rename": "success",
+        "cluster_clone": "fail",
+        "cluster_create_instance": null,
+        "instance_restore": null
+      },
+      "End": true
+    },
+    "Replicate-DB-Cluster-Create-Instance": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Cluster-Create-Instance",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_cluster_identifier.$": "$.input.target.db_cluster_identifier",
+            "source.$": "$.input.source",
+            "target.$": "$.input.target",
+            "db_type.$": "$.input.db_type",
+            "state_machine": "Replicate-DB-Cluster-Create-Instance"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "Next": "Was DB Cluster Create Instance Successful?",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - DB Cluster Create Instance - Set Status Data",
+          "ResultPath": "$.db_cluster_create_instance"
+        }
+      ],
+      "ResultSelector": {
+        "data.$": "$.Output"
+      },
+      "ResultPath": "$.db_cluster_create_instance"
+    },
+    "Was DB Cluster Create Instance Successful?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Or": [
+            {
+              "Variable": "$.db_cluster_create_instance.data.status.db_parent_cluster_available",
+              "StringEquals": "fail"
+            },
+            {
+              "Variable": "$.db_cluster_create_instance.data.status.db_cluster_create_instance",
+              "StringEquals": "fail"
+            },
+            {
+              "Variable": "$.db_cluster_create_instance.data.status.db_instance_available",
+              "StringEquals": "fail"
+            }
+          ],
+          "Next": "Fail - DB Cluster Create Instance - Set Status Data"
+        }
+      ],
+      "Default": "Is DB Type Authkey or Main?"
+    },
+    "Fail - DB Cluster Create Instance - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "cluster_rename": "success",
+        "instance_rename": "success",
+        "cluster_clone": "success",
+        "cluster_create_instance": "fail",
+        "instance_restore": null
+      },
+      "End": true,
+      "ResultPath": "$.status"
+    },
+    "Is DB Type Authkey or Main?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.input.db_type",
+          "StringEquals": "authkey",
+          "Next": "Replicate-DB-Authkey-Instance-Restore"
+        },
+        {
+          "Variable": "$.input.db_type",
+          "StringEquals": "main",
+          "Next": "Replicate-DB-Main-Instance-Restore"
+        }
+      ],
+      "Default": "Fail - DB Instance Restore - Set Status Data"
+    },
+    "Replicate-DB-Authkey-Instance-Restore": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Authkey-Instance-Restore",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.input.target.db_instance_identifier",
+            "source.$": "$.input.source",
+            "target.$": "$.input.target",
+            "db_type": "authkey",
+            "state_machine": "Replicate-DB-Authkey-Instance-Restore"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - DB Instance Restore - Set Status Data",
+          "ResultPath": "$.db_instance_restore"
+        }
+      ],
+      "Next": "Was DB Instance Restore Successful?",
+      "ResultSelector": {
+        "data.$": "$.Output"
+      },
+      "ResultPath": "$.db_instance_restore"
+    },
+    "Was DB Instance Restore Successful?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Or": [
+            {
+              "Variable": "$.db_instance_restore.data.status.db_available",
+              "StringEquals": "fail"
+            },
+            {
+              "Variable": "$.db_instance_restore.data.status.db_users_restore",
+              "StringEquals": "fail"
+            },
+            {
+              "Variable": "$.db_instance_restore.data.status.db_prefix_vins",
+              "StringEquals": "fail"
+            }
+          ],
+          "Next": "Fail - DB Instance Restore - Set Status Data"
+        }
+      ],
+      "Default": "Success - Set Status Data"
+    },
+    "Success - Set Status Data": {
+      "Type": "Pass",
+      "End": true,
+      "Result": {
+        "cluster_rename": "success",
+        "instance_rename": "success",
+        "cluster_clone": "success",
+        "cluster_create_instance": "success",
+        "instance_restore": "success"
+      },
+      "ResultPath": "$.status"
+    },
+    "Replicate-DB-Main-Instance-Restore": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Main-Instance-Restore",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.input.target.db_instance_identifier",
+            "source.$": "$.input.source",
+            "target.$": "$.input.target",
+            "db_type": "main",
+            "state_machine": "Replicate-DB-Main-Instance-Restore"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - DB Instance Restore - Set Status Data",
+          "ResultPath": "$.db_instance_restore"
+        }
+      ],
+      "Next": "Was DB Instance Restore Successful?",
+      "ResultSelector": {
+        "data.$": "$.Output"
+      },
+      "ResultPath": "$.db_instance_restore"
+    }
+  },
+  "Comment": "Rename RDS DB Cluster"
+}

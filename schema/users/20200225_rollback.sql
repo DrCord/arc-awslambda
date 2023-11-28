@@ -1,0 +1,1 @@
+ALTER TABLE user_profile_join_user_preferences DROP COLUMN value;

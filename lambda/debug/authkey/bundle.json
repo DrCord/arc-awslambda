@@ -1,0 +1,9 @@
+{
+  "name": "debug/authkey",
+  "vpc": "authkey",
+  "lambdas": {
+    "util_authkey_execute_sql": {
+      "tests": []
+    }
+  }
+}

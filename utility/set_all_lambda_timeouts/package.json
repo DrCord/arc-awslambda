@@ -1,0 +1,15 @@
+{
+  "name": "set_all_lambda_timeouts",
+  "version": "1.0.0",
+  "description": "Gets all lambda names for us-west-2 region and sets the timeout.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cord Slatton - Arcimoto",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.596.0",
+    "commander": "^4.0.1"
+  }
+}

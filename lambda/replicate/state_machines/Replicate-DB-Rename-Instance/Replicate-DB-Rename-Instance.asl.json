@@ -1,0 +1,351 @@
+{
+  "StartAt": "Notify - Start",
+  "States": {
+    "Notify - Start": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Instance Rename - Start",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Check DB Instance Exists"
+    },
+    "Check DB Instance Exists": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_exists:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_instance_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Does DB Instance Exist?",
+      "ResultPath": "$.db_exists",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Check DB Instance Exists - Set Status Data",
+          "ResultPath": "$.db_exists"
+        }
+      ]
+    },
+    "Fail - Check DB Instance Exists - Set Status Data": {
+      "Type": "Pass",
+      "ResultPath": "$.status",
+      "Result": {
+        "db_exists": "fail",
+        "db_available": null,
+        "db_rename": null,
+        "db_renamed": null
+      },
+      "End": true
+    },
+    "Does DB Instance Exist?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_exists.data.db_exists",
+          "BooleanEquals": false,
+          "Next": "Notify - DB Does Not Exist"
+        }
+      ],
+      "Default": "Check DB Instance Availability"
+    },
+    "Notify - DB Does Not Exist": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Instance Rename - Does not Exist",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "WARNING",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "DB Does not Exist - Set Status Data"
+    },
+    "DB Does not Exist - Set Status Data": {
+      "Type": "Pass",
+      "End": true,
+      "ResultPath": "$.status",
+      "Result": {
+        "db_exists": false,
+        "db_available": null,
+        "db_rename": null,
+        "db_renamed": null
+      }
+    },
+    "Check DB Instance Availability": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_available:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_instance_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is DB Instance Available?",
+      "ResultPath": "$.db_available",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Check DB Instance Availability - Set Status Data",
+          "ResultPath": "$.db_available"
+        }
+      ]
+    },
+    "Fail - Check DB Instance Availability - Set Status Data": {
+      "Type": "Pass",
+      "ResultPath": "$.status",
+      "Result": {
+        "db_exists": "success",
+        "db_available": "fail",
+        "db_rename": null,
+        "db_renamed": null
+      },
+      "End": true
+    },
+    "Is DB Instance Available?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_available.data.db_available",
+          "BooleanEquals": true,
+          "Next": "Rename DB Instance"
+        }
+      ],
+      "Default": "Wait for DB Instance Availability"
+    },
+    "Wait for DB Instance Availability": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check DB Instance Availability"
+    },
+    "Rename DB Instance": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_instance_rename:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_instance_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Wait for DB Instance Rename Completion",
+      "ResultPath": "$.db_rename",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Rename DB Instance - Set Status Data",
+          "ResultPath": "$.db_rename"
+        }
+      ]
+    },
+    "Fail - Rename DB Instance - Set Status Data": {
+      "Type": "Pass",
+      "ResultPath": "$.status",
+      "Result": {
+        "db_exists": "success",
+        "db_available": "success",
+        "db_rename": "fail",
+        "db_renamed": null
+      },
+      "End": true
+    },
+    "Wait for DB Instance Rename Completion": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check DB Instance Renamed"
+    },
+    "Check DB Instance Renamed": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_exists:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_instance_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is DB Instance Renamed?",
+      "ResultPath": "$.db_renamed",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Check DB Instance Renamed - Set Status Data",
+          "ResultPath": "$.db_renamed"
+        }
+      ]
+    },
+    "Fail - Check DB Instance Renamed - Set Status Data": {
+      "Type": "Pass",
+      "ResultPath": "$.status",
+      "Result": {
+        "db_exists": "success",
+        "db_available": "success",
+        "db_rename": "success",
+        "db_renamed": "fail"
+      },
+      "End": true
+    },
+    "Is DB Instance Renamed?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_renamed.data.db_exists",
+          "BooleanEquals": false,
+          "Next": "Notify - Complete"
+        }
+      ],
+      "Default": "Wait for DB Instance Rename Completion"
+    },
+    "Notify - Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Instance Rename - Complete",
+          "message_addendum.$": "$.input.db_identifier",
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Success - Set Status Data"
+    },
+    "Success - Set Status Data": {
+      "Type": "Pass",
+      "ResultPath": "$.status",
+      "Result": {
+        "db_exists": "success",
+        "db_available": "success",
+        "db_rename": "success",
+        "db_renamed": "success"
+      },
+      "End": true
+    }
+  },
+  "Comment": "Rename RDS DB Instance and wait for rename to complete"
+}

@@ -1,0 +1,4 @@
+jsonschema
+xmlrunner
+git+ssh://git@bitbucket.org/arcimotocode1/arcimoto-lambda-utility.git
+git+ssh://git@bitbucket.org/arcimotocode1/arcimoto-ses-utility.git

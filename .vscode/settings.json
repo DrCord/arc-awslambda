@@ -1,0 +1,49 @@
+{
+    "gitAngular.scopes": [
+        "alarms",
+        "arcimoto",
+        "authorities",
+        "backfill",
+        "config",
+        "dependencies",
+        "docs",
+        "debug",
+        "firmware",
+        "fleets",
+        "grafana",
+        "hologram",
+        "lambda-utility",
+        "locations",
+        "managed sessions",
+        "notes",
+        "pipeline",
+        "recalls",
+        "reef",
+        "replicate",
+        "root",
+        "schema",
+        "sheer id",
+        "telemetry",
+        "tests",
+        "userpool",
+        "users",
+        "utility",
+        "vehicles",
+        "yrisk"
+    ],
+    "python.analysis.extraPaths": [
+        "./dependencies/tests",
+        "./dependencies/cerberus",
+        "./dependencies/",
+        "./utility/lambda"
+    ],
+    "python.autoComplete.extraPaths": [
+        "./dependencies/tests",
+        "./dependencies/cerberus",
+        "./dependencies/",
+        "./utility/lambda"
+    ],
+    "python.linting.enabled": true,
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pylintEnabled": false
+}

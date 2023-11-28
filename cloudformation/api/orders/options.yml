@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Method for OPTIONS
+
+Parameters:
+  OperationName: 
+    Type: String
+  ParentResourceId: 
+    Type: String
+  RestApiId: 
+    Type: String
+  AllowedMethods:
+    Type: String
+
+Resources:
+  apiGatewayMethodOptions:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      OperationName: !Ref OperationName
+      AuthorizationType: NONE
+      HttpMethod: OPTIONS
+      ResourceId: !Ref ParentResourceId
+      RestApiId: !Ref RestApiId
+      Integration:
+        Type: MOCK
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Cache-Control'"
+              method.response.header.Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE,OPTIONS'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            ResponseTemplates:
+              application/json: ''
+            StatusCode: '200'
+        PassthroughBehavior: WHEN_NO_MATCH
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Methods: true
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: '200'

@@ -1,0 +1,141 @@
+{
+  "name": "vehicles",
+  "vpc": "main",
+  "lambdas": {
+    "add_vehicle_metadata": {
+      "tests": [
+        "test_add_vehicle_metadata"
+      ]
+    },
+    "get_telemetry_vehicle": {
+      "tests": [
+        "test_get_telemetry_vehicle"
+      ]
+    },
+    "get_vehicle_shadow": {
+      "tests": [
+        "test_get_vehicle_shadow"
+      ]
+    },
+    "gps_privacy_setting_get": {
+      "tests": [
+        "test_gps_privacy_setting_get"
+      ]
+    },
+    "gps_recording_toggle": {
+      "tests": [
+        "test_gps_recording_toggle"
+      ]
+    },
+    "list_telemetry_vehicles": {
+      "tests": [
+        "test_list_telemetry_vehicles"
+      ]
+    },
+    "provision_iot": {
+      "tests": [
+        "test_provision_iot"
+      ]
+    },
+    "provision_iot_certificate": {
+      "tests": [
+        "test_provision_iot_certificate"
+      ]
+    },
+    "provision_vehicle_telemetry": {
+      "tests": [
+        "test_provision_vehicle_telemetry"
+      ]
+    },
+    "register_vehicle": {
+      "tests": [
+        "test_register_vehicle"
+      ]
+    },
+    "shadow_reported_state": {
+      "tests": [
+        "test_shadow_reported_state"
+      ]
+    },
+    "unprovision_iot": {
+      "tests": [
+        "test_unprovision_iot"
+      ]
+    },
+    "unprovision_iot_certificate": {
+      "tests": [
+        "test_unprovision_iot_certificate"
+      ]
+    },
+    "unprovision_vehicle_telemetry": {
+      "tests": [
+        "test_unprovision_vehicle_telemetry"
+      ]
+    },
+    "update_shadow_document": {
+      "tests": [
+        "test_update_shadow_document"
+      ]
+    },
+    "vehicles_configuration_set": {
+      "tests": [
+        "test_vehicles_configuration_set"
+      ]
+    },
+    "vehicles_firmware_components_list": {
+      "tests": [
+        "test_vehicles_firmware_components_list"
+      ]
+    },
+    "vehicles_model_release_create": {
+      "tests": [
+        "test_vehicles_model_release_create"
+      ]
+    },
+    "vehicles_model_release_parts_get": {
+      "tests": [
+        "test_vehicles_model_release_parts_get"
+      ]
+    },
+    "vehicles_model_release_part_set": {
+      "tests": [
+        "test_vehicles_model_release_part_set"
+      ]
+    },
+    "vehicles_model_releases_list": {
+      "tests": [
+        "test_vehicles_model_releases_list"
+      ]
+    },
+    "vehicles_models_list": {
+      "tests": [
+        "test_vehicles_models_list"
+      ]
+    },
+    "vehicles_options_set": {
+      "tests": [
+        "test_vehicles_options_set"
+      ]
+    },
+    "vehicles_part_type_create": {
+      "tests": [
+        "test_vehicles_part_type_create"
+      ]
+    },
+    "vehicles_vehicle_model_release_set": {
+      "tests": [
+        "test_vehicles_vehicle_model_release_set"
+      ]
+    },
+    "vehicles_vehicle_part_set": {
+      "tests": [
+        "test_vehicles_vehicle_part_set"
+      ]
+    },
+    "vehicles_vehicle_shadow_synchronized": {
+      "tests": [
+        "test_vehicles_vehicle_shadow_synchronized"
+      ]
+    }
+  }
+}

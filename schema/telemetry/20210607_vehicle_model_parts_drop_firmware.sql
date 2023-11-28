@@ -1,0 +1,1 @@
+ALTER TABLE vehicle_model_parts DROP COLUMN firmware_release_id;

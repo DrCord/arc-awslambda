@@ -1,0 +1,67 @@
+{
+        "agent": {
+                "metrics_collection_interval": 60,
+                "run_as_user": "root"
+        },
+        "logs": {
+                "logs_collected": {
+                        "files": {
+                                "collect_list": [
+                                        {
+                                                "file_path": "/var/log/influxdb/**",
+                                                "log_group_name": "influxdb",
+                                                "log_stream_name": "{instance_id}"
+                                        },
+                                        {
+                                                "file_path": "/var/log/telegraf/**",
+                                                "log_group_name": "telegraf",
+                                                "log_stream_name": "{instance_id}"
+                                        },
+                                        {
+                                                "file_path": "/var/log/influx_csv_backup/**",
+                                                "log_group_name": "influx_csv_backup",
+                                                "log_stream_name": "{instance_id}"
+                                        },
+                                        {
+                                                "file_path": "/var/log/nginx/**",
+                                                "log_group_name": "nginx",
+                                                "log_stream_name": "{instance_id}"
+                                        }
+                                ]
+                        }
+                }
+        },
+        "metrics": {
+                "append_dimensions": {
+                        "AutoScalingGroupName": "${aws:AutoScalingGroupName}",
+                        "ImageId": "${aws:ImageId}",
+                        "InstanceId": "${aws:InstanceId}",
+                        "InstanceType": "${aws:InstanceType}"
+                },
+                "metrics_collected": {
+                        "collectd": {
+                                "metrics_aggregation_interval": 60
+                        },
+                        "disk": {
+                                "measurement": [
+                                        "used_percent"
+                                ],
+                                "metrics_collection_interval": 60,
+                                "resources": [
+                                        "*"
+                                ]
+                        },
+                        "mem": {
+                                "measurement": [
+                                        "mem_used_percent"
+                                ],
+                                "metrics_collection_interval": 60
+                        },
+                        "statsd": {
+                                "metrics_aggregation_interval": 60,
+                                "metrics_collection_interval": 10,
+                                "service_address": ":8125"
+                        }
+                }
+        }
+}

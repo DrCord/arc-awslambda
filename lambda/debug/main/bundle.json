@@ -1,0 +1,9 @@
+{
+  "name": "debug/main",
+  "vpc": "main",
+  "lambdas": {
+    "util_telemetry_execute_sql": {
+      "tests": []
+    }
+  }
+}

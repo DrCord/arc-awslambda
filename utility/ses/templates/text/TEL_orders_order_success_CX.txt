@@ -1,0 +1,65 @@
+New Customer Order #{{order_id}}
+
+You've received an order from {{Customer.firstName}} {{Customer.lastName}} ({{Customer.email}})
+
+Billing Address 
+    {{BillingAddress.firstName}} {{BillingAddress.lastName}}
+    {{BillingAddress.address1}}
+    {{#if BillingAddress.address2}}{{BillingAddress.address2}}{{/if}}
+    {{BillingAddress.city}}, {{BillingAddress.state}} {{BillingAddress.postalCode}} {{BillingAddress.country}}
+    {{Customer.phone}}
+    {{Customer.email}}
+
+Shipping Address 
+     {{ShippingAddress.firstName}} {{ShippingAddress.lastName}}
+     {{ShippingAddress.address1}}
+     {{#if ShippingAddress.address2}}{{ShippingAddress.address2}}{{/if}}
+     {{ShippingAddress.city}}, {{ShippingAddress.state}} {{ShippingAddress.postalCode}} {{ShippingAddress.country}}
+
+Additional Customer Information 
+     Delivery Method: {{Order.deliveryMethod}}
+     Referral: {{Order.howDidYouHear}} {{Order.referralCode}}
+     Notes: {{Order.customerNotes}}
+
+Customer Order and Reservation Email
+
+  Thank you for your reservation
+
+  Dear {{Customer.firstName}},
+
+     Your {{Order.modelName}} reservation is confirmed! We anticipate your vehicle will be completed within the next {{Order.deliveryLeadTime}}.
+     As we near the completion of your vehicle, we will reach out again to arrange delivery and to collect final payment.
+     Need financing? Check out some of our recommended financing options here https://www.arcimoto.com/finance
+
+     A member of our customer experience team will contact you within the next 24 hours to start planning for your delivery experience.
+     Please contact info@arcimoto.com for any questions regarding your order.
+
+     We look forward to getting you on the road in your new {{Order.modelName}}!
+
+     From the beginning, our mission has been a big one: to catalyze the shift to a sustainable transportation system. 
+     That goal has never been more important than it is today. Every mile matters, and we thank you for your support. The future is fun!
+ 
+    Sincerely,
+ 
+     Team Arcimoto
+ 
+Order Details  
+      Billing Address 
+         {{BillingAddress.firstName}} {{BillingAddress.lastName}}
+         {{BillingAddress.address1}}
+         {{#if BillingAddress.address2}}{{BillingAddress.address2}}{{/if}}
+         {{BillingAddress.city}}, {{BillingAddress.state}} {{BillingAddress.postalCode}}
+         {{Customer.phone}}
+ 
+         Reservation ARC# {{order_id}}
+
+        {{#each Order.meta}} 
+         {{keyLabel}} -- {{description}} -- {{unitPrice}}
+        {{/each}}
+ 
+         Estimated Total Charges: {{estimatedPrice}}
+         Total Due Now: {{payment.amount}}
+         Selected Payment Method: {{payment.paymentMethod}}
+         {{payment.alert}}
+ 
+© Arcimoto Inc. {{currentYear}}

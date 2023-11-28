@@ -1,0 +1,3073 @@
+{
+  "layers": {
+    "global_dependencies": {
+      "name": "arcimoto-globals"
+    }
+  },
+  "common_dependencies": {
+    "aws_secretsmanager_caching": {
+      "from": "dependencies/aws_secretsmanager_caching.zip",
+      "action": "unzip"
+    },
+    "cachetools": {
+      "from": "dependencies/google-auth/cachetools",
+      "to": "cachetools"
+    },
+    "certifi": {
+      "from": "dependencies/certifi/certifi",
+      "to": "certifi"
+    },
+    "colors": {
+      "from": "dependencies/grafana_json/grafana_colors.json",
+      "to": "grafana_colors.json"
+    },
+    "cryptography": {
+      "from": "dependencies/cryptography.zip",
+      "action": "unzip"
+    },
+    "env_resources_telemetry": {
+      "from": "dependencies/env_resources_telemetry.json",
+      "to": "env_resources.json"
+    },
+    "google": {
+      "from": "dependencies/google-auth/google",
+      "to": "google"
+    },
+    "google.oauth2": {
+      "from": "dependencies/google-auth/google/oauth2",
+      "to": "google.oauth2"
+    },
+    "google_auth_oauthlib": {
+      "from": "dependencies/gspread/google_auth_oauthlib",
+      "to": "google_auth_oauthlib"
+    },
+    "grafana": {
+      "from": "dependencies/grafana.py",
+      "to": "grafana.py"
+    },
+    "grafana_config": {
+      "from": "dependencies/grafana_json/grafana_config.json",
+      "to": "grafana_config.json"
+    },
+    "grafana_telemetry_points": {
+      "from": "dependencies/grafana_json/grafana_telemetry_points.json",
+      "to": "grafana_telemetry_points.json"
+    },
+    "gspread": {
+      "from": "dependencies/gspread/gspread",
+      "to": "gspread"
+    },
+    "hubspot_api_client": {
+      "from": "dependencies/hubspot_api_client.zip",
+      "action": "unzip"
+    },
+    "influxdb_extended": {
+      "from": "dependencies/influxdb_extended_38.zip",
+      "action": "unzip"
+    },
+    "oauthlib": {
+      "from": "dependencies/gspread/oauthlib",
+      "to": "oauthlib"
+    },
+    "pyasn1": {
+      "from": "dependencies/google-auth/pyasn1",
+      "to": "pyasn1"
+    },
+    "pyasn1_modules": {
+      "from": "dependencies/google-auth/pyasn1_modules",
+      "to": "pyasn1_modules"
+    },
+    "rds_auth": {
+      "from": "dependencies/rds_auth.py",
+      "to": "rds_auth.py"
+    },
+    "requests": {
+      "from": "dependencies/requests.zip",
+      "action": "unzip"
+    },
+    "requests_oauthlib": {
+      "from": "dependencies/gspread/requests_oauthlib",
+      "to": "requests_oauthlib"
+    },
+    "rsa": {
+      "from": "dependencies/google-auth/rsa",
+      "to": "rsa"
+    }
+ },
+  "functions": {
+    "add_telemetry_definition": {
+      "bundle": "telemetry"
+    },
+    "add_vehicle_metadata": {
+      "bundle": "vehicles"
+    },
+    "add_vehicle_to_group": {
+      "bundle": "fleets"
+    },
+    "authkey_vehicle_get": {
+      "bundle": "authorities",
+      "dependencies": [
+        {
+          "from": "dependencies/authorities.py",
+          "to": "authorities.py"
+        }
+      ]
+    },
+    "backfill_ingest_request": {
+      "bundle": "backfill",
+      "common_dependencies": [
+        "requests"
+      ]
+    },
+    "backfill_notify_complete": {
+      "bundle": "backfill"
+    },
+    "backfill_notify_failed": {
+      "bundle": "backfill"
+    },
+    "backfill_s3_delete_file": {
+      "bundle": "backfill"
+    },
+    "backfill_s3_load_file": {
+      "bundle": "backfill"
+    },
+    "backfill_s3_presigned_url_generate": {
+      "bundle": "backfill"
+    },
+    "backfill_state_machine_start": {
+      "bundle": "backfill"
+    },
+    "create_authority": {
+      "bundle": "authorities",
+      "common_dependencies": [
+        "cryptography"
+      ],
+      "dependencies": [
+        {
+          "from": "dependencies/authorities.py",
+          "to": "authorities.py"
+        }
+      ]
+    },
+    "create_vehicle_group": {
+      "bundle": "fleets"
+    },
+    "delete_authority": {
+      "bundle": "authorities",
+      "dependencies": [
+        {
+          "from": "dependencies/authorities.py",
+          "to": "authorities.py"
+        }
+      ]
+    },
+    "delete_vehicle_group": {
+      "bundle": "fleets"
+    },
+    "factory_pin_generate": {
+      "bundle": "authorities"
+    },
+    "firmware_version_get": {
+      "bundle": "firmware",
+      "common_dependencies": [
+        "certifi"
+      ],
+      "dependencies": [
+        {
+          "from": "dependencies/firmware.py",
+          "to": "firmware.py"
+        }
+      ]
+    },
+    "firmware_version_get_release_data": {
+      "bundle": "firmware",
+      "common_dependencies": [
+        "certifi"
+      ],
+      "dependencies": [
+        {
+          "from": "dependencies/firmware.py",
+          "to": "firmware.py"
+        }
+      ]
+    },
+    "firmware_version_set_release_data": {
+      "bundle": "firmware",
+      "dependencies": [
+        {
+          "from": "dependencies/firmware.py",
+          "to": "firmware.py"
+        }
+      ]
+    },
+    "firmware_version_vin_get": {
+      "bundle": "firmware"
+    },
+    "firmware_version_vin_set": {
+      "bundle": "firmware",
+      "common_dependencies": [
+        "certifi"
+      ],
+      "dependencies": [
+        {
+          "from": "dependencies/firmware.py",
+          "to": "firmware.py"
+        }
+      ]
+    },
+    "fleets_accounting_department_code_create": {
+      "bundle": "fleets"
+    },
+    "fleets_accounting_department_code_delete": {
+      "bundle": "fleets"
+    },
+    "fleets_accounting_department_codes_list": {
+      "bundle": "fleets"
+    },
+    "fleets_fleet_update": {
+      "bundle": "fleets"
+    },
+    "fleets_statistics_get": {
+      "bundle": "fleets",
+      "common_dependencies": [
+        "influxdb_extended"
+      ]
+    },
+    "fleets_vehicle_group_accounting_department_code_set": {
+      "bundle": "fleets"
+    },
+    "fleets_vehicle_group_add_user": {
+      "bundle": "fleets"
+    },
+    "fleets_vehicle_group_location_set": {
+      "bundle": "fleets"
+    },
+    "fleets_vehicle_group_type_set": {
+      "bundle": "fleets"
+    },
+    "fleets_vehicle_group_types_list": {
+      "bundle": "fleets"
+    },
+    "fleets_vehicle_group_remove_user": {
+      "bundle": "fleets"
+    },
+    "get_authority": {
+      "bundle": "authorities"
+    },
+    "get_commit_info": {
+      "bundle": "firmware",
+      "common_dependencies": [
+        "certifi"
+      ],
+      "dependencies": [
+        {
+          "from": "dependencies/firmware.py",
+          "to": "firmware.py"
+        }
+      ]
+    },
+    "get_telemetry_definition": {
+      "bundle": "telemetry"
+    },
+    "get_telemetry_metrics_keys": {
+      "bundle": "telemetry"
+    },
+    "get_telemetry_points": {
+      "bundle": "telemetry"
+    },
+    "get_telemetry_vehicle": {
+      "bundle": "vehicles"
+    },
+    "get_trusted_keys": {
+      "bundle": "authorities"
+    },
+    "get_vehicle_group": {
+      "bundle": "fleets"
+    },
+    "get_vehicle_shadow": {
+      "bundle": "vehicles"
+    },
+    "gps_privacy_setting_get": {
+      "bundle": "vehicles"
+    },
+    "gps_recording_toggle": {
+      "bundle": "vehicles"
+    },
+    "hologram_change_plan": {
+      "bundle": "hologram",
+      "common_dependencies": [
+        "requests"
+      ]
+    },
+    "hologram_check_plans": {
+      "bundle": "hologram",
+      "common_dependencies": [
+        "requests"
+      ]
+    },
+    "list_authorities": {
+      "bundle": "authorities"
+    },
+    "list_telemetry_vehicles": {
+      "bundle": "vehicles"
+    },
+    "list_vehicle_groups": {
+      "bundle": "fleets"
+    },
+    "list_vehicles": {
+      "bundle": "authorities"
+    },
+    "locations_accounting_location_code_create": {
+      "bundle": "locations"
+    },
+    "locations_accounting_location_code_delete": {
+      "bundle": "locations"
+    },
+    "locations_accounting_location_codes_list": {
+      "bundle": "locations"
+    },
+    "locations_address_types_list": {
+      "bundle": "locations"
+    },
+    "locations_countries_list": {
+      "bundle": "locations"
+    },
+    "locations_location_accounting_location_code_set": {
+      "bundle": "locations"
+    },
+    "locations_location_create": {
+      "bundle": "locations"
+    },
+    "locations_location_delete": {
+      "bundle": "locations"
+    },
+    "locations_location_get": {
+      "bundle": "locations"
+    },
+    "locations_location_update": {
+      "bundle": "locations"
+    },
+    "locations_locations_list": {
+      "bundle": "locations"
+    },
+    "managed_session_end": {
+      "bundle": "managed_session"
+    },
+    "managed_session_get": {
+      "bundle": "managed_session"
+    },
+    "managed_session_list": {
+      "bundle": "managed_session"
+    },
+    "managed_session_mode_set": {
+      "bundle": "managed_session"
+    },
+    "managed_session_start": {
+      "bundle": "managed_session"
+    },
+    "managed_session_telemetry_get": {
+      "bundle": "managed_session",
+      "common_dependencies": [
+        "influxdb_extended"
+      ]
+    },
+    "message_broker": {
+      "bundle": "utility",
+      "common_dependencies": [
+        "requests"
+      ]
+    },
+    "monitor_influxdb_backup": {
+      "bundle": "alarms"
+    },
+    "note_create": {
+      "bundle": "notes"
+    },
+    "note_delete": {
+      "bundle": "notes"
+    },
+    "notes_get": {
+      "bundle": "notes"
+    },
+    "orders_order_add_error_payment_notifier":{
+      "bundle":"orders"
+    },
+    "orders_order_add_payment":{
+      "bundle":"orders"
+    },
+    "orders_order_add_success_payment_notifier":{
+      "bundle":"orders"
+    },
+    "orders_order_archive":{
+      "bundle":"orders"
+    },
+    "orders_order_create":{
+      "bundle":"orders"
+    },
+    "orders_order_crm_update":{
+      "bundle":"orders",
+      "common_dependencies": [
+        "hubspot_api_client",
+        "requests"
+      ],
+      "dependencies": [
+        {
+          "from": "dependencies/hubspot/hubspot_api_values.json",
+          "to": "hubspot_api_values.json"
+        }
+      ]
+    },
+    "orders_order_delete":{
+      "bundle":"orders"
+    }, 
+      "orders_order_get":{
+      "bundle":"orders"
+    },
+    "orders_order_queue_crm_update":{
+      "bundle":"orders"
+    },
+    "orders_order_queue_payment_error_cx":{
+      "bundle":"orders"
+    },
+    "orders_order_queue_payment_success_cx":{
+      "bundle":"orders"
+    },
+    "orders_order_queue_payment_success_customer":{
+      "bundle":"orders"
+    },
+    "orders_order_ses_email":{
+      "bundle":"orders"
+    },
+    "orders_orders_list":{
+      "bundle":"orders"
+    },
+    "print_label_request": {
+      "bundle": "utility",
+      "common_dependencies": [
+        "requests"
+      ]
+    },
+    "provision_grafana_groups": {
+      "bundle": "grafana",
+      "common_dependencies": [
+        "grafana",
+        "requests",
+        "colors",
+        "grafana_config",
+        "grafana_telemetry_points"
+      ],
+      "dependencies": [
+        {
+          "from": "dependencies/grafana_json/grafana_groups_dashboard.json",
+          "to": "grafana_groups_dashboard.json"
+        },
+        {
+          "from": "dependencies/grafana_json/grafana_groups_panel_set.json",
+          "to": "grafana_groups_panel_set.json"
+        },
+        {
+          "from": "dependencies/grafana_json/grafana_vin_dashboard.json",
+          "to": "grafana_vin_dashboard.json"
+        }
+      ]
+    },
+    "provision_grafana_overview": {
+      "bundle": "grafana",
+      "common_dependencies": [
+        "grafana",
+        "requests",
+        "colors",
+        "grafana_config",
+        "grafana_telemetry_points"
+      ],
+      "dependencies": [
+        {
+          "from": "dependencies/grafana_json/grafana_overview_dashboard.json",
+          "to": "grafana_overview_dashboard.json"
+        },
+        {
+          "from": "dependencies/grafana_json/grafana_overview_header_panel.json",
+          "to": "grafana_overview_header_panel.json"
+        },
+        {
+          "from": "dependencies/grafana_json/grafana_overview_vin_panel_set.json",
+          "to": "grafana_overview_vin_panel_set.json"
+        },
+        {
+          "from": "dependencies/grafana_json/grafana_vin_dashboard.json",
+          "to": "grafana_vin_dashboard.json"
+        },
+        {
+          "from": "dependencies/grafana_json/grafana_group_telemetry_dashboard.json",
+          "to": "grafana_group_telemetry_dashboard.json"
+        },
+        {
+          "from": "dependencies/grafana_json/grafana_group_telemetry_panel_set.json",
+          "to": "grafana_group_telemetry_panel_set.json"
+        }
+      ]
+    },
+    "provision_grafana_vehicle": {
+      "bundle": "grafana",
+      "common_dependencies": [
+        "grafana",
+        "requests",
+        "grafana_config",
+        "grafana_telemetry_points"
+      ],
+      "dependencies": [
+        {
+          "from": "dependencies/grafana_json/grafana_line_graph.json",
+          "to": "grafana_line_graph.json"
+        },
+        {
+          "from": "dependencies/grafana_json/grafana_worldmap_graph.json",
+          "to": "grafana_worldmap_graph.json"
+        },
+        {
+          "from": "dependencies/grafana_json/grafana_vin_dashboard.json",
+          "to": "grafana_vin_dashboard.json"
+        },
+        {
+          "from": "dependencies/grafana_json/grafana_vin_dashboard_footer.json",
+          "to": "grafana_vin_dashboard_footer.json"
+        }
+      ]
+    },
+    "provision_iot": {
+      "bundle": "vehicles"
+    },
+    "provision_iot_certificate": {
+      "bundle": "vehicles"
+    },
+    "provision_telemetry_alarm": {
+      "bundle": "alarms"
+    },
+    "provision_vehicle_authority": {
+      "bundle": "authorities",
+      "dependencies": [
+        {
+          "from": "dependencies/authorities.py",
+          "to": "authorities.py"
+        }
+      ]
+    },
+    "provision_vehicle_telemetry": {
+      "bundle": "vehicles"
+    },
+    "recall_add_vehicle": {
+      "bundle": "recalls",
+      "dependencies": [
+        {
+          "from": "dependencies/recalls.py",
+          "to": "recalls.py"
+        }
+      ]
+    },
+    "recall_create": {
+      "bundle": "recalls"
+    },
+    "recall_delete": {
+      "bundle": "recalls"
+    },
+    "recall_edit": {
+      "bundle": "recalls"
+    },
+    "recall_edit_vehicle": {
+      "bundle": "recalls",
+      "dependencies": [
+        {
+          "from": "dependencies/recalls.py",
+          "to": "recalls.py"
+        }
+      ]
+    },
+    "recall_get": {
+      "bundle": "recalls"
+    },
+    "recall_get_updated": {
+      "bundle": "recalls"
+    },
+    "recall_get_vehicle": {
+      "bundle": "recalls"
+    },
+    "recall_list": {
+      "bundle": "recalls"
+    },
+    "recall_list_vehicle": {
+      "bundle": "recalls"
+    },
+    "recall_remove_vehicle": {
+      "bundle": "recalls",
+      "dependencies": [
+        {
+          "from": "dependencies/recalls.py",
+          "to": "recalls.py"
+        }
+      ]
+    },
+    "recall_service_vehicle": {
+      "bundle": "recalls",
+      "dependencies": [
+        {
+          "from": "dependencies/recalls.py",
+          "to": "recalls.py"
+        }
+      ]
+    },
+    "recall_set_updated": {
+      "bundle": "recalls"
+    },
+    "reef_managed_session_end": {
+      "bundle": "reef"
+    },
+    "reef_managed_session_get": {
+      "bundle": "reef"
+    },
+    "reef_managed_session_list": {
+      "bundle": "reef"
+    },
+    "reef_managed_session_start": {
+      "bundle": "reef"
+    },
+    "reef_managed_session_telemetry_get": {
+      "bundle": "reef",
+      "common_dependencies": [
+        "influxdb_extended"
+      ]
+    },
+    "reef_sheer_id_verify_dl": {
+      "bundle": "reef",
+      "common_dependencies": [
+        "certifi"
+      ]
+    },
+    "reef_vehicle_shadow_synchronized": {
+      "bundle": "reef"
+    },
+    "register_vehicle": {
+      "bundle": "vehicles",
+      "common_dependencies": [
+        "certifi"
+      ],
+      "dependencies": [
+        {
+          "from": "dependencies/firmware.py",
+          "to": "firmware.py"
+        },
+        {
+          "from": "dependencies/parts.py",
+          "to": "parts.py"
+        }
+      ]
+    },
+    "rekey_authority": {
+      "bundle": "authorities",
+      "common_dependencies": [
+        "cryptography"
+      ]
+    },
+    "remedy_create": {
+      "bundle": "recalls",
+      "dependencies": [
+        {
+          "from": "dependencies/recalls.py",
+          "to": "recalls.py"
+        }
+      ]
+    },
+    "remedy_delete": {
+      "bundle": "recalls"
+    },
+    "remedy_edit": {
+      "bundle": "recalls"
+    },
+    "remedy_get": {
+      "bundle": "recalls"
+    },
+    "remedy_list": {
+      "bundle": "recalls"
+    },
+    "remove_vehicle_from_arcimoto_group": {
+      "bundle": "fleets"
+    },
+    "remove_vehicle_from_group": {
+      "bundle": "fleets"
+    },
+    "replicate_authkey_db_users_restore": {
+      "bundle": "replicate/auth",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_authkey_db_prefix_vins": {
+      "bundle": "replicate/auth",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_db_available": {
+      "bundle": "replicate",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_db_cluster_clone": {
+      "bundle": "replicate",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_db_cluster_delete": {
+      "bundle": "replicate",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_db_cluster_instance_create": {
+      "bundle": "replicate",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_db_cluster_remove_protection": {
+      "bundle": "replicate",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_db_cluster_rename": {
+      "bundle": "replicate",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_db_exists": {
+      "bundle": "replicate",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_db_instance_delete": {
+      "bundle": "replicate",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_db_instance_rename": {
+      "bundle": "replicate",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_events_cleanup": {
+      "bundle": "replicate"
+    },
+    "replicate_main_db_prefix_vins": {
+      "bundle": "replicate/main",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_main_db_users_restore": {
+      "bundle": "replicate/main",
+      "dependencies": [
+        {
+          "from": "dependencies/replicate.py",
+          "to": "replicate.py"
+        }
+      ]
+    },
+    "replicate_db_retired_schedule_removal": {
+      "bundle": "replicate"
+    },
+    "replicate_notify": {
+      "bundle": "replicate"
+    },
+    "set_db_telemetry_alarm": {
+      "bundle": "alarms"
+    },
+    "set_continuous_queries": {
+      "bundle": "utility",
+      "common_dependencies": [
+        "rds_auth",
+        "env_resources_telemetry",
+        "requests"
+      ]
+    },
+    "set_telemetry_points": {
+      "bundle": "telemetry"
+    },
+    "set_telemetry_version": {
+      "bundle": "telemetry"
+    },
+    "shadow_reported_state": {
+      "bundle": "vehicles"
+    },
+    "sheer_id_verify_dl": {
+      "bundle": "sheer_id",
+      "common_dependencies": [
+        "certifi"
+      ]
+    },
+    "sign_vehicle_token": {
+      "bundle": "authorities",
+      "common_dependencies": [
+        "cryptography"
+      ],
+      "dependencies": [
+        {
+          "from": "dependencies/authorities.py",
+          "to": "authorities.py"
+        }
+      ]
+    },
+    "slack_notification": {
+      "bundle": "utility"
+    },
+    "step_wrapper": {
+      "bundle": "utility"
+    },
+    "step_wrapper_palantir": {
+      "bundle": "utility"
+    },
+    "telemetry_ingest_timestream": {
+      "bundle": "telemetry"
+    },
+    "telemetry_points_get_defaults": {
+      "bundle": "telemetry"
+    },
+    "telemetry_report_vehicles_overcharge": {
+      "bundle": "telemetry"
+    },
+    "telemetry_vehicles_timestream_get": {
+      "bundle": "telemetry"
+    },
+    "telemetry_vpc_ingest_influx": {
+      "bundle": "telemetry",
+      "common_dependencies": [
+        "requests"
+      ]
+    },
+    "test_add_telemetry_definition": {
+      "bundle": "telemetry/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_add_vehicle_metadata": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_add_vehicle_to_group": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_authkey_vehicle_get": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_backfill_ingest_request": {
+      "bundle": "backfill/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/backfill_functions.py",
+          "to": "backfill_functions.py"
+        }
+      ]
+    },
+    "test_backfill_notify_complete": {
+      "bundle": "backfill/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/backfill_functions.py",
+          "to": "backfill_functions.py"
+        }
+      ]
+    },
+    "test_backfill_notify_failed": {
+      "bundle": "backfill/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/backfill_functions.py",
+          "to": "backfill_functions.py"
+        }
+      ]
+    },
+    "test_backfill_s3_delete_file": {
+      "bundle": "backfill/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/backfill_functions.py",
+          "to": "backfill_functions.py"
+        }
+      ]
+    },
+    "test_backfill_s3_load_file": {
+      "bundle": "backfill/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/backfill_functions.py",
+          "to": "backfill_functions.py"
+        }
+      ]
+    },
+    "test_backfill_s3_presigned_url_generate": {
+      "bundle": "backfill/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/backfill_functions.py",
+          "to": "backfill_functions.py"
+        }
+      ]
+    },
+    "test_backfill_state_machine_start": {
+      "bundle": "backfill/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/backfill_functions.py",
+          "to": "backfill_functions.py"
+        }
+      ]
+    },
+    "test_create_authority": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_create_vehicle_group": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_delete_authority": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_delete_vehicle_group": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_factory_pin_generate": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_firmware_version_get": {
+      "bundle": "firmware/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/firmware_functions.py",
+          "to": "firmware_functions.py"
+        }
+      ]
+    },
+    "test_firmware_version_get_release_data": {
+      "bundle": "firmware/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/firmware_functions.py",
+          "to": "firmware_functions.py"
+        }
+      ]
+    },
+    "test_firmware_version_set_release_data": {
+      "bundle": "firmware/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/firmware_functions.py",
+          "to": "firmware_functions.py"
+        }
+      ]
+    },
+    "test_firmware_version_vin_get": {
+      "bundle": "firmware/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/firmware_functions.py",
+          "to": "firmware_functions.py"
+        }
+      ]
+    },
+    "test_firmware_version_vin_set": {
+      "bundle": "firmware/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/firmware_functions.py",
+          "to": "firmware_functions.py"
+        }
+      ]
+    },
+    "test_fleets_accounting_department_code_create": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_fleets_accounting_department_code_delete": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_fleets_accounting_department_codes_list": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_fleets_fleet_update": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_fleets_statistics_get": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_fleets_vehicle_group_accounting_department_code_set": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_fleets_vehicle_group_add_user": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_fleets_vehicle_group_location_set": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        },
+        {
+          "from": "dependencies/tests/locations_functions.py",
+          "to": "locations_functions.py"
+        }
+      ]
+    },
+    "test_fleets_vehicle_group_remove_user": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_fleets_vehicle_group_type_set": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_fleets_vehicle_group_types_list": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_get_authority": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_get_commit_info": {
+      "bundle": "firmware/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/firmware_functions.py",
+          "to": "firmware_functions.py"
+        }
+      ]
+    },
+    "test_get_telemetry_definition": {
+      "bundle": "telemetry/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_get_telemetry_metrics_keys": {
+      "bundle": "telemetry/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_get_telemetry_points": {
+      "bundle": "telemetry/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_get_telemetry_vehicle": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_get_trusted_keys": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_get_vehicle_group": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_get_vehicle_shadow": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_gps_privacy_setting_get": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_gps_recording_toggle": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_hologram_change_plan": {
+      "bundle": "hologram/tests"
+    },
+    "test_hologram_check_plans": {
+      "bundle": "hologram/tests"
+    },
+    "test_list_authorities": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_list_vehicles": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_list_telemetry_vehicles": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        },
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_list_vehicle_groups": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_locations_accounting_location_code_create": {
+      "bundle": "locations/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/locations_functions.py",
+          "to": "locations_functions.py"
+        }
+      ]
+    },
+    "test_locations_accounting_location_code_delete": {
+      "bundle": "locations/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/locations_functions.py",
+          "to": "locations_functions.py"
+        }
+      ]
+    },
+    "test_locations_accounting_location_codes_list": {
+      "bundle": "locations/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/locations_functions.py",
+          "to": "locations_functions.py"
+        }
+      ]
+    },
+    "test_locations_address_types_list": {
+      "bundle": "locations/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/locations_functions.py",
+          "to": "locations_functions.py"
+        }
+      ]
+    },
+    "test_locations_countries_list": {
+      "bundle": "locations/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/locations_functions.py",
+          "to": "locations_functions.py"
+        }
+      ]
+    },
+    "test_locations_location_accounting_location_code_set": {
+      "bundle": "locations/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/locations_functions.py",
+          "to": "locations_functions.py"
+        }
+      ]
+    },
+    "test_locations_location_create": {
+      "bundle": "locations/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/locations_functions.py",
+          "to": "locations_functions.py"
+        }
+      ]
+    },
+    "test_locations_location_delete": {
+      "bundle": "locations/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/locations_functions.py",
+          "to": "locations_functions.py"
+        }
+      ]
+    },
+    "test_locations_location_get": {
+      "bundle": "locations/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/locations_functions.py",
+          "to": "locations_functions.py"
+        }
+      ]
+    },
+    "test_locations_location_update": {
+      "bundle": "locations/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/locations_functions.py",
+          "to": "locations_functions.py"
+        }
+      ]
+    },
+    "test_locations_locations_list": {
+      "bundle": "locations/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/locations_functions.py",
+          "to": "locations_functions.py"
+        }
+      ]
+    },
+    "test_managed_session_end": {
+      "bundle": "managed_session/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/managed_session_functions.py",
+          "to": "managed_session_functions.py"
+        }
+      ]
+    },
+    "test_managed_session_get": {
+      "bundle": "managed_session/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/managed_session_functions.py",
+          "to": "managed_session_functions.py"
+        }
+      ]
+    },
+    "test_managed_session_list": {
+      "bundle": "managed_session/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/managed_session_functions.py",
+          "to": "managed_session_functions.py"
+        }
+      ]
+    },
+    "test_managed_session_mode_set": {
+      "bundle": "managed_session/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/managed_session_functions.py",
+          "to": "managed_session_functions.py"
+        }
+      ]
+    },
+    "test_managed_session_start": {
+      "bundle": "managed_session/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/managed_session_functions.py",
+          "to": "managed_session_functions.py"
+        }
+      ]
+    },
+    "test_managed_session_telemetry_get": {
+      "bundle": "managed_session/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/managed_session_functions.py",
+          "to": "managed_session_functions.py"
+        }
+      ]
+    },
+    "test_message_broker": {
+      "bundle": "utility/tests"
+    },
+    "test_note_create": {
+      "bundle": "notes/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/notes_functions.py",
+          "to": "notes_functions.py"
+        }
+      ]
+    },
+    "test_note_delete": {
+      "bundle": "notes/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/notes_functions.py",
+          "to": "notes_functions.py"
+        }
+      ]
+    },
+    "test_notes_get": {
+      "bundle": "notes/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/notes_functions.py",
+          "to": "notes_functions.py"
+        }
+      ]
+    },
+    "test_orders_order_add_error_payment_notifier":{
+      "bundle": "orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    }, 
+    "test_orders_order_add_payment": {
+      "bundle": "orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    },
+    "test_orders_order_add_success_payment_notifier":{
+      "bundle": "orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    },
+    "test_orders_order_archive": {
+      "bundle": "orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    }, 
+    "test_orders_order_create": {
+      "bundle": "orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    }, 
+    "test_orders_order_crm_update":{
+      "bundle":"orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    },
+    "test_orders_order_delete": {
+      "bundle": "orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    }, 
+    "test_orders_order_get": {
+      "bundle": "orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    },
+    "test_orders_order_queue_crm_update":{
+      "bundle": "orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    },
+    "test_orders_order_queue_payment_success_customer":{
+      "bundle": "orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    },
+    "test_orders_order_queue_payment_success_cx":{
+      "bundle": "orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    },
+    "test_orders_order_ses_email":{
+      "bundle": "orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    },
+    "test_orders_orders_list": {
+      "bundle": "orders/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/orders_functions.py",
+          "to": "orders_functions.py"
+        }
+      ]
+    },
+    "test_print_label_request": {
+      "bundle": "utility/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/utility_functions.py",
+          "to": "utility_functions.py"
+        }
+      ]
+    },
+    "test_provision_grafana_groups": {
+      "bundle": "grafana/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/grafana_functions.py",
+          "to": "grafana_functions.py"
+        }
+      ]
+    },
+    "test_provision_grafana_overview": {
+      "bundle": "grafana/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        },
+        {
+          "from": "dependencies/tests/grafana_functions.py",
+          "to": "grafana_functions.py"
+        }
+      ]
+    },
+    "test_provision_grafana_vehicle": {
+      "bundle": "grafana/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/grafana_functions.py",
+          "to": "grafana_functions.py"
+        }
+      ]
+    },
+    "test_provision_iot": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_provision_iot_certificate": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_provision_vehicle_authority": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_provision_vehicle_telemetry": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_recall_add_vehicle": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_recall_create": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_recall_delete": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_recall_edit": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_recall_edit_vehicle": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_recall_get": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_recall_get_updated": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_recall_get_vehicle": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_recall_list": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_recall_list_vehicle": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_recall_remove_vehicle": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_recall_service_vehicle": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_recall_set_updated": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_reef_managed_session_end": {
+      "bundle": "reef/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        },
+        {
+          "from": "dependencies/tests/reef_functions.py",
+          "to": "reef_functions.py"
+        }
+      ]
+    },
+    "test_reef_managed_session_get": {
+      "bundle": "reef/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        },
+        {
+          "from": "dependencies/tests/managed_session_functions.py",
+          "to": "managed_session_functions.py"
+        },
+        {
+          "from": "dependencies/tests/reef_functions.py",
+          "to": "reef_functions.py"
+        }
+      ]
+    },
+    "test_reef_managed_session_list": {
+      "bundle": "reef/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/reef_functions.py",
+          "to": "reef_functions.py"
+        }
+      ]
+    },
+    "test_reef_managed_session_start": {
+      "bundle": "reef/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        },
+        {
+          "from": "dependencies/tests/reef_functions.py",
+          "to": "reef_functions.py"
+        }
+      ]
+    },
+    "test_reef_managed_session_telemetry_get": {
+      "bundle": "reef/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        },
+        {
+          "from": "dependencies/tests/managed_session_functions.py",
+          "to": "managed_session_functions.py"
+        },
+        {
+          "from": "dependencies/tests/reef_functions.py",
+          "to": "reef_functions.py"
+        }
+      ]
+    },
+    "test_reef_sheer_id_verify_dl": {
+      "bundle": "reef/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/reef_functions.py",
+          "to": "reef_functions.py"
+        }
+      ]
+    },
+    "test_reef_vehicle_shadow_synchronized": {
+      "bundle": "reef/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        },
+        {
+          "from": "dependencies/tests/reef_functions.py",
+          "to": "reef_functions.py"
+        },
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_register_vehicle": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_rekey_authority": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_remedy_create": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_remedy_delete": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_remedy_edit": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_remedy_get": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_remedy_list": {
+      "bundle": "recalls/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/recall_functions.py",
+          "to": "recall_functions.py"
+        }
+      ]
+    },
+    "test_remove_vehicle_from_arcimoto_group": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_remove_vehicle_from_group": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_set_telemetry_points": {
+      "bundle": "telemetry/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_set_telemetry_version": {
+      "bundle": "telemetry/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_shadow_reported_state": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        },
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_sheer_id_verify_dl": {
+      "bundle": "sheer_id/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/sheer_id_functions.py",
+          "to": "sheer_id_functions.py"
+        }
+      ]
+    },
+    "test_sign_vehicle_token": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_slack_notification": {
+      "bundle": "utility/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/utility_functions.py",
+          "to": "utility_functions.py"
+        }
+      ]
+    },
+    "test_step_wrapper": {
+      "bundle": "utility/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/utility_functions.py",
+          "to": "utility_functions.py"
+        }
+      ]
+    },
+    "test_step_wrapper_palantir": {
+      "bundle": "utility/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/utility_functions.py",
+          "to": "utility_functions.py"
+        }
+      ]
+    },
+    "test_telemetry_ingest_timestream": {
+      "bundle": "telemetry/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_telemetry_points_get_defaults": {
+      "bundle": "telemetry/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_telemetry_report_vehicles_overcharge": {
+      "bundle": "telemetry/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_telemetry_vehicles_timestream_get": {
+      "bundle": "telemetry/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        },
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_telemetry_vpc_ingest_influx": {
+      "bundle": "telemetry/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_unit_test_bundles_get_lambdas": {
+      "bundle": "unit_test/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/unit_test_functions.py",
+          "to": "unit_test_functions.py"
+        }
+      ]
+    },
+    "test_unit_test_lambda_get_tests": {
+      "bundle": "unit_test/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/unit_test_functions.py",
+          "to": "unit_test_functions.py"
+        }
+      ]
+    },
+    "test_unit_test_lambda_run_tests": {
+      "bundle": "unit_test/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/unit_test_functions.py",
+          "to": "unit_test_functions.py"
+        }
+      ]
+    },
+    "test_unit_test_lambdas_tests_report": {
+      "bundle": "unit_test/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/unit_test_functions.py",
+          "to": "unit_test_functions.py"
+        }
+      ]
+    },
+    "test_unit_test_notify": {
+      "bundle": "unit_test/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/unit_test_functions.py",
+          "to": "unit_test_functions.py"
+        }
+      ]
+    },
+    "test_unprovision_iot": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_unprovision_iot_certificate": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_unprovision_vehicle_arcimoto_authority": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_unprovision_vehicle_authority": {
+      "bundle": "authorities/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/authorities_functions.py",
+          "to": "authorities_functions.py"
+        }
+      ]
+    },
+    "test_unprovision_vehicle_telemetry": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_update_hologram": {
+      "bundle": "hologram/tests"
+    },
+    "test_update_shadow_document": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_user_groups_get": {
+      "bundle": "fleets/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        }
+      ]
+    },
+    "test_userpool_trigger_custom_message": {
+      "bundle": "userpool/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/userpool_functions.py",
+          "to": "userpool_functions.py"
+        }
+      ]
+    },
+    "test_users_add_permission_to_group": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_add_preference_to_user": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_ability_grant": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_add_user_to_group": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_create_user": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_delete_user": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_disable_user": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_enable_user": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_group_create": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_group_delete": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_group_get": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_groups_list": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_permissions_ability_create": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_permissions_ability_delete": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_permissions_ability_edit": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_permissions_ability_get": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_permissions_abilities_list": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_permissions_list": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_preferences_list": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_profile_get": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_profile_update": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_remove_permission_from_group": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_remove_user_from_group": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_resend_user_invite": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_user_get": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_user_mfa_sms_disable": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_user_mfa_sms_enable": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_user_mfa_totp_associate_token": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_user_mfa_totp_disable": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_user_mfa_totp_enable": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_user_mfa_totp_verify_token": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_users_users_list": {
+      "bundle": "users/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/users_functions.py",
+          "to": "users_functions.py"
+        }
+      ]
+    },
+    "test_utility_cwl_set_retention": {
+      "bundle": "utility/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/utility_functions.py",
+          "to": "utility_functions.py"
+        }
+      ]
+    },
+    "test_utility_controlled_docs_masterlist_export": {
+      "bundle": "utility/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/utility_functions.py",
+          "to": "utility_functions.py"
+        }
+      ]
+    },
+    "test_utility_email_alert_error": {
+      "bundle": "utility/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/utility_functions.py",
+          "to": "utility_functions.py"
+        }
+      ]
+    },
+    "test_vehicles_configuration_set": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_vehicles_firmware_components_list": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_vehicles_model_release_create": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_vehicles_model_release_parts_get": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_vehicles_model_release_part_set": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        },
+        {
+          "from":"dependencies/parts.py",
+          "to": "parts.py"
+        }
+      ]
+    },
+    "test_vehicles_model_releases_list": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_vehicles_models_list": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_vehicles_options_set": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_vehicles_part_type_create": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_vehicles_telemetry_get": {
+      "bundle": "telemetry/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        },
+        {
+          "from": "dependencies/tests/telemetry_functions.py",
+          "to": "telemetry_functions.py"
+        }
+      ]
+    },
+    "test_vehicles_vehicle_part_set": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        },
+        {
+          "from":"dependencies/parts.py",
+          "to": "parts.py"
+        }
+      ]
+    },
+    "test_vehicles_vehicle_model_release_set": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_vehicles_vehicle_shadow_synchronized": {
+      "bundle": "vehicles/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/vehicles_functions.py",
+          "to": "vehicles_functions.py"
+        }
+      ]
+    },
+    "test_yrisk_data_s3_verify": {
+      "bundle": "yrisk/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/yrisk_functions.py",
+          "to": "yrisk_functions.py"
+        }
+      ]
+    },
+    "test_yrisk_data_to_s3": {
+      "bundle": "yrisk/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/yrisk_functions.py",
+          "to": "yrisk_functions.py"
+        }
+      ]
+    },
+    "test_yrisk_fleets_list": {
+      "bundle": "yrisk/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/yrisk_functions.py",
+          "to": "yrisk_functions.py"
+        }
+      ]
+    },
+    "test_yrisk_notify": {
+      "bundle": "yrisk/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/yrisk_functions.py",
+          "to": "yrisk_functions.py"
+        }
+      ]
+    },
+    "test_yrisk_notify_email": {
+      "bundle": "yrisk/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/yrisk_functions.py",
+          "to": "yrisk_functions.py"
+        }
+      ]
+    },
+    "test_yrisk_output_assemble": {
+      "bundle": "yrisk/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/yrisk_functions.py",
+          "to": "yrisk_functions.py"
+        }
+      ]
+    },
+    "test_yrisk_vehicle_telemetry_get": {
+      "bundle": "yrisk/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/yrisk_functions.py",
+          "to": "yrisk_functions.py"
+        }
+      ]
+    },
+    "test_yrisk_vehicles_list": {
+      "bundle": "yrisk/tests",
+      "dependencies": [
+        {
+          "from": "dependencies/tests/fleets_functions.py",
+          "to": "fleets_functions.py"
+        },
+        {
+          "from": "dependencies/tests/yrisk_functions.py",
+          "to": "yrisk_functions.py"
+        }
+      ]
+    },
+    "vehicles_telemetry_get": {
+      "bundle": "telemetry",
+      "common_dependencies": [
+        "influxdb_extended"
+      ]
+    },
+    "unpack_telemetry_message": {
+      "bundle": "telemetry"
+    },
+    "unprovision_iot": {
+      "bundle": "vehicles"
+    },
+    "unprovision_iot_certificate": {
+      "bundle": "vehicles"
+    },
+    "unprovision_telemetry_alarm": {
+      "bundle": "alarms"
+    },
+    "unprovision_vehicle_arcimoto_authority": {
+      "bundle": "authorities",
+      "dependencies": [
+        {
+          "from": "dependencies/authorities.py",
+          "to": "authorities.py"
+        }
+      ]
+    },
+    "unprovision_vehicle_authority": {
+      "bundle": "authorities",
+      "dependencies": [
+        {
+          "from": "dependencies/authorities.py",
+          "to": "authorities.py"
+        }
+      ]
+    },
+    "unprovision_vehicle_telemetry": {
+      "bundle": "vehicles"
+    },
+    "unset_db_telemetry_alarm": {
+      "bundle": "alarms"
+    },
+    "update_hologram": {
+      "bundle": "hologram",
+      "common_dependencies": [
+        "requests"
+      ]
+    },
+    "update_shadow_document": {
+      "bundle": "vehicles"
+    },
+    "unit_test_bundles_get_lambdas": {
+      "bundle": "unit_test",
+      "dependencies": [
+        {
+          "from": "dependencies.json",
+          "to": "dependencies.json"
+        }
+      ]
+    },
+    "unit_test_lambda_get_tests": {
+      "bundle": "unit_test",
+      "common_dependencies": [
+        "requests"
+      ]
+    },
+    "unit_test_lambda_run_tests": {
+      "bundle": "unit_test"
+    },
+    "unit_test_lambdas_tests_report": {
+      "bundle": "unit_test"
+    },
+    "unit_test_notify": {
+      "bundle": "unit_test"
+    },
+    "user_groups_get": {
+      "bundle": "fleets"
+    },
+    "userpool_trigger_custom_message": {
+      "bundle": "userpool"
+    },
+    "users_ability_grant": {
+      "bundle": "users"
+    },
+    "users_add_user_to_group": {
+      "bundle": "users"
+    },
+    "users_add_permission_to_group":{
+      "bundle": "users"
+    },
+    "users_add_preference_to_user":{
+      "bundle": "users"
+    },
+    "users_create_user":{
+      "bundle": "users"
+    },
+    "users_delete_user":{
+      "bundle": "users"
+    },
+    "users_disable_user":{
+      "bundle": "users"
+    },
+    "users_enable_user":{
+      "bundle": "users"
+    },
+    "users_group_create":{
+      "bundle": "users"
+    },
+    "users_group_delete":{
+      "bundle": "users"
+    },
+    "users_group_get":{
+      "bundle": "users"
+    },
+    "users_groups_list": {
+      "bundle": "users"
+    },
+    "users_permissions_abilities_list": {
+      "bundle": "users"
+    },
+    "users_permissions_ability_create": {
+      "bundle": "users"
+    },
+    "users_permissions_ability_delete": {
+      "bundle": "users"
+    },
+    "users_permissions_ability_edit": {
+      "bundle": "users"
+    },
+    "users_permissions_ability_get": {
+      "bundle": "users"
+    },
+    "users_permissions_list": {
+      "bundle": "users"
+    },
+    "users_preferences_list": {
+      "bundle": "users"
+    },
+    "users_profile_get": {
+      "bundle": "users"
+    },
+    "users_profile_update":{
+      "bundle": "users"
+    },
+    "users_remove_permission_from_group":{
+      "bundle": "users"
+    },
+    "users_remove_user_from_group":{
+      "bundle": "users"
+    },
+    "users_resend_user_invite":{
+      "bundle": "users"
+    },
+    "users_user_get":{
+      "bundle": "users"
+    },
+    "users_user_mfa_sms_disable":{
+      "bundle": "users"
+    },
+    "users_user_mfa_sms_enable":{
+      "bundle": "users"
+    },
+    "users_user_mfa_totp_associate_token":{
+      "bundle": "users"
+    },
+    "users_user_mfa_totp_disable":{
+      "bundle": "users"
+    },
+    "users_user_mfa_totp_enable":{
+      "bundle": "users"
+    },
+    "users_user_mfa_totp_verify_token":{
+      "bundle": "users"
+    },
+    "users_users_list": {
+      "bundle": "users"
+    },
+    "util_authkey_execute_sql": {
+      "bundle": "debug/authkey",
+      "dependencies": [
+        {
+          "from": "schema/keyauthority/",
+          "to": "schema/"
+        }
+      ]
+    },
+    "util_telemetry_execute_sql": {
+      "bundle": "debug/main",
+      "dependencies": [
+        {
+          "from": "schema/telemetry/",
+          "to": "schema/"
+        }
+      ]
+    },
+    "util_users_execute_sql": {
+      "bundle": "debug/users",
+      "dependencies": [
+        {
+          "from": "schema/users/",
+          "to": "schema/"
+        }
+      ]
+    },
+    "utility_controlled_docs_masterlist_export": {
+      "bundle": "utility",
+      "common_dependencies": [
+        "cachetools",
+        "google",
+        "google_auth_oauthlib",
+        "google.oauth2",
+        "gspread",
+        "oauthlib",
+        "pyasn1",
+        "pyasn1_modules",
+        "requests",
+        "requests_oauthlib",
+        "rsa"
+      ]
+    },
+    "utility_cwl_set_retention": {
+      "bundle": "utility"
+    },
+    "utility_email_alert_error": {
+      "bundle": "utility"
+    },
+    "utility_notify_aws_billing_alarm": {
+      "bundle": "utility"
+    },
+    "utility_notify_aws_cost_and_usage_daily": {
+      "bundle": "utility"
+    },
+    "vehicles_configuration_set":{
+      "bundle": "vehicles"
+    },
+    "vehicles_firmware_components_list":{
+      "bundle": "vehicles"
+    },
+    "vehicles_model_release_create": {
+      "bundle": "vehicles"
+    },
+    "vehicles_model_release_parts_get": {
+      "bundle": "vehicles",
+      "dependencies": [
+        {
+          "from": "dependencies/parts.py",
+          "to": "parts.py"
+        }
+      ]
+    },
+    "vehicles_model_release_part_set": {
+      "bundle": "vehicles",
+      "dependencies": [
+        {
+          "from": "dependencies/parts.py",
+          "to": "parts.py"
+        }
+      ]
+    },
+    "vehicles_model_releases_list":{
+      "bundle": "vehicles"
+    },
+    "vehicles_models_list":{
+      "bundle": "vehicles"
+    },
+    "vehicles_options_set":{
+      "bundle": "vehicles"
+    },
+    "vehicles_part_type_create":{
+      "bundle": "vehicles"
+    },
+    "vehicles_vehicle_part_set": {
+      "bundle": "vehicles",
+      "dependencies": [
+        {
+          "from": "dependencies/parts.py",
+          "to": "parts.py"
+        }
+      ]
+    },
+    "vehicles_vehicle_model_release_set": {
+      "bundle": "vehicles"
+    },
+    "vehicles_vehicle_shadow_synchronized": {
+      "bundle": "vehicles"
+    },
+    "yrisk_data_s3_verify": {
+      "bundle": "yrisk"
+    },
+    "yrisk_fleets_list": {
+      "bundle": "yrisk"
+    },
+    "yrisk_data_to_s3": {
+      "bundle": "yrisk"
+    },
+    "yrisk_notify": {
+      "bundle": "yrisk"
+    },
+    "yrisk_notify_email": {
+      "bundle": "yrisk"
+    },
+    "yrisk_output_assemble": {
+      "bundle": "yrisk"
+    },
+    "yrisk_vehicle_telemetry_get": {
+      "bundle": "yrisk",
+      "common_dependencies": [
+        "influxdb_extended"
+      ]
+    },
+    "yrisk_vehicles_list": {
+      "bundle": "yrisk"
+    }
+  }
+}

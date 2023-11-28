@@ -1,0 +1,43 @@
+{
+  "$schema":"http://json-schema.org/draft-06/schema#",
+  "title":"Arcimoto AWS Lambda Bundles bundle.json Schema",
+  "description":"Schema for each lambda bundle's bundle.json file",
+  "type":"object",
+  "properties":{
+      "name":{
+        "description":"Bundle name",
+        "type":"string"
+      },
+      "vpc":{
+         "description":"Bundle AWS VPC",
+         "type":"string"
+      },
+      "lambdas":{
+         "description":"Bundle specific lambda definitions, including unit test lambdas",
+         "type":"object",
+         "patternProperties": {
+            "^.*$": {
+               "type": "object",
+               "properties" : {
+                 "tests" : {
+                   "type" : "array",
+                   "uniqueItems": true,
+                   "items": {
+                     "type": "string"
+                   }
+                 }
+               },
+               "required": [
+                  "tests"
+               ]
+            }
+         },
+         "additionalProperties": false
+      }
+   },
+   "required":[
+      "name",
+      "vpc",
+      "lambdas"
+   ]
+}

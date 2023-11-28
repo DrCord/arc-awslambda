@@ -1,0 +1,4 @@
+aws ec2 modify-vpc-peering-connection-options \
+  --vpc-peering-connection-id "pcx-0a747555d2ca798ac" \
+  --requester-peering-connection-options '{"AllowDnsResolutionFromRemoteVpc":false}' \
+  --accepter-peering-connection-options '{"AllowDnsResolutionFromRemoteVpc":true}'

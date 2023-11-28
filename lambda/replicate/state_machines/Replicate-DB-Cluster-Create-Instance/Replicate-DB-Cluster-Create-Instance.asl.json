@@ -1,0 +1,257 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Notify - Start",
+  "States": {
+    "Notify - Start": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Cluster: Create Instance - Start",
+          "event_data": {
+            "db_cluster_identifier.$": "$.input.db_cluster_identifier",
+            "env.$": "$.input.replication_target_env"
+          },
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Next": "Check Parent DB Cluster Availability"
+    },
+    "Check Parent DB Cluster Availability": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_available:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_cluster_identifier.$": "$.input.db_cluster_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is Parent DB Cluster Available?",
+      "ResultPath": "$.db_parent_available",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Check Parent DB Cluster Availability - Set Status Data",
+          "ResultPath": "$.db_parent_available"
+        }
+      ]
+    },
+    "Fail - Check Parent DB Cluster Availability - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_parent_cluster_available": "fail",
+        "db_cluster_create_instance": null,
+        "db_instance_available": null
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Is Parent DB Cluster Available?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_parent_available.data.db_available",
+          "BooleanEquals": true,
+          "Next": "DB Cluster - Create Instance"
+        }
+      ],
+      "Default": "Wait for Parent DB Cluster Availability"
+    },
+    "Wait for Parent DB Cluster Availability": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check Parent DB Cluster Availability"
+    },
+    "DB Cluster - Create Instance": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_cluster_instance_create:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_type.$": "$.input.db_type"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Wait for New DB Instance Availability",
+      "ResultPath": "$.create_instance",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - DB Cluster Create Instance - Set Status Data",
+          "ResultPath": "$.create_instance"
+        }
+      ]
+    },
+    "Fail - DB Cluster Create Instance - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_parent_cluster_available": "success",
+        "db_cluster_create_instance": "fail",
+        "db_instance_available": null
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Wait for New DB Instance Availability": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check New DB Instance Availability"
+    },
+    "Check New DB Instance Availability": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_available:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_instance_identifier.$": "$.create_instance.data.db_instance_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is New DB Instance Available?",
+      "ResultPath": "$.new_db_instance_available",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "ResultPath": "$.new_db_instance_available",
+          "Next": "Fail - DB Instance Check Availability - Set Status Data"
+        }
+      ]
+    },
+    "Fail - DB Instance Check Availability - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_parent_cluster_available": "success",
+        "db_cluster_create_instance": "success",
+        "db_instance_available": "fail"
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Is New DB Instance Available?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.new_db_instance_available.data.db_available",
+          "BooleanEquals": true,
+          "Next": "Notify - Complete"
+        }
+      ],
+      "Default": "Wait for New DB Instance Availability"
+    },
+    "Notify - Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Cluster: Create Instance - Complete",
+          "event_data": {
+            "db_cluster_identifier.$": "$.input.db_cluster_identifier",
+            "env.$": "$.input.replication_target_env"
+          },
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Success - Set Status Data"
+    },
+    "Success - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_parent_cluster_available": "success",
+        "db_cluster_create_instance": "success",
+        "db_instance_available": "success"
+      },
+      "ResultPath": "$.status",
+      "End": true
+    }
+  }
+}

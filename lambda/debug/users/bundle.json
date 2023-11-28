@@ -1,0 +1,9 @@
+{
+  "name": "debug/users",
+  "vpc": "users",
+  "lambdas": {
+    "util_users_execute_sql": {
+      "tests": []
+    }
+  }
+}

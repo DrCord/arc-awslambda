@@ -1,0 +1,17 @@
+[
+    {
+        "content": "<a style=\"text-decoration: none\" href=\"replacetext_url_base/d/group_overview_dashboard/groups-overview?orgId=1\"><h5 style=\"color:#FFFFFF;text-align:center;\">&crarr; FLEETS</h3></a>",
+        "gridPos": {
+            "h": 2,
+            "w": 24,
+            "x": 0,
+            "y": 0
+        },
+        "id": "replacetext_panel_id",
+        "links": [],
+        "mode": "html",
+        "title": "",
+        "transparent": true,
+        "type": "text"
+    }
+]

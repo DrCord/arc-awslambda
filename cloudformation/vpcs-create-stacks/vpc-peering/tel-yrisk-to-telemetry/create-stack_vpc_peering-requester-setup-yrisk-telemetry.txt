@@ -1,0 +1,13 @@
+aws cloudformation create-stack \
+  --stack-name TEL-YRisk-Peering-Telemetry-Requester-Setup \
+  --template-url "https://arcimoto-cloudformation.s3.us-west-2.amazonaws.com/vpc/VPCPeering-Requester-Setup.cfn.yaml" \
+  --parameters \
+    ParameterKey=PeerName,ParameterValue=tel-yrisk-to-telemetry \
+    ParameterKey=PeerOwnerId,ParameterValue=511596272857 \
+    ParameterKey=PeerRoleARN,ParameterValue="arn:aws:iam::511596272857:role/TEL-VPC-Peering-Accepter-Role-PeerRole-A28N8H4NHZ13" \
+    ParameterKey=PeerVPCID,ParameterValue=vpc-00c8740cb421371f1 \
+    ParameterKey=VPCID,ParameterValue=vpc-0aac9fab8c615edad \
+  --tags \
+    Key="Cost Center",Value="Telematics" \
+    Key="VPC",Value="YRisk" \
+    Key="Partner",Value="YRisk"

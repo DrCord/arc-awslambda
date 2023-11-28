@@ -1,0 +1,121 @@
+{
+  "$schema":"http://json-schema.org/draft-06/schema#",
+  "title":"Arcimoto AWS Lambda Dependencies Definitions",
+  "description":"Dependency definitions to build deployment packages for AWS Lambdas and Layers",
+  "type":"object",
+  "properties":{
+     "layers":{
+        "description":"AWS Lambda Layer definitions",
+        "type":"object",
+        "properties": {
+          "global_dependencies": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "version": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        },
+        "required": [
+          "global_dependencies"
+        ]
+     },
+     "common_dependencies":{
+      "description":"Lambda dependencies packaged for easy use",
+        "type":"object",
+        "patternProperties": {
+           "^.*$": {
+              "type": "object",
+              "properties" : {
+                "action" : {
+                  "type" : "string",
+                  "enum": [
+                    "unzip"
+                  ]
+                },
+                "from" : {
+                  "type" : "string"
+                },
+                "to" : {
+                  "type" : "string"
+                }
+              },
+              "anyOf": [
+                {
+                  "required": [
+                    "from",
+                    "to"
+                  ]
+                },
+                {
+                  "required": [
+                    "from",
+                    "action"
+                  ]
+                }
+              ]
+           }
+        },
+        "additionalProperties": false
+     },
+     "functions":{
+      "description":"AWS Lambda defintions",
+        "type":"object",
+        "patternProperties": {
+           "^.*$": {
+              "type": "object",
+              "properties" : {
+                "bundle" : {
+                  "type" : "string",
+                  "minLength": 3
+                },
+                "common_dependencies": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1
+                },
+                "dependencies": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "from": {
+                        "type": "string"
+                      },
+                      "to": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "from",
+                      "to"
+                    ]
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                 "bundle"
+              ]
+           }
+        },
+        "additionalProperties": false
+     }
+  },
+  "required":[
+     "layers",
+     "common_dependencies",
+     "functions"
+  ]
+}

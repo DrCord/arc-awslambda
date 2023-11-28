@@ -1,0 +1,21 @@
+{
+  "name": "alarms",
+  "vpc": "telemetry",
+  "lambdas": {
+    "monitor_influxdb_backup": {
+      "tests": []
+    },
+    "provision_telemetry_alarm": {
+      "tests": []
+    },
+    "set_db_telemetry_alarm": {
+      "tests": []
+    },
+    "unprovision_telemetry_alarm": {
+      "tests": []
+    },
+    "unset_db_telemetry_alarm": {
+      "tests": []
+    }
+  }
+}

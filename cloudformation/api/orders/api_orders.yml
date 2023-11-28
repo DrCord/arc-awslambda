@@ -1,0 +1,122 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Orders Section of Orders API
+
+Parameters:
+  ParentResourceId: 
+    Type: String
+  RestApiId: 
+    Type: String
+
+Resources:
+  # /v1/orders
+  apiResourceOrders:
+    Type: AWS::ApiGateway::Resource
+    Properties: 
+      ParentId: !Ref ParentResourceId
+      PathPart: orders
+      RestApiId: !Ref RestApiId
+
+  # GET/v1/orders (list)
+  apiMethodOrdersList:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/arcimoto-cloudformation/orders-api/method.yml
+      Parameters:
+        LambdaName: orders_orders_list
+        OperationName: Orders - List
+        ParentResourceId: !Ref apiResourceOrders
+        RestApiId: !Ref RestApiId
+        Route: GET/v1/orders
+  
+  # POST/v1/orders (create)
+  apiMethodOrdersCreate:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: https://s3.amazonaws.com/arcimoto-cloudformation/orders-api/method.yml
+      Parameters: 
+        CustomParametersMapping: "\"order_request\":  $input.json('order_request'),"
+        HttpMethod: POST
+        LambdaName: orders_order_create
+        OperationName: Orders - Create
+        ParentResourceId: !Ref apiResourceOrders
+        RestApiId: !Ref RestApiId
+        Route: POST/v1/orders
+
+  # OPTIONS/v1/orders (options)
+  apiMethodOrdersOptions:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: https://s3.amazonaws.com/arcimoto-cloudformation/orders-api/options.yml
+      Parameters: 
+        OperationName: Orders - Options
+        ParentResourceId: !Ref apiResourceOrders
+        RestApiId: !Ref RestApiId
+        AllowedMethods: "'GET,POST,OPTIONS'"
+
+  #/v1/orders/{order-id}
+  apiResourceOrdersOrderId:
+    Type: AWS::ApiGateway::Resource
+    Properties: 
+      ParentId: !Ref apiResourceOrders
+      PathPart: "{order-id}"
+      RestApiId: !Ref RestApiId
+
+  # GET/v1/orders/{order-id} (get)
+  apiMethodOrdersGet:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: https://s3.amazonaws.com/arcimoto-cloudformation/orders-api/method.yml
+      Parameters:
+        CustomParametersMapping: "\"order_id\": \"$input.params('order-id')\","
+        LambdaName: orders_order_get
+        OperationName: Order - Get
+        ParentResourceId: !Ref apiResourceOrdersOrderId
+        RestApiId: !Ref RestApiId
+        Route: GET/v1/orders/*
+
+  # OPTIONS/v1/orders/{orders-id} (options)
+  apiMethodOrdersOrderIdOptions:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: https://s3.amazonaws.com/arcimoto-cloudformation/orders-api/options.yml
+      Parameters: 
+        OperationName: Orders-Id - Options
+        ParentResourceId: !Ref apiResourceOrdersOrderId
+        RestApiId: !Ref RestApiId
+        AllowedMethods: "'GET,OPTIONS'"
+
+  #/v1/orders/{order-id}/payment
+  apiResourceOrdersPayment:
+    Type: AWS::ApiGateway::Resource
+    Properties: 
+      ParentId: !Ref apiResourceOrdersOrderId
+      PathPart: payment
+      RestApiId: !Ref RestApiId
+
+  # PUT /v1/orders/{order-id}/payment (payment)
+  apiMethodOrderPayment:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: https://s3.amazonaws.com/arcimoto-cloudformation/orders-api/method.yml
+      Parameters: 
+        CustomParametersMapping: !Join 
+          - "\n"
+          - - "\"order_id\": \"$input.params('order-id')\","
+            - "\"payment\": $input.json('payment'),"
+        HttpMethod: PUT
+        LambdaName: orders_order_add_payment
+        OperationName: Order Payment
+        ParentResourceId: !Ref apiResourceOrdersPayment
+        RestApiId: !Ref RestApiId
+        Route: PUT/v1/orders/*/payment
+
+  # OPTIONS/v1/orders/{orders-id}/payment (options)
+  apiMethodOrdersOrderIdPaymentOptions:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      TemplateURL: https://s3.amazonaws.com/arcimoto-cloudformation/orders-api/options.yml
+      Parameters: 
+        OperationName: Orders-Id-Payment - Options
+        ParentResourceId: !Ref apiResourceOrdersPayment
+        RestApiId: !Ref RestApiId
+        AllowedMethods: "'PUT,OPTIONS'"

@@ -1,0 +1,339 @@
+{
+  "StartAt": "Notify - Undo Start",
+  "States": {
+    "Notify - Undo Start": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "Payload": {
+          "event": "DBs Replicate Undo - Start",
+          "event_data": {
+            "replication_status.$": "$.input.replication_data.status"
+          },
+          "source": "Replicate-DBs-ENV-Undo",
+          "severity": "WARNING",
+          "channel": "replicate"
+        },
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Did New Cluster Clone State Machine Run?",
+      "ResultPath": null
+    },
+    "Did New Cluster Clone State Machine Run?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Not": {
+            "Variable": "$.input.replication_data.status.cluster_clone",
+            "IsNull": true
+          },
+          "Next": "Did New Cluster Creation State Machine Succeed?"
+        }
+      ],
+      "Default": "Did Existing Instance Rename State Machine Run?"
+    },
+    "Did New Cluster Creation State Machine Succeed?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.input.replication_data.status.cluster_clone",
+          "StringEquals": "success",
+          "Next": "Remove New DB Cluster Protection"
+        }
+      ],
+      "Default": "Did New Cluster Get Created Before State Machine Failure?"
+    },
+    "Did New Cluster Get Created Before State Machine Failure?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.input.replication_data.db_cluster_clone.data.status.db_cluster_clone",
+          "StringEquals": "success",
+          "Next": "Remove New DB Cluster Protection"
+        }
+      ],
+      "Default": "Did Existing Instance Rename State Machine Run?"
+    },
+    "Remove New DB Cluster Protection": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Cluster-Remove-Protection",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.output.state_machine.db_cluster_clone.data.db_cluster_identifier",
+            "state_machine": "Replicate-DB-Cluster-Remove-Protection"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "ResultPath": "$.db_cluster_remove_protection",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DBs-ENV-Undo",
+          "ResultPath": "$.db_cluster_remove_protection"
+        }
+      ],
+      "Next": "Did New Instance State Machine Run?"
+    },
+    "Did New Instance State Machine Run?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Not": {
+            "Variable": "$.input.replication_data.status.cluster_create_instance",
+            "IsNull": true
+          },
+          "Next": "Did New Instance Creation State Machine Succeed?"
+        }
+      ],
+      "Default": "Did Existing Instance Rename State Machine Run?"
+    },
+    "Did New Instance Creation State Machine Succeed?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.input.replication_data.status.cluster_create_instance",
+          "StringEquals": "success",
+          "Next": "Delete New DB Instance"
+        }
+      ],
+      "Default": "Did New Instance Get Created Before State Machine Failure?"
+    },
+    "Did New Instance Get Created Before State Machine Failure?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.input.replication_data.db_cluster_create_instance.data.status.db_cluster_create_instance",
+          "StringEquals": "success",
+          "Next": "Delete New DB Instance"
+        }
+      ],
+      "Default": "Delete New DB Cluster"
+    },
+    "Delete New DB Instance": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Instance-Delete",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.output.state_machine.db_cluster_create_instance.Output.db_cluster_instance_create.data.db_cluster_identifier",
+            "state_machine": "Replicate-DB-Rename-Instance"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "ResultPath": "$.output.state_machine.db_instance_delete_new",
+      "Next": "Delete New DB Cluster"
+    },
+    "Delete New DB Cluster": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Cluster-Delete",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.input.target.db_instance_identifier",
+            "state_machine": "Replicate-DB-Cluster-Delete"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "ResultPath": "$.db_cluster_delete",
+      "Next": "Restore DB Instance Name",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "all",
+          "Next": "Fail - Replicate-DBs-ENV-Undo",
+          "ResultPath": "$.db_cluster_delete"
+        }
+      ]
+    },
+    "Did Existing Instance Rename State Machine Run?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Not": {
+            "Variable": "$.input.replication_data.status.instance_rename",
+            "IsNull": true
+          },
+          "Next": "Did Existing Instance Rename State Machine Succeed?"
+        }
+      ],
+      "Default": "Did Existing Cluster Rename State Machine Run?"
+    },
+    "Did Existing Instance Rename State Machine Succeed?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.input.replication_data.status.instance_rename",
+          "StringEquals": "success",
+          "Next": "Restore DB Instance Name"
+        }
+      ],
+      "Default": "Did Existing Instance Get Renamed Before State Machine Failure?"
+    },
+    "Did Existing Instance Get Renamed Before State Machine Failure?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.input.replication_data.db_instance_rename.data.status.db_rename",
+          "StringEquals": "success",
+          "Next": "Restore DB Instance Name"
+        }
+      ],
+      "Default": "Did Existing Cluster Rename State Machine Run?"
+    },
+    "Restore DB Instance Name": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Rename-Instance",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.input.replication_data.db_instance_rename.data.db_rename.data.db_instance_identifier",
+            "state_machine": "Replicate-DB-Rename-Instance"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "ResultPath": "$.db_instance_restore_name",
+      "Next": "Restore DB Cluster Name",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DBs-ENV-Undo",
+          "ResultPath": "$.db_instance_restore_name"
+        }
+      ]
+    },
+    "Did Existing Cluster Rename State Machine Run?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Not": {
+            "Variable": "$.input.replication_data.status.cluster_rename",
+            "IsNull": true
+          },
+          "Next": "Did Existing Cluster Rename State Machine Succeed?"
+        }
+      ],
+      "Default": "Notify - Undo Complete"
+    },
+    "Did Existing Cluster Rename State Machine Succeed?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.input.replication_data.status.cluster_rename",
+          "StringEquals": "success",
+          "Next": "Restore DB Cluster Name"
+        }
+      ],
+      "Default": "Did Existing Cluster Get Renamed Before State Machine Failure?"
+    },
+    "Did Existing Cluster Get Renamed Before State Machine Failure?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.input.replication_data.db_cluster_rename.data.status.db_rename",
+          "StringEquals": "success",
+          "Next": "Restore DB Cluster Name"
+        }
+      ],
+      "Default": "Notify - Undo Complete"
+    },
+    "Restore DB Cluster Name": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Rename-Cluster",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.input.replication_data.db_cluster_rename.data.db_rename.data.db_cluster_identifier",
+            "state_machine": "Replicate-DB-Rename-Cluster"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "ResultPath": "$.db_cluster_restore_name",
+      "Next": "Notify - Undo Complete",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DBs-ENV-Undo",
+          "ResultPath": "$.db_cluster_restore_name"
+        }
+      ]
+    },
+    "Notify - Undo Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "Payload": {
+          "event": "DBs Replicate Undo - Complete",
+          "event_data": {
+            "replication_status.$": "$.input.replication_data.status"
+          },
+          "source": "Replicate-DBs-ENV-Undo",
+          "severity": "WARNING",
+          "channel": "replicate"
+        },
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "End": true
+    },
+    "Fail - Replicate-DBs-ENV-Undo": {
+      "Type": "Fail"
+    }
+  },
+  "Comment": "Rename RDS DB Cluster"
+}

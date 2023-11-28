@@ -1,0 +1,15 @@
+aws cloudformation create-stack \
+  --stack-name TEL-YRisk-Peering-Main-Updates-Accepter \
+  --template-url "https://arcimoto-cloudformation.s3.us-west-2.amazonaws.com/vpc/VPCPeering-Updates.cfn.yaml" \
+  --parameters \
+    ParameterKey=PeerName,ParameterValue=tel-yrisk-to-main \
+    ParameterKey=NumberOfRouteTables,ParameterValue=3 \
+    ParameterKey=NumberOfSecurityGroups,ParameterValue=3 \
+    ParameterKey=PeerVPCCIDR,ParameterValue="10.225.0.0/16" \
+    ParameterKey=RouteTableIds,ParameterValue=\"rtb-06269d5751468c4ae,rtb-0904794b0537e2e78,rtb-0fbd32c4d25c13104\" \
+    ParameterKey=SecurityGroupIds,ParameterValue=\"sg-014114218009c11fc,sg-02a7a3c93dc9ac8a8,sg-0501723435fc6015a\" \
+    ParameterKey=VPCPeeringConnectionId,ParameterValue=pcx-01eab7e8875a16bb7 \
+  --tags \
+    Key="Cost Center",Value="Telematics" \
+    Key="VPC",Value="YRisk" \
+    Key="Partner",Value="YRisk"

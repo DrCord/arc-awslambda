@@ -1,0 +1,36 @@
+{
+  "name": "managed_session",
+  "vpc": "main",
+  "lambdas": {
+    "managed_session_end": {
+      "tests": [
+        "test_managed_session_end"
+      ]
+    },
+    "managed_session_get": {
+      "tests": [
+        "test_managed_session_get"
+      ]
+    },
+    "managed_session_list": {
+      "tests": [
+        "test_managed_session_list"
+      ]
+    },
+    "managed_session_mode_set": {
+      "tests": [
+        "test_managed_session_mode_set"
+      ]
+    },
+    "managed_session_start": {
+      "tests": [
+        "test_managed_session_start"
+      ]
+    },
+    "managed_session_telemetry_get": {
+      "tests": [
+        "test_managed_session_telemetry_get"
+      ]
+    }
+  }
+}

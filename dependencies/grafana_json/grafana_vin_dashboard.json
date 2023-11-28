@@ -1,0 +1,1791 @@
+{
+    "dashboard": {
+        "annotations": {
+            "list": [
+                {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "datasource",
+                    "uid": "grafana"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "target": {
+                    "limit": 100,
+                    "matchAny": false,
+                    "tags": [],
+                    "type": "dashboard"
+                },
+                "type": "dashboard"
+                }
+            ]
+        },
+        "editable": true,
+        "fiscalYearStartMonth": 0,
+        "graphTooltip": 1,
+        "id": null,
+        "links": [],
+        "liveNow": false,
+        "panels": [
+            {
+                "datasource": "replacetext_datasource",
+                "fieldConfig": {
+                    "defaults": {
+                        "color": {
+                            "mode": "palette-classic"
+                        },
+                        "custom": {
+                            "axisLabel": "",
+                            "axisPlacement": "auto",
+                            "barAlignment": 0,
+                            "drawStyle": "line",
+                            "fillOpacity": 10,
+                            "gradientMode": "none",
+                            "hideFrom": {
+                                "legend": false,
+                                "tooltip": false,
+                                "viz": false
+                            },
+                            "lineInterpolation": "linear",
+                            "lineStyle": {
+                                "fill": "solid"
+                            },
+                            "lineWidth": 4,
+                            "pointSize": 6,
+                            "scaleDistribution": {
+                                "type": "linear"
+                            },
+                            "showPoints": "always",
+                            "spanNulls": true,
+                            "stacking": {
+                                "group": "A",
+                                "mode": "none"
+                            },
+                            "thresholdsStyle": {
+                                "mode": "off"
+                            }
+                        },
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        },
+                        "unit": "short"
+                    },
+                    "overrides": [
+                        {
+                            "matcher": {
+                                "id": "byRegexp",
+                                "options": "/current/"
+                            },
+                            "properties": [
+                                {
+                                    "id": "custom.fillOpacity",
+                                    "value": 0
+                                },
+                                {
+                                "id": "custom.lineWidth",
+                                "value": 1
+                                }
+                            ]
+                            },
+                            {
+                            "matcher": {
+                                "id": "byRegexp",
+                                "options": "/speed/"
+                            },
+                            "properties": [
+                                {
+                                "id": "custom.fillOpacity",
+                                "value": 0
+                                },
+                                {
+                                "id": "custom.lineWidth",
+                                "value": 1
+                                }
+                            ]
+                            },
+                            {
+                            "matcher": {
+                                "id": "byRegexp",
+                                "options": "/soc/"
+                            },
+                            "properties": [
+                                {
+                                "id": "custom.fillOpacity",
+                                "value": 0
+                                },
+                                {
+                                "id": "custom.lineWidth",
+                                "value": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "gridPos": {
+                    "h": 10,
+                    "w": 12,
+                    "x": 0,
+                    "y": 0
+                },
+                "id": 1,
+                "links": [],
+                "options": {
+                    "legend": {
+                        "calcs": [],
+                        "displayMode": "list",
+                        "placement": "bottom"
+                    },
+                    "tooltip": {
+                        "mode": "multi",
+                        "sort": "none"
+                    }
+                },
+                "pluginVersion": "9.0.4",
+                "targets": [
+                    {
+                        "alias": "$telemetry1",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($telemetry1) as $telemetry1 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "A",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    },
+                    {
+                        "alias": "$telemetry2",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($telemetry2) as $telemetry2 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "B",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    },
+                    {
+                        "alias": "$telemetry3",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($telemetry3) as $telemetry3 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "C",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    },
+                    {
+                        "alias": "$telemetry4",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($telemetry4) as $telemetry4 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "D",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    }
+                ],
+                "title": "Dynamic Panel: telemetry 1, telemetry 2, telemetry 3,  telemetry 4",
+                "type": "timeseries"
+            },
+            {
+                "datasource": "replacetext_datasource",
+                "fieldConfig": {
+                    "defaults": {
+                        "color": {
+                            "mode": "palette-classic"
+                        },
+                        "custom": {
+                            "axisLabel": "",
+                            "axisPlacement": "auto",
+                            "barAlignment": 0,
+                            "drawStyle": "points",
+                            "fillOpacity": 10,
+                            "gradientMode": "none",
+                            "hideFrom": {
+                                "legend": false,
+                                "tooltip": false,
+                                "viz": false
+                            },
+                            "lineInterpolation": "linear",
+                            "lineWidth": 4,
+                            "pointSize": 6,
+                            "scaleDistribution": {
+                                "type": "linear"
+                            },
+                            "showPoints": "always",
+                            "spanNulls": false,
+                            "stacking": {
+                                "group": "A",
+                                "mode": "none"
+                            },
+                            "thresholdsStyle": {
+                                "mode": "off"
+                            }
+                        },
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        },
+                        "unit": "short"
+                    },
+                    "overrides": []
+                },
+                "gridPos": {
+                    "h": 10,
+                    "w": 12,
+                    "x": 12,
+                    "y": 0
+                },
+                "id": 2,
+                "links": [],
+                "options": {
+                    "legend": {
+                        "calcs": [],
+                        "displayMode": "list",
+                        "placement": "bottom"
+                    },
+                    "tooltip": {
+                        "mode": "multi",
+                        "sort": "none"
+                    }
+                },
+                "pluginVersion": "9.0.4",
+                "targets": [
+                {
+                    "alias": "$temperature1",
+                    "groupBy": [
+                    {
+                        "params": [
+                        "$__interval"
+                        ],
+                        "type": "time"
+                    },
+                    {
+                        "params": [
+                        "null"
+                        ],
+                        "type": "fill"
+                    }
+                    ],
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT mean($temperature1) as $temperature1 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                    [
+                        {
+                        "params": [
+                            "value"
+                        ],
+                        "type": "field"
+                        },
+                        {
+                        "params": [],
+                        "type": "mean"
+                        }
+                    ]
+                    ],
+                    "tags": []
+                },
+                {
+                    "alias": "$temperature2",
+                    "groupBy": [
+                    {
+                        "params": [
+                        "$__interval"
+                        ],
+                        "type": "time"
+                    },
+                    {
+                        "params": [
+                        "null"
+                        ],
+                        "type": "fill"
+                    }
+                    ],
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT mean($temperature2) as $temperature2 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                    "rawQuery": true,
+                    "refId": "B",
+                    "resultFormat": "time_series",
+                    "select": [
+                    [
+                        {
+                        "params": [
+                            "value"
+                        ],
+                        "type": "field"
+                        },
+                        {
+                        "params": [],
+                        "type": "mean"
+                        }
+                    ]
+                    ],
+                    "tags": []
+                },
+                {
+                    "alias": "$temperature3",
+                    "groupBy": [
+                    {
+                        "params": [
+                        "$__interval"
+                        ],
+                        "type": "time"
+                    },
+                    {
+                        "params": [
+                        "null"
+                        ],
+                        "type": "fill"
+                    }
+                    ],
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT mean($temperature3) as $temperature3 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                    "rawQuery": true,
+                    "refId": "C",
+                    "resultFormat": "time_series",
+                    "select": [
+                    [
+                        {
+                        "params": [
+                            "value"
+                        ],
+                        "type": "field"
+                        },
+                        {
+                        "params": [],
+                        "type": "mean"
+                        }
+                    ]
+                    ],
+                    "tags": []
+                },
+                {
+                    "alias": "$temperature4",
+                    "groupBy": [
+                    {
+                        "params": [
+                        "$__interval"
+                        ],
+                        "type": "time"
+                    },
+                    {
+                        "params": [
+                        "null"
+                        ],
+                        "type": "fill"
+                    }
+                    ],
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT mean($temperature4) as $temperature4 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                    "rawQuery": true,
+                    "refId": "D",
+                    "resultFormat": "time_series",
+                    "select": [
+                    [
+                        {
+                        "params": [
+                            "value"
+                        ],
+                        "type": "field"
+                        },
+                        {
+                        "params": [],
+                        "type": "mean"
+                        }
+                    ]
+                    ],
+                    "tags": []
+                }
+                ],
+                "title": "Dynamic Panel: temperature 1, temperature 2, temperature 3, temperature 4",
+                "type": "timeseries"
+            },
+            {
+                "datasource": "replacetext_datasource",
+                "fieldConfig": {
+                    "defaults": {
+                        "color": {
+                            "mode": "palette-classic"
+                        },
+                        "custom": {
+                            "axisLabel": "",
+                            "axisPlacement": "auto",
+                            "barAlignment": 0,
+                            "drawStyle": "points",
+                            "fillOpacity": 10,
+                            "gradientMode": "none",
+                            "hideFrom": {
+                                "legend": false,
+                                "tooltip": false,
+                                "viz": false
+                            },
+                            "lineInterpolation": "linear",
+                            "lineStyle": {
+                                "fill": "solid"
+                            },
+                            "lineWidth": 4,
+                            "pointSize": 6,
+                            "scaleDistribution": {
+                                "type": "linear"
+                            },
+                            "showPoints": "always",
+                            "spanNulls": false,
+                            "stacking": {
+                                "group": "A",
+                                "mode": "none"
+                            },
+                            "thresholdsStyle": {
+                                "mode": "off"
+                            }
+                        },
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        },
+                        "unit": "short"
+                    },
+                    "overrides": []
+                },
+                "gridPos": {
+                    "h": 10,
+                    "w": 12,
+                    "x": 0,
+                    "y": 10
+                },
+                "id": 3,
+                "links": [],
+                "options": {
+                    "legend": {
+                        "calcs": [],
+                        "displayMode": "list",
+                        "placement": "bottom"
+                    },
+                    "tooltip": {
+                        "mode": "multi",
+                        "sort": "none"
+                    }
+                },
+                "pluginVersion": "9.0.4",
+                "targets": [
+                    {
+                        "alias": "$telemetry1 minus $telemetry2",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($telemetry1) - mean($telemetry2) as [[telemetry1]]__minus__[[telemetry2]] FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "C",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    }
+                ],
+                "title": "Dynamic Panel:  ( telemetry 1 - telemetry 2 )",
+                "type": "timeseries"
+            },
+            {
+                "datasource": "replacetext_datasource",
+                "fieldConfig": {
+                    "defaults": {
+                        "color": {
+                            "mode": "palette-classic"
+                        },
+                        "custom": {
+                            "axisLabel": "",
+                            "axisPlacement": "auto",
+                            "barAlignment": 0,
+                            "drawStyle": "points",
+                            "fillOpacity": 10,
+                            "gradientMode": "none",
+                            "hideFrom": {
+                                "legend": false,
+                                "tooltip": false,
+                                "viz": false
+                            },
+                            "lineInterpolation": "linear",
+                            "lineWidth": 4,
+                            "pointSize": 6,
+                            "scaleDistribution": {
+                                "type": "linear"
+                            },
+                            "showPoints": "always",
+                            "spanNulls": false,
+                            "stacking": {
+                                "group": "A",
+                                "mode": "none"
+                            },
+                            "thresholdsStyle": {
+                                "mode": "off"
+                            }
+                        },
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        },
+                        "unit": "short"
+                    },
+                    "overrides": []
+                },
+                "gridPos": {
+                    "h": 10,
+                    "w": 12,
+                    "x": 12,
+                    "y": 10
+                },
+                "id": 4,
+                "links": [],
+                "options": {
+                    "legend": {
+                        "calcs": [],
+                        "displayMode": "list",
+                        "placement": "bottom"
+                    },
+                    "tooltip": {
+                        "mode": "multi",
+                        "sort": "none"
+                    }
+                },
+                "pluginVersion": "9.0.4",
+                "targets": [
+                    {
+                        "alias": "$voltage1",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($voltage1) as $voltage1 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "A",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    },
+                    {
+                        "alias": "$voltage2",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($voltage2) as $voltage2 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "B",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    },
+                    {
+                        "alias": "$voltage3",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($voltage3) as $voltage3 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "C",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    },
+                    {
+                        "alias": "$voltage4",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($voltage4) as $voltage4 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "D",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    }
+                ],
+                "title": "Dynamic Panel: voltage 1, voltage 2, voltage 3, voltage 4",
+                "type": "timeseries"
+            },
+            {
+                "datasource": "replacetext_datasource",
+                "fieldConfig": {
+                    "defaults": {
+                        "color": {
+                            "mode": "palette-classic"
+                        },
+                        "custom": {
+                            "axisLabel": "",
+                            "axisPlacement": "auto",
+                            "barAlignment": 0,
+                            "drawStyle": "points",
+                            "fillOpacity": 10,
+                            "gradientMode": "none",
+                            "hideFrom": {
+                                "legend": false,
+                                "tooltip": false,
+                                "viz": false
+                            },
+                            "lineInterpolation": "linear",
+                            "lineWidth": 4,
+                            "pointSize": 6,
+                            "scaleDistribution": {
+                                "type": "linear"
+                            },
+                            "showPoints": "always",
+                            "spanNulls": false,
+                            "stacking": {
+                                "group": "A",
+                                "mode": "none"
+                            },
+                            "thresholdsStyle": {
+                                "mode": "off"
+                            }
+                        },
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        },
+                        "unit": "short"
+                    },
+                    "overrides": []
+                },
+                "gridPos": {
+                    "h": 10,
+                    "w": 12,
+                    "x": 0,
+                    "y": 20
+                },
+                "id": 5,
+                "links": [],
+                "options": {
+                    "legend": {
+                        "calcs": [],
+                        "displayMode": "list",
+                        "placement": "bottom"
+                    },
+                    "tooltip": {
+                        "mode": "multi",
+                        "sort": "none"
+                    }
+                },
+                "pluginVersion": "9.0.4",
+                "targets": [
+                    {
+                        "alias": "$telemetry1",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($telemetry1) as $telemetry1 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "A",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    },
+                    {
+                        "alias": "$telemetry2",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($telemetry2) as $telemetry2 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "B",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    },
+                    {
+                        "alias": "$telemetry1 minus $telemetry2",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($telemetry1) - mean($telemetry2) as  [[telemetry1]]__minus__[[telemetry2]]  FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "C",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    }
+                ],
+                "title": "Dynamic Panel: telemetry 1, telemetry 2, ( telemetry 1 - telemetry 2 )",
+                "type": "timeseries"
+            },
+            {
+                "datasource": "replacetext_datasource",
+                "fieldConfig": {
+                    "defaults": {
+                        "color": {
+                            "mode": "palette-classic"
+                        },
+                        "custom": {
+                            "axisLabel": "",
+                            "axisPlacement": "auto",
+                            "barAlignment": 0,
+                            "drawStyle": "points",
+                            "fillOpacity": 10,
+                            "gradientMode": "none",
+                            "hideFrom": {
+                                "legend": false,
+                                "tooltip": false,
+                                "viz": false
+                            },
+                            "lineInterpolation": "linear",
+                            "lineWidth": 4,
+                            "pointSize": 6,
+                            "scaleDistribution": {
+                                "type": "linear"
+                            },
+                            "showPoints": "always",
+                            "spanNulls": false,
+                            "stacking": {
+                                "group": "A",
+                                "mode": "none"
+                            },
+                            "thresholdsStyle": {
+                                "mode": "off"
+                            }
+                        },
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        },
+                        "unit": "short"
+                    },
+                    "overrides": []
+                },
+                "gridPos": {
+                    "h": 10,
+                    "w": 12,
+                    "x": 12,
+                    "y": 20
+                },
+                "id": 6,
+                "links": [],
+                "options": {
+                    "legend": {
+                        "calcs": [],
+                        "displayMode": "list",
+                        "placement": "bottom"
+                    },
+                    "tooltip": {
+                        "mode": "multi",
+                        "sort": "none"
+                    }
+                },
+                "pluginVersion": "9.0.4",
+                "targets": [
+                    {
+                        "alias": "$current1",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($current1) as $current1 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "A",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    },
+                    {
+                        "alias": "$current2",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($current2) as $current2 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "B",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    },
+                    {
+                        "alias": "$current3",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($current3) as $current3 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "C",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    },
+                    {
+                        "alias": "$current4",
+                        "groupBy": [
+                        {
+                            "params": [
+                            "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                            "null"
+                            ],
+                            "type": "fill"
+                        }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean($current4) as $current4 FROM \"telemetry\" WHERE $timeFilter  AND \"vin\"='$VIN' GROUP BY time($__interval) fill(null)",
+                        "rawQuery": true,
+                        "refId": "D",
+                        "resultFormat": "time_series",
+                        "select": [
+                        [
+                            {
+                            "params": [
+                                "value"
+                            ],
+                            "type": "field"
+                            },
+                            {
+                            "params": [],
+                            "type": "mean"
+                            }
+                        ]
+                        ],
+                        "tags": []
+                    }
+                ],
+                "title": "Dynamic Panel: current variable 1, current variable 2, current variable 3, current variable 4",
+                "type": "timeseries"
+            }
+        ],
+        "refresh": false,
+        "schemaVersion": 18,
+        "style": "dark",
+        "tags": [],
+        "templating": {
+        "list": [
+            {
+                "allValue": null,
+                "current": {
+                    "selected": false,
+                    "tags": [],
+                    "text": "replacetext_vin",
+                    "value": "replacetext_vin"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show tag values with key=vin",
+                "hide": 0,
+                "includeAll": false,
+                "label": "VIN",
+                "multi": false,
+                "name": "VIN",
+                "options": [],
+                "query": "show tag values with key=vin",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "tags": [],
+                    "text": "lv_voltage_1",
+                    "value": "lv_voltage_1"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "telemetry 1",
+                "multi": false,
+                "name": "telemetry1",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "tags": [],
+                    "text": "lv_voltage_2",
+                    "value": "lv_voltage_2"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "telemetry 2",
+                "multi": false,
+                "name": "telemetry2",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "tags": [],
+                    "text": "speed",
+                    "value": "speed"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "telemetry 3",
+                "multi": false,
+                "name": "telemetry3",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "tags": [],
+                    "text": "bms_pack_soc",
+                    "value": "bms_pack_soc"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "telemetry 4",
+                "multi": false,
+                "name": "telemetry4",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "text": "controller_1_inverter_temperature",
+                    "value": "controller_1_inverter_temperature"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "temperature 1",
+                "multi": false,
+                "name": "temperature1",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "/temp/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "text": "controller_2_inverter_temperature",
+                    "value": "controller_2_inverter_temperature"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "temperature 2",
+                "multi": false,
+                "name": "temperature2",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "/temp/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "text": "controller_1_motor_temperature",
+                    "value": "controller_1_motor_temperature"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "temperature 3",
+                "multi": false,
+                "name": "temperature3",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "/temp/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "text": "controller_2_motor_temperature",
+                    "value": "controller_2_motor_temperature"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "temperature 4",
+                "multi": false,
+                "name": "temperature4",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "/temp/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "text": "bms_pack_instantaneous_voltage",
+                    "value": "bms_pack_instantaneous_voltage"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "voltage 1",
+                "multi": false,
+                "name": "voltage1",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "/volt/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "text": "bms_pack_instantaneous_voltage",
+                    "value": "bms_pack_instantaneous_voltage"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "voltage 2",
+                "multi": false,
+                "name": "voltage2",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "/volt/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "text": "bms_high_cell_voltage",
+                    "value": "bms_high_cell_voltage"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "voltage 3",
+                "multi": false,
+                "name": "voltage3",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "/volt/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "text": "bms_low_cell_voltage",
+                    "value": "bms_low_cell_voltage"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "voltage 4",
+                "multi": false,
+                "name": "voltage4",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "/volt/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "text": "bms_pack_current",
+                    "value": "bms_pack_current"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "current 1",
+                "multi": false,
+                "name": "current1",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "/current/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "text": "bms_pack_current",
+                    "value": "bms_pack_current"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "current 2",
+                "multi": false,
+                "name": "current2",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "/current/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "text": "bms_pack_current",
+                    "value": "bms_pack_current"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "current 3",
+                "multi": false,
+                "name": "current3",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "/current/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                    "text": "bms_pack_current",
+                    "value": "bms_pack_current"
+                },
+                "datasource": "replacetext_datasource",
+                "definition": "show field keys from telemetry",
+                "hide": 0,
+                "includeAll": false,
+                "label": "current 4",
+                "multi": false,
+                "name": "current4",
+                "options": [],
+                "query": "show field keys from telemetry",
+                "refresh": 1,
+                "regex": "/current/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            }
+        ]
+        },
+        "time": {
+            "from": "now-7d",
+            "to": "now"
+        },
+        "timepicker": {
+        "refresh_intervals": [
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+        ],
+        "time_options": [
+            "5m",
+            "15m",
+            "1h",
+            "6h",
+            "12h",
+            "24h",
+            "2d",
+            "7d",
+            "30d"
+        ]
+        },
+        "timezone": "browser",
+        "title": "replacetext_vin",
+        "uid": "replacetext_vin",
+        "version": 0
+    },
+    "folderId": "replacetext_folder_id",
+    "overwrite": true
+}

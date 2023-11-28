@@ -1,0 +1,41 @@
+{
+  "name": "backfill",
+  "vpc": "telemetry",
+  "lambdas": {
+    "backfill_ingest_request": {
+      "tests": [
+        "test_backfill_ingest_request"
+      ]
+    },
+    "backfill_notify_complete": {
+      "tests": [
+        "test_backfill_notify_complete"
+      ]
+    },
+    "backfill_notify_failed": {
+      "tests": [
+        "test_backfill_notify_failed"
+      ]
+    },
+    "backfill_s3_delete_file": {
+      "tests": [
+        "test_backfill_s3_delete_file"
+      ]
+    },
+    "backfill_s3_load_file": {
+      "tests": [
+        "test_backfill_s3_load_file"
+      ]
+    },
+    "backfill_s3_presigned_url_generate": {
+      "tests": [
+        "test_backfill_s3_presigned_url_generate"
+      ]
+    },
+    "backfill_state_machine_start": {
+      "tests": [
+        "test_backfill_state_machine_start"
+      ]
+    }
+  }
+}

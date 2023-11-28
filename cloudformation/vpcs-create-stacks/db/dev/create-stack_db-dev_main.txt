@@ -1,0 +1,23 @@
+aws cloudformation create-stack \
+  --stack-name TEL-Main-DB-Dev \
+  --template-url "https://arcimoto-cloudformation.s3.us-west-2.amazonaws.com/vpc/Aurora-Postgres-DB-Cluster.yml" \
+  --capabilities CAPABILITY_IAM \
+  --parameters \
+    ParameterKey=ParentVPCStack,ParameterValue=TEL-Main \
+    ParameterKey=ParentSSHBastionStack,ParameterValue=TEL-Main-Bastion-Dev \
+    ParameterKey=DBName,ParameterValue=telemetryam \
+    ParameterKey=DBUsername,ParameterValue=teladmin \
+    ParameterKey=DBEngineVersion,ParameterValue=13.5 \
+    ParameterKey=DBInstanceClass,ParameterValue="db.t4g.medium" \
+    ParameterKey=DBSnapshotName,ParameterValue="arn:aws:rds:us-west-2:511596272857:snapshot:dev-telemetryam-for-aurora" \
+    ParameterKey=EnvironmentStage,ParameterValue=dev \
+    ParameterKey=Application,ParameterValue="Telematics Cloud" \
+    ParameterKey=ProjectCostCenter,ParameterValue=Telematics \
+    ParameterKey=ServiceOwnersEmailContact,ParameterValue="code@arcimoto.com" \
+    ParameterKey=NotificationList,ParameterValue="main-vpc-db-dev@arcimoto.com" \
+    ParameterKey=Confidentiality,ParameterValue=private \
+    ParameterKey=Compliance,ParameterValue=none 
+  --tags \
+    Key="Cost Center",Value="Telematics" \
+    Key="VPC",Value="Main" \
+    Key="Environment",Value="Dev"

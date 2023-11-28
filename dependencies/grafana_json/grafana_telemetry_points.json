@@ -1,0 +1,698 @@
+{
+	"vehicle_started": {
+		"title": "Vehicle Started",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"vehicle_direction_state": {
+		"title": "Vehicle Direction State",
+		"ylabel": "0=Neutral, 1=Reverse, 2=Forward",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"brake_fault": {
+		"title": "Brake Fault",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"lv_fault": {
+		"title": "Lv Fault",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"hv_fault": {
+		"title": "Hv Fault",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"left_driver_seat_belt_not_secured": {
+		"title": "Left Driver Seat Belt Not Secured",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"right_driver_seat_belt_not_secured": {
+		"title": "Right Driver Seat Belt Not Secured",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"drivetrain_overtemp": {
+		"title": "Drivetrain Overtemp",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"left_passenger_seat_belt_not_secured": {
+		"title": "Left Passenger Seat Belt Not Secured",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"right_passenger_seat_belt_not_secured": {
+		"title": "Right Passenger Seat Belt Not Secured",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"epsu_current": {
+		"title": "Epsu Current",
+		"ylabel": "Amperes",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"epsu_unit_temperature": {
+		"title": "Epsu Unit Temperature",
+		"ylabel": "Degrees Celsius",
+		"offset": "-40",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"epsu_encoder_temperature": {
+		"title": "Epsu Encoder Temperature",
+		"ylabel": "Degrees Celsius",
+		"offset": "-40",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"controller_1_motor_temperature": {
+		"title": "Controller 1 Motor Temperature",
+		"ylabel": "Degrees Celsius",
+		"offset": "-40",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"controller_2_motor_temperature": {
+		"title": "Controller 2 Motor Temperature",
+		"ylabel": "Degrees Celsius",
+		"offset": "-40",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"controller_1_inverter_temperature": {
+		"title": "Controller 1 Inverter Temperature",
+		"ylabel": "Degrees Celsius",
+		"offset": "-40",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"controller_2_inverter_temperature": {
+		"title": "Controller 2 Inverter Temperature",
+		"ylabel": "Degrees Celsius",
+		"offset": "-40",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"controller_1_fault_level": {
+		"title": "Controller 1 Fault Level",
+		"ylabel": "Fault Level",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"controller_1_fault_code": {
+		"title": "Controller 1 Fault Code",
+		"ylabel": "Fault Code",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"controller_2_fault_level": {
+		"title": "Controller 2 Fault Level",
+		"ylabel": "Fault Level",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"controller_2_fault_code": {
+		"title": "Controller 2 Fault Code",
+		"ylabel": "Fault Code",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"speed": {
+		"title": "Speed",
+		"ylabel": "kmph",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"steering_angle": {
+		"title": "Steering Angle",
+		"ylabel": "CAN 0x10C Steering Angle Units",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"odometer": {
+		"title": "Odometer",
+		"ylabel": "Kilometers",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"fio_coolant_level_switch_status": {
+		"title": "Fio Coolant Level Switch Status",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"fio_blinker_left": {
+		"title": "Fio Blinker Left",
+		"ylabel": "0 = Off, 1 = On, 2 = Err Open (undercurrent), 3 = Error Short (overcurrent)",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"fio_blinker_right": {
+		"title": "Fio Blinker Right",
+		"ylabel": "0 = Off, 1 = On, 2 = Err Open (undercurrent), 3 = Error Short (overcurrent)",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"rio_blinker_left_error": {
+		"title": "Left Tail Light Fault",
+		"ylabel": "0: NO FAULT, 1: RESERVED, 2: FAULT_OPEN, 3: FAULT_SHORT",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"rio_blinker_right_error": {
+		"title": "Right Tail Light Fault",
+		"ylabel": "0: NO FAULT, 1: RESERVED, 2: FAULT_OPEN, 3: FAULT_SHORT",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"rio_seatbelt_passenger_left": {
+		"title": "Passenger's Left Seatbelt Switch State",
+		"ylabel": "0 = buckled, 1 = unbuckled",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"rio_seatbelt_passenger_right": {
+		"title": "Passenger's Right Seatbelt Switch State",
+		"ylabel": "",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"rio_chmsl": {
+		"title": "CHMSL Fault",
+		"ylabel": "0: NO FAULT, 1: RESERVED, 2: FAULT_OPEN, 3: FAULT_SHORT",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"rio_reverse_light": {
+		"title": "Reverse Light Fault",
+		"ylabel": "0: NO FAULT, 1: RESERVED, 2: FAULT_OPEN, 3: FAULT_SHORT",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"rio_license_light": {
+		"title": "License Plate Light Fault",
+		"ylabel": "0: NO FAULT, 1: RESERVED, 2: FAULT_OPEN, 3: FAULT_SHORT",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"rio_seat_heat_front": {
+		"title": "Front Seat Heater Fault",
+		"ylabel": "0: NO FAULT, 1: RESERVED, 2: FAULT_OPEN, 3: FAULT_SHORT",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"rio_seat_heat_rear": {
+		"title": "Rear Seat Heater Fault",
+		"ylabel": "0: NO FAULT, 1: RESERVED, 2: FAULT_OPEN, 3: FAULT_SHORT",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"charger_output_short_protection": {
+		"title": "Charger Output Short Protection",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"charger_hardware_failure": {
+		"title": "Charger Hardware Failure",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"charger_output_overcurrent_protection": {
+		"title": "Charger Output Overcurrent Protection",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"charger_output_overvoltage_protection": {
+		"title": "Charger Output Overvoltage Protection",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"charger_pfc_over_temperature_protection": {
+		"title": "Charger PFC Over Temperature Protection",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_pack_soc": {
+		"title": "BMS Pack SoC",
+		"ylabel": "Percent Charge",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"bms_pack_current": {
+		"title": "BMS Pack Current",
+		"ylabel": "deci-Amperes",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"bms_pack_instantaneous_voltage": {
+		"title": "BMS Pack Instantaneous Voltage",
+		"ylabel": "deci-Volts",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"bms_pack_health": {
+		"title": "BMS Pack Health",
+		"ylabel": "CAN 0x400 Pack Health Units",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_multi_purpose_enable": {
+		"title": "BMS Multi Purpose Enable",
+		"ylabel": "0 = OFF, 1 = ON",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_discharge_relay": {
+		"title": "BMS Discharge Relay",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_charge_relay": {
+		"title": "BMS Charge Relay",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_charger_safety": {
+		"title": "BMS Charger Safety",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_total_pack_cycles": {
+		"title": "BMS Total Pack Cycles",
+		"ylabel": "CAN 0x401 Cycles Units",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"bms_pack_dcl": {
+		"title": "BMS Pack DCL",
+		"ylabel": "Amperes",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"bms_pack_ccl": {
+		"title": "BMS Pack CCL",
+		"ylabel": "Amperes",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"bms_ccl_reduced_high_cell_resistance": {
+		"title": "BMS Ccl Reduced High Cell Resistance",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_dtc_p0a0a_internal_heatsink_thermistor_fault": {
+		"title": "BMS Dtc P0a0a Internal Heatsink Thermistor Fault",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_dtc_p0a0f_cell_bank_fault": {
+		"title": "BMS Dtc P0a0f Cell Bank Fault",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_dtc_p0a10_pack_too_hot_fault": {
+		"title": "BMS Dtc P0a10 Pack Too Hot Fault",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_dtc_p0a80_weak_cell_fault": {
+		"title": "BMS Dtc P0a80 Weak Cell Fault",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_dtc_p0a9c_thermistor_fault": {
+		"title": "BMS Dtc P0a9c Thermistor Fault",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_dtc_p0aa6_high_voltage_isolation_fault": {
+		"title": "BMS Dtc P0aa6 High Voltage Isolation Fault",
+		"ylabel": "Boolean",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "top"
+	},
+	"bms_low_cell_voltage": {
+		"title": "BMS Low Cell Voltage",
+		"ylabel": "CAN 0x403 Voltage Units",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"bms_high_cell_voltage": {
+		"title": "BMS High Cell Voltage",
+		"ylabel": "CAN 0x403 Voltage Units",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"bms_j1772_plug_state": {
+		"title": "BMS J1772 Plug State",
+		"ylabel": "CAN 0x404 Plug State Units",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"lv_voltage_1": {
+		"title": "Lv Voltage 1",
+		"ylabel": "dV",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"lv_voltage_2": {
+		"title": "Lv Voltage 2",
+		"ylabel": "dV",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"lv_voltage_3": {
+		"title": "Lv Voltage 3",
+		"ylabel": "dV",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"lv_voltage_4": {
+		"title": "Lv Voltage 4",
+		"ylabel": "dV",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"lv_current_1": {
+		"title": "Lv Current 1",
+		"ylabel": "Amperes",
+		"offset": "+127",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"lv_current_2": {
+		"title": "Lv Current 2",
+		"ylabel": "Amperes",
+		"offset": "+127",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"lv_current_3": {
+		"title": "Lv Current 3",
+		"ylabel": "Amperes",
+		"offset": "+127",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"lv_current_4": {
+		"title": "Lv Current 4",
+		"ylabel": "Amperes",
+		"offset": "+127",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"humidity": {
+		"title": "Humidity",
+		"ylabel": "Percent Relative Humidity",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"ambient_temp": {
+		"title": "Comm Board Temp",
+		"ylabel": "Degrees Celsius",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	},
+	"gps_altitude": {
+		"title": "GPS Altitude",
+		"ylabel": "meters (above mean sea level)",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+  },
+  "gps_latitude": {
+		"title": "GPS Latitude",
+		"ylabel": "Degrees Latitude",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+  },
+  "gps_longitude": {
+		"title": "GPS Longitude",
+		"ylabel": "Degrees Longitude",
+		"offset": "",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "last"
+	},
+	"gps_position": {
+		"title": "GPS Position",
+		"ylabel": "GPS Position",
+		"offset": "",
+		"operator": "mean",
+		"metric": "speed",
+		"latitude": "gps_latitude",
+		"longitude": "gps_longitude",
+		"fill": 10,
+		"type": "worldmap",
+		"downsample": "last"
+	},
+	"gearbox_temp": {
+		"title": "Gearbox Temperature",
+		"ylabel": "Degrees Celsius",
+		"offset": "-40",
+		"operator": "mean",
+		"type": "line_graph",
+		"color": "#ffffff",
+		"downsample": "mean"
+	}
+}

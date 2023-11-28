@@ -1,0 +1,54 @@
+{
+  "basePath": "/web",
+  "definitions": {
+    "Empty": {
+      "title": "Empty Schema",
+      "type": "object"
+    }
+  },
+  "host": "api.arcimoto.com",
+  "info": {
+    "description": "Mock endpoints for hosting single page applications",
+    "title": "Web",
+    "version": "2022-04-04T17:47:32Z"
+  },
+  "paths": {
+    "/v1/palantir": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "text/html"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "responseTemplates": {
+                "text/html": "<!DOCTYPE html>\r\n<html lang=en>\r\n<head>\r\n  <meta charset=utf-8>\r\n  <meta http-equiv=X-UA-Compatible content=\"IE=edge\">\r\n  <meta name=viewport content=\"width=device-width,initial-scale=1\">\r\n  <link rel=icon href=https://arcimoto-palantir.s3-us-west-2.amazonaws.com/$context.stage/favicon.png>\r\n  <title>Arcimoto Palantir - $context.stage</title>\r\n  <link href=https://arcimoto-palantir.s3-us-west-2.amazonaws.com/$context.stage/css/app.css rel=preload as=style>\r\n  <link href=https://arcimoto-palantir.s3-us-west-2.amazonaws.com/$context.stage/css/chunk-vendors.css rel=preload\r\n    as=style>\r\n  <link href=https://arcimoto-palantir.s3-us-west-2.amazonaws.com/$context.stage/js/chunk-vendors.js rel=preload\r\n    as=script>\r\n  <link href=https://arcimoto-palantir.s3-us-west-2.amazonaws.com/$context.stage/css/chunk-vendors.css rel=stylesheet>\r\n  \r\n  <link href=https://arcimoto-palantir.s3-us-west-2.amazonaws.com/$context.stage/css/app.css rel=stylesheet>\r\n  <link rel=stylesheet href=\"//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900,400italic|Material+Icons|Bilbo\">\r\n  <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css\">\r\n</head>\r\n\r\n<body>\r\n  <noscript><strong>This tool does not work properly without JavaScript enabled, enable it to continue.</strong></noscript>\r\n  <div id=app></div>\r\n  <script src=https://arcimoto-palantir.s3-us-west-2.amazonaws.com/$context.stage/js/chunk-vendors.js></script>\r\n  <script type=\"text/javascript\">\r\n    // cache busting - prevent stale versions of app from being used\r\n    (function(){ \r\n         var randomNum = Math.random();\r\n         var e = document.getElementsByTagName(\"script\")[0];\r\n         var d = document.createElement(\"script\");\r\n         d.src = \"https://arcimoto-palantir.s3-us-west-2.amazonaws.com/$context.stage/js/app.js?x=\" + randomNum + \"\";\r\n         d.type = \"text/javascript\"; \r\n         d.async = true;\r\n         d.defer = true;\r\n         e.parentNode.insertBefore(d,e);\r\n     })();\r\n  </script>\r\n</body>\r\n  <script async defer src=\"https://cdnjs.cloudflare.com/ajax/libs/masonry/4.0.0/masonry.pkgd.min.js\"></script>\r\n  <script async defer src=\"https://cdnjs.cloudflare.com/ajax/libs/markerclustererplus/2.1.4/markerclusterer.js\"></script>\r\n</html>"
+              },
+              "statusCode": "200"
+            }
+          },
+          "type": "mock"
+        }
+      }
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0"
+}

@@ -1,0 +1,14 @@
+aws cloudformation create-stack \
+  --stack-name TEL-Main-Peering-Users-Updates-Requester \
+  --template-url "https://arcimoto-cloudformation.s3.us-west-2.amazonaws.com/vpc/VPCPeering-Updates.cfn.yaml" \
+  --parameters \
+    ParameterKey=PeerName,ParameterValue=tel-main-to-users \
+    ParameterKey=NumberOfRouteTables,ParameterValue=3 \
+    ParameterKey=NumberOfSecurityGroups,ParameterValue=1 \
+    ParameterKey=PeerVPCCIDR,ParameterValue="10.221.0.0/16" \
+    ParameterKey=RouteTableIds,ParameterValue=\"rtb-06269d5751468c4ae,rtb-0904794b0537e2e78,rtb-0fbd32c4d25c13104\" \
+    ParameterKey=SecurityGroupIds,ParameterValue=sg-076496b494f53f884 \
+    ParameterKey=VPCPeeringConnectionId,ParameterValue=pcx-02c990d4802bf5c51 \
+  --tags \
+    Key="Cost Center",Value="Telematics" \
+    Key="VPC",Value="Main"

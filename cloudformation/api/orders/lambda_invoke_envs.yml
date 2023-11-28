@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: API attached lambda invoke permissions for all ENVs (dev, staging, prod)
+
+Parameters:
+  RestApiId: 
+    Type: String
+  LambdaName: 
+    Type: String
+  Route: 
+    Type: String
+
+Resources:
+  lambdaApiGatewayInvokeDev:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaName}:dev
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApiId}/*/${Route}
+
+  lambdaApiGatewayInvokeStaging:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaName}:staging
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApiId}/*/${Route}
+
+  lambdaApiGatewayInvokeProd:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaName}:prod
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApiId}/*/${Route}

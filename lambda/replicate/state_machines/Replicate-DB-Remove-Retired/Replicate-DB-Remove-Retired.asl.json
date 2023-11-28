@@ -1,0 +1,153 @@
+{
+  "StartAt": "Notify - Remove DB Instance and Cluster Start",
+  "States": {
+    "Notify - Remove DB Instance and Cluster Start": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "Payload": {
+          "event": "Remove DB Instance and Cluster - Start",
+          "event_data": {
+            "input.$": "$.input"
+          },
+          "source": "Replicate-DB-Remove-Retired",
+          "severity": "INFO",
+          "channel": "replicate"
+        },
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Remove DB Cluster Protection",
+      "ResultPath": null
+    },
+    "Remove DB Cluster Protection": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Cluster-Remove-Protection",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.input.db_cluster_identifier",
+            "state_machine": "Replicate-DB-Cluster-Remove-Protection"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "ResultPath": "$.db_cluster_remove_protection",
+      "Next": "Delete DB Instance",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DB-Remove-Retired",
+          "ResultPath": "$.db_cluster_remove_protection"
+        }
+      ]
+    },
+    "Delete DB Instance": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Instance-Delete",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.input.db_instance_identifier",
+            "state_machine": "Replicate-DB-Rename-Instance"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "ResultPath": "$.db_instance_delete",
+      "Next": "Delete DB Cluster",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DB-Remove-Retired",
+          "ResultPath": "$.db_instance_delete"
+        }
+      ]
+    },
+    "Delete DB Cluster": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync:2",
+      "Parameters": {
+        "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Cluster-Delete",
+        "Input": {
+          "input": {
+            "run_env.$": "$.input.run_env",
+            "replication_target_env.$": "$.input.replication_target_env",
+            "db_identifier.$": "$.input.db_cluster_identifier",
+            "state_machine": "Replicate-DB-Cluster-Delete"
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+        }
+      },
+      "ResultPath": "$.db_cluster_delete",
+      "Next": "Notify - Remove DB Instance and Cluster Complete",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Replicate-DB-Remove-Retired",
+          "ResultPath": "$.db_cluster_delete"
+        }
+      ]
+    },
+    "Notify - Remove DB Instance and Cluster Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "Payload": {
+          "event": "Remove DB Instance and Cluster - Complete",
+          "event_data": {
+            "input.$": "$.input"
+          },
+          "source": "Replicate-DB-Remove-Retired",
+          "severity": "INFO",
+          "channel": "replicate"
+        },
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "End": true
+    },
+    "Fail - Replicate-DB-Remove-Retired": {
+      "Type": "Fail"
+    }
+  },
+  "Comment": "Rename RDS DB Cluster"
+}

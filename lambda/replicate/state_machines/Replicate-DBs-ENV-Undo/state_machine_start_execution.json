@@ -1,0 +1,118 @@
+{
+  "input": {
+    "db_type": "main",
+    "replication_target_env": "$.input.replication_target_env",
+    "target": {
+      "db_instance_identifier": "ta1rn3qhtdvcpg5",
+      "db_cluster_identifier": "tel-main-db-staging-auroradbcluster-6ntob7x6ajn5"
+    },
+    "run_env": "dev",
+    "replication_data": {
+      "input": {
+        "db_type": "main",
+        "run_env": "dev",
+        "source": {
+          "db_cluster_identifier": "tel-main-db-prod-auroradbcluster-1kkvd236ktt8q"
+        },
+        "replication_target_env": "staging",
+        "target": {
+          "db_cluster_identifier": "tel-main-db-staging-auroradbcluster-6ntob7x6ajn5",
+          "db_instance_identifier": "ta1rn3qhtdvcpg5"
+        }
+      },
+      "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID": "arn:aws:states:us-west-2:511596272857:execution:Replicate-DBs:4a777074-f848-4410-a054-dbc83b6fcba9",
+      "db_cluster_rename": {
+        "data": {
+          "input": {
+            "state_machine": "Replicate-DB-Rename-Cluster",
+            "db_type": "main",
+            "run_env": "dev",
+            "source": {
+              "db_cluster_identifier": "tel-main-db-prod-auroradbcluster-1kkvd236ktt8q"
+            },
+            "db_identifier": "tel-main-db-staging-auroradbcluster-6ntob7x6ajn5",
+            "replication_target_env": "staging",
+            "target": {
+              "db_cluster_identifier": "tel-main-db-staging-auroradbcluster-6ntob7x6ajn5",
+              "db_instance_identifier": "ta1rn3qhtdvcpg5"
+            }
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID": "arn:aws:states:us-west-2:511596272857:execution:Replicate-DB-Type-Prod-to-ENV:3481de8c-3343-475b-9be9-04d278dd413d",
+          "db_exists": {
+            "data": {
+              "db_exists": true
+            }
+          },
+          "db_available": {
+            "data": {
+              "db_available": true
+            }
+          },
+          "db_rename": {
+            "data": {
+              "db_cluster_identifier": "tel-main-db-staging-auroradbcluster-6nt-retired-20220701-200931"
+            }
+          },
+          "db_renamed": {
+            "data": {
+              "db_exists": false
+            }
+          },
+          "status": {
+            "db_exists": "success",
+            "db_available": "success",
+            "db_rename": "success",
+            "db_renamed": "success"
+          }
+        }
+      },
+      "db_instance_rename": {
+        "data": {
+          "input": {
+            "state_machine": "Replicate-DB-Rename-Instance",
+            "db_type": "main",
+            "run_env": "dev",
+            "source": {
+              "db_cluster_identifier": "tel-main-db-prod-auroradbcluster-1kkvd236ktt8q"
+            },
+            "db_identifier": "ta1rn3qhtdvcpg5",
+            "replication_target_env": "staging",
+            "target": {
+              "db_cluster_identifier": "tel-main-db-staging-auroradbcluster-6ntob7x6ajn5",
+              "db_instance_identifier": "ta1rn3qhtdvcpg5"
+            }
+          },
+          "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID": "arn:aws:states:us-west-2:511596272857:execution:Replicate-DB-Type-Prod-to-ENV:3481de8c-3343-475b-9be9-04d278dd413d",
+          "db_exists": {
+            "data": {
+              "db_exists": true
+            }
+          },
+          "db_available": {
+            "data": {
+              "db_available": true
+            }
+          },
+          "db_rename": {
+            "Error": "ArcimotoAlertException",
+            "Cause": "{\"errorMessage\":\"Replicate DBs: Intentional Error in replicate_db_instance_rename.\\nenv: staging\\ndb_instance_identifier: ta1rn3qhtdvcpg5\\ndb_instance_new_identifier: None\",\"errorType\":\"ArcimotoAlertException\",\"stackTrace\":[\"  File \\\"/opt/python/lib/python3.8/site-packages/arcimoto/runtime.py\\\", line 72, in _impl\\n    raise e\\n\",\"  File \\\"/opt/python/lib/python3.8/site-packages/arcimoto/runtime.py\\\", line 60, in _impl\\n    result = function(**args)\\n\",\"  File \\\"/var/task/lambda/replicate_db_instance_rename.py\\\", line 37, in replicate_db_instance_rename\\n    raise ArcimotoAlertException(f'Replicate DBs: Intentional Error in replicate_db_instance_rename.\\\\nenv: {env}\\\\ndb_instance_identifier: {db_instance_identifier}\\\\ndb_instance_new_identifier: {db_instance_new_identifier}')\\n\"]}"
+          },
+          "status": {
+            "db_exists": "success",
+            "db_available": "success",
+            "db_rename": "fail",
+            "db_renamed": null
+          }
+        }
+      },
+      "status": {
+        "cluster_rename": "success",
+        "instance_rename": "fail",
+        "cluster_clone": null,
+        "cluster_create_instance": null,
+        "instance_restore": null
+      }
+    }
+  },
+  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID": "arn:aws:states:us-west-2:511596272857:execution:Replicate-DBs:4a777074-f848-4410-a054-dbc83b6fcba9"
+}

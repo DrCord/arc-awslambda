@@ -1,0 +1,133 @@
+{
+      "circleMaxSize": 30,
+      "circleMinSize": 2,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "decimals": 0,
+      "esMetric": "Count",
+      "datasource": "DYNAMIC_DATASOURCE",
+      "gridPos": {
+        "h": "DYNAMIC_HEIGHT",
+        "w": "DYNAMIC_WIDTH",
+        "x": "DYNAMIC_X_POSITION",
+        "y": "DYNAMIC_Y_POSITION"
+      },
+      "hideEmpty": false,
+      "hideZero": false,
+      "id": 24,
+      "initialZoom": "11",
+      "locationData": "table",
+      "mapCenter": "custom",
+      "mapCenterLatitude": "44.05",
+      "mapCenterLongitude": "-123.05",
+      "maxDataPoints": 1,
+      "mouseWheelZoom": false,
+      "showLegend": true,
+      "stickyLabels": false,
+      "tableQueryOptions": {
+        "geohashField": "geohash",
+        "latitudeField": "latitude",
+        "longitudeField": "longitude",
+        "metricField": "metric",
+        "queryType": "coordinates"
+      },
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "10"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "telemetry",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "DYNAMIC_GPS_QUERY",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "speed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "metric"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "gps_latitude"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "latitude"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "gps_longitude"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "longitude"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "vin",
+              "operator": "=",
+              "value": "DYNAMIC_VIN"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,10",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "DYNAMIC_TITLE",
+      "type": "grafana-worldmap-panel",
+      "unitPlural": "",
+      "unitSingle": "",
+      "valueName": "total"
+}

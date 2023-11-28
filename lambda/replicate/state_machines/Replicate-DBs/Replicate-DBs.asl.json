@@ -1,0 +1,655 @@
+{
+  "Comment": "Replicates the Prod DBs (main & authkey) to the requested target ENV(s) (dev, staging).",
+  "StartAt": "Replicate Prod DBs to ENV DBs",
+  "States": {
+    "Replicate Prod DBs to ENV DBs": {
+      "Type": "Parallel",
+      "Next": "Was Replication Successful for Both DBs?",
+      "Branches": [
+        {
+          "StartAt": "Replicate-DB-Type-Prod-to-ENV [authkey]",
+          "States": {
+            "Replicate-DB-Type-Prod-to-ENV [authkey]": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Type-Prod-to-ENV",
+                "Input": {
+                  "input": {
+                    "run_env.$": "$.input.run_env",
+                    "replication_target_env.$": "$.input.replication_target_env",
+                    "source.$": "$.input.authkey.prod",
+                    "target.$": "$.input.authkey.target",
+                    "db_type": "authkey"
+                  },
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+                }
+              },
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "States.ALL"
+                  ],
+                  "Comment": "All",
+                  "Next": "Fail - Replicate [authkey] - Set Status Data",
+                  "ResultPath": "$.replicate_db"
+                }
+              ],
+              "Next": "Was DB Replication Successful? [authkey]",
+              "ResultSelector": {
+                "data.$": "$.Output"
+              },
+              "ResultPath": "$.replicate_db"
+            },
+            "Was DB Replication Successful? [authkey]": {
+              "Type": "Choice",
+              "Choices": [
+                {
+                  "Or": [
+                    {
+                      "Variable": "$.replicate_db.data.status.cluster_rename",
+                      "StringEquals": "fail"
+                    },
+                    {
+                      "Variable": "$.replicate_db.data.status.instance_rename",
+                      "StringEquals": "fail"
+                    },
+                    {
+                      "Variable": "$.replicate_db.data.status.cluster_clone",
+                      "StringEquals": "fail"
+                    },
+                    {
+                      "Variable": "$.replicate_db.data.status.cluster_create_instance",
+                      "StringEquals": "fail"
+                    },
+                    {
+                      "Variable": "$.replicate_db.data.status.instance_restore",
+                      "StringEquals": "fail"
+                    }
+                  ],
+                  "Next": "Fail - Replicate [authkey] - Set Status Data"
+                }
+              ],
+              "Default": "Success - Replicate [authkey] - Set Status Data"
+            },
+            "Success - Replicate [authkey] - Set Status Data": {
+              "Type": "Pass",
+              "End": true,
+              "Result": {
+                "replicate_db": true
+              },
+              "ResultPath": "$.status"
+            },
+            "Fail - Replicate [authkey] - Set Status Data": {
+              "Type": "Pass",
+              "Result": {
+                "replicate_db": false
+              },
+              "End": true,
+              "ResultPath": "$.status"
+            }
+          }
+        },
+        {
+          "StartAt": "Replicate-DB-Type-Prod-to-ENV [main]",
+          "States": {
+            "Replicate-DB-Type-Prod-to-ENV [main]": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DB-Type-Prod-to-ENV",
+                "Input": {
+                  "input": {
+                    "run_env.$": "$.input.run_env",
+                    "replication_target_env.$": "$.input.replication_target_env",
+                    "source.$": "$.input.main.prod",
+                    "target.$": "$.input.main.target",
+                    "db_type": "main"
+                  },
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+                }
+              },
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "States.ALL"
+                  ],
+                  "Comment": "All",
+                  "Next": "Fail - Replicate [main] - Set Status Data",
+                  "ResultPath": "$.replicate_db"
+                }
+              ],
+              "Next": "Was DB Replication Successful? [main]",
+              "ResultSelector": {
+                "data.$": "$.Output"
+              },
+              "ResultPath": "$.replicate_db"
+            },
+            "Was DB Replication Successful? [main]": {
+              "Type": "Choice",
+              "Choices": [
+                {
+                  "Or": [
+                    {
+                      "Variable": "$.replicate_db.data.status.cluster_rename",
+                      "StringEquals": "fail"
+                    },
+                    {
+                      "Variable": "$.replicate_db.data.status.instance_rename",
+                      "StringEquals": "fail"
+                    },
+                    {
+                      "Variable": "$.replicate_db.data.status.cluster_clone",
+                      "StringEquals": "fail"
+                    },
+                    {
+                      "Variable": "$.replicate_db.data.status.cluster_create_instance",
+                      "StringEquals": "fail"
+                    },
+                    {
+                      "Variable": "$.replicate_db.data.status.instance_restore",
+                      "StringEquals": "fail"
+                    }
+                  ],
+                  "Next": "Fail - Replicate [main] - Set Status Data"
+                }
+              ],
+              "Default": "Success - Replicate [main] - Set Status Data"
+            },
+            "Success - Replicate [main] - Set Status Data": {
+              "Type": "Pass",
+              "Result": {
+                "replicate_db": true
+              },
+              "End": true,
+              "ResultPath": "$.status"
+            },
+            "Fail - Replicate [main] - Set Status Data": {
+              "Type": "Pass",
+              "Result": {
+                "replicate_db": false
+              },
+              "End": true,
+              "ResultPath": "$.status"
+            }
+          }
+        }
+      ],
+      "ResultSelector": {
+        "authkey.$": "$[0]",
+        "main.$": "$[1]"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Notify - Replicate DBs Failure",
+          "ResultPath": "$.replicate_dbs"
+        }
+      ],
+      "ResultPath": "$.replicate_dbs"
+    },
+    "Was Replication Successful for Both DBs?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "And": [
+            {
+              "Variable": "$.replicate_dbs.authkey.status.replicate_db",
+              "BooleanEquals": true
+            },
+            {
+              "Variable": "$.replicate_dbs.main.status.replicate_db",
+              "BooleanEquals": true
+            }
+          ],
+          "Next": "Notify - Replicate DBs Schedule Retired DBs Removal Start"
+        }
+      ],
+      "Default": "Notify - Replicate Failure"
+    },
+    "Notify - Replicate DBs Schedule Retired DBs Removal Start": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "Replicate DBs Schedule Retired DBs Removal Start",
+          "event_data": {
+            "replication_target_env.$": "$.input.replication_target_env"
+          },
+          "source": "Replicate-DBs",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Schedule Retired DBs Removal"
+    },
+    "Notify - Replicate Failure": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "Replicate Failure - Error",
+          "event_data": {
+            "replication_target_env.$": "$.input.replication_target_env"
+          },
+          "source": "Replicate-DBs",
+          "severity": "ERROR",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Replicate-DBs-Undo"
+    },
+    "Replicate-DBs-Undo": {
+      "Type": "Parallel",
+      "Next": "Notify - Replicate DBs Failure",
+      "Branches": [
+        {
+          "StartAt": "Replicate-DBs-ENV-Undo [authkey]",
+          "States": {
+            "Replicate-DBs-ENV-Undo [authkey]": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DBs-ENV-Undo",
+                "Input": {
+                  "input": {
+                    "db_type": "authkey",
+                    "run_env.$": "$.input.run_env",
+                    "replication_target_env": "$.input.replication_target_env",
+                    "replication_data.$": "$.replicate_dbs.authkey.replicate_db.data",
+                    "target": {
+                      "db_cluster_identifier.$": "$.input.authkey.target.db_cluster_identifier",
+                      "db_instance_identifier.$": "$.input.authkey.target.db_instance_identifier"
+                    }
+                  },
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+                }
+              },
+              "ResultSelector": {
+                "data.$": "$.Output"
+              },
+              "ResultPath": "$.undo_db",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "Replicate-DBs-ENV-Undo [main]",
+          "States": {
+            "Replicate-DBs-ENV-Undo [main]": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "StateMachineArn": "arn:aws:states:us-west-2:511596272857:stateMachine:Replicate-DBs-ENV-Undo",
+                "Input": {
+                  "input": {
+                    "db_type": "main",
+                    "run_env.$": "$.input.run_env",
+                    "replication_target_env": "$.input.replication_target_env",
+                    "replication_data.$": "$.replicate_dbs.main.replicate_db.data",
+                    "target": {
+                      "db_cluster_identifier.$": "$.input.main.target.db_cluster_identifier",
+                      "db_instance_identifier.$": "$.input.main.target.db_instance_identifier"
+                    }
+                  },
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+                }
+              },
+              "ResultSelector": {
+                "data.$": "$.Output"
+              },
+              "ResultPath": "$.undo_db",
+              "End": true
+            }
+          }
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Notify - Replicate Undo Failure",
+          "ResultPath": "$.undo"
+        }
+      ],
+      "ResultSelector": {
+        "authkey.$": "$[0]",
+        "main.$": "$[1]"
+      },
+      "ResultPath": "$.undo"
+    },
+    "Schedule Retired DBs Removal": {
+      "Type": "Parallel",
+      "Branches": [
+        {
+          "StartAt": "Schedule Retired Authkey DB Removal",
+          "States": {
+            "Schedule Retired Authkey DB Removal": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName.$": "States.Format('replicate_db_retired_schedule_removal:{}', $.input.run_env)",
+                "Payload": {
+                  "replication_target_env.$": "$.input.replication_target_env",
+                  "db_type": "authkey",
+                  "db_cluster_identifier.$": "$.replicate_dbs.authkey.replicate_db.data.db_cluster_rename.data.db_rename.data.db_cluster_identifier",
+                  "db_instance_identifier.$": "$.replicate_dbs.authkey.replicate_db.data.db_instance_rename.data.db_rename.data.db_instance_identifier"
+                }
+              },
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException"
+                  ],
+                  "IntervalSeconds": 2,
+                  "MaxAttempts": 6,
+                  "BackoffRate": 2
+                }
+              ],
+              "ResultPath": "$.db_retired_schedule_removal.authkey",
+              "ResultSelector": {
+                "$.data": "$.Payload"
+              },
+              "End": true,
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "States.ALL"
+                  ],
+                  "Comment": "All",
+                  "Next": "Notify - Failure - Schedule Retired Authkey DB Removal",
+                  "ResultPath": "$.db_retired_schedule_removal.authkey"
+                }
+              ]
+            },
+            "Notify - Failure - Schedule Retired Authkey DB Removal": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+                "Payload": {
+                  "event": "Failure - Schedule Retired Authkey DB Removal",
+                  "event_data": {
+                    "replication_target_env.$": "$.input.replication_target_env"
+                  },
+                  "source": "Replicate-DBs",
+                  "severity": "ERROR",
+                  "channel": "replicate"
+                }
+              },
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException"
+                  ],
+                  "IntervalSeconds": 2,
+                  "MaxAttempts": 6,
+                  "BackoffRate": 2
+                }
+              ],
+              "ResultPath": null,
+              "Next": "Fail - Schedule Retired Authkey DB Removal"
+            },
+            "Fail - Schedule Retired Authkey DB Removal": {
+              "Type": "Fail"
+            }
+          }
+        },
+        {
+          "StartAt": "Schedule Retired Main DB Removal",
+          "States": {
+            "Schedule Retired Main DB Removal": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName.$": "States.Format('replicate_db_retired_schedule_removal:{}', $.input.run_env)",
+                "Payload": {
+                  "replication_target_env.$": "$.input.replication_target_env",
+                  "db_type": "main",
+                  "db_cluster_identifier.$": "$.replicate_dbs.main.replicate_db.data.db_cluster_rename.data.db_rename.data.db_cluster_identifier",
+                  "db_instance_identifier.$": "$.replicate_dbs.main.replicate_db.data.db_instance_rename.data.db_rename.data.db_instance_identifier"
+                }
+              },
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException"
+                  ],
+                  "IntervalSeconds": 2,
+                  "MaxAttempts": 6,
+                  "BackoffRate": 2
+                }
+              ],
+              "ResultPath": "$.db_retired_schedule_removal.main",
+              "ResultSelector": {
+                "$.data": "$.Payload"
+              },
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "States.ALL"
+                  ],
+                  "Comment": "All",
+                  "Next": "Notify - Failure - Schedule Retired Main DB Removal",
+                  "ResultPath": "$.db_retired_schedule_removal.main"
+                }
+              ],
+              "End": true
+            },
+            "Notify - Failure - Schedule Retired Main DB Removal": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+                "Payload": {
+                  "event": "Failure - Schedule Retired Main DB Removal",
+                  "event_data": {
+                    "replication_target_env.$": "$.input.replication_target_env"
+                  },
+                  "source": "Replicate-DBs",
+                  "severity": "ERROR",
+                  "channel": "replicate"
+                }
+              },
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException"
+                  ],
+                  "IntervalSeconds": 2,
+                  "MaxAttempts": 6,
+                  "BackoffRate": 2
+                }
+              ],
+              "ResultPath": null,
+              "Next": "Fail - Schedule Retired Main DB Removal"
+            },
+            "Fail - Schedule Retired Main DB Removal": {
+              "Type": "Fail"
+            }
+          }
+        }
+      ],
+      "Next": "Notify - Replicate DBs Schedule Retired DBs Removal Complete",
+      "ResultSelector": {
+        "authkey.$": "$[0]",
+        "main.$": "$[1]"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Notify - Replicate DBs Failure",
+          "ResultPath": "$.schedule_retired_dbs_removal"
+        }
+      ],
+      "ResultPath": "$.schedule_retired_dbs_removal"
+    },
+    "Notify - Replicate DBs Schedule Retired DBs Removal Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "Replicate DBs Schedule Retired DBs Removal Complete",
+          "event_data": {
+            "replication_target_env.$": "$.input.replication_target_env"
+          },
+          "source": "Replicate-DBs",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Notify - Replicate DBs to ENV Complete"
+    },
+    "Notify - Replicate DBs to ENV Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "Replicate DBs to ENV Complete",
+          "event_data": {
+            "replication_target_env.$": "$.input.replication_target_env"
+          },
+          "source": "Replicate-DBs",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "End": true
+    },
+    "Notify - Replicate Undo Failure": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "Replicate Undo - Error",
+          "event_data": {
+            "replication_target_env.$": "$.input.replication_target_env"
+          },
+          "source": "Replicate-DBs",
+          "severity": "ERROR",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Notify - Replicate DBs Failure"
+    },
+    "Notify - Replicate DBs Failure": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "Replicate DBs to ENV Failure",
+          "event_data": {
+            "replication_target_env.$": "$.input.replication_target_env"
+          },
+          "source": "Replicate-DBs",
+          "severity": "ERROR",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Fail - ENV Replication Failure"
+    },
+    "Fail - ENV Replication Failure": {
+      "Type": "Fail"
+    }
+  }
+}

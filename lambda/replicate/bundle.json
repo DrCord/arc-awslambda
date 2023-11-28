@@ -1,0 +1,42 @@
+{
+  "name": "replicate",
+  "vpc": "none",
+  "lambdas": {
+    "replicate_db_available": {
+      "tests": []
+    },
+    "replicate_db_cluster_clone": {
+      "tests": []
+    },
+    "replicate_db_cluster_delete": {
+      "tests": []
+    },
+    "replicate_db_cluster_instance_create": {
+      "tests": []
+    },
+    "replicate_db_cluster_remove_protection": {
+      "tests": []
+    },
+    "replicate_db_cluster_rename": {
+      "tests": []
+    },
+    "replicate_db_exists": {
+      "tests": []
+    },
+    "replicate_db_instance_delete": {
+      "tests": []
+    },
+    "replicate_db_instance_rename": {
+      "tests": []
+    },
+    "replicate_db_retired_schedule_removal": {
+      "tests": []
+    },
+    "replicate_events_cleanup": {
+      "tests": []
+    },
+    "replicate_notify": {
+      "tests": []
+    }
+  }
+}

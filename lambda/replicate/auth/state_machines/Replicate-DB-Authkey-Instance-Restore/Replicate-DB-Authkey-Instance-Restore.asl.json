@@ -1,0 +1,239 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Notify - Start",
+  "States": {
+    "Notify - Start": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Instance Restore - Start",
+          "event_data": {
+            "db_instance_identifier.$": "$.input.db_identifier",
+            "env.$": "$.input.replication_target_env"
+          },
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Next": "Check DB Instance Availability"
+    },
+    "Check DB Instance Availability": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_db_available:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env",
+          "db_instance_identifier.$": "$.input.db_identifier"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is DB Instance Available?",
+      "ResultPath": "$.db_available",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - Check DB Instance Availability - Set Status Data",
+          "ResultPath": "$.db_available"
+        }
+      ]
+    },
+    "Fail - Check DB Instance Availability - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_available": "fail",
+        "db_users_restore": null,
+        "db_prefix_vins": null
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Is DB Instance Available?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.db_available.data.db_available",
+          "BooleanEquals": true,
+          "Next": "DB Instance - Users Restore"
+        }
+      ],
+      "Default": "Wait for DB Instance Availability"
+    },
+    "Wait for DB Instance Availability": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check DB Instance Availability"
+    },
+    "DB Instance - Users Restore": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_authkey_db_users_restore:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "DB Instance - Prefix VINs",
+      "ResultPath": "$.db_users_restore",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - DB Instance Users Restore - Set Status Data",
+          "ResultPath": "$.db_users_restore"
+        }
+      ]
+    },
+    "Fail - DB Instance Users Restore - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_available": "success",
+        "db_users_restore": "fail",
+        "db_prefix_vins": null
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "DB Instance - Prefix VINs": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_authkey_db_prefix_vins:{}', $.input.run_env)",
+        "Payload": {
+          "env.$": "$.input.replication_target_env"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Notify - Complete",
+      "ResultPath": "$.db_prefix_vins",
+      "ResultSelector": {
+        "data.$": "$.Payload"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Comment": "All",
+          "Next": "Fail - DB Prefix VINs - Set Status Data",
+          "ResultPath": "$.db_prefix_vins"
+        }
+      ]
+    },
+    "Fail - DB Prefix VINs - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_available": "success",
+        "db_users_restore": "success",
+        "db_prefix_vins": "fail"
+      },
+      "ResultPath": "$.status",
+      "End": true
+    },
+    "Notify - Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('replicate_notify:{}', $.input.run_env)",
+        "Payload": {
+          "event": "DB Instance Restore - Complete",
+          "event_data": {
+            "db_instance_identifier.$": "$.input.db_identifier",
+            "env.$": "$.input.replication_target_env"
+          },
+          "source.$": "$.input.state_machine",
+          "severity": "INFO",
+          "channel": "replicate"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "ResultPath": null,
+      "Next": "Success - Set Status Data"
+    },
+    "Success - Set Status Data": {
+      "Type": "Pass",
+      "Result": {
+        "db_available": "success",
+        "db_users_restore": "success",
+        "db_prefix_vins": "success"
+      },
+      "ResultPath": "$.status",
+      "End": true
+    }
+  }
+}

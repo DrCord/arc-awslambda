@@ -1,0 +1,8 @@
+aws cloudformation create-stack \
+  --stack-name TEL-VPC-Peering-Accepter-Role \
+  --template-url "https://arcimoto-cloudformation.s3.us-west-2.amazonaws.com/vpc/VPCPeering-Accepter-Role.cfn.yaml" \
+  --capabilities CAPABILITY_IAM \
+  --parameters \
+    ParameterKey=PeerOwnerIds,ParameterValue=511596272857 \
+  --tags \
+    Key="Cost Center",Value="Telematics"

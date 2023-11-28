@@ -1,0 +1,99 @@
+{
+  "Comment": "Load backfill data file from S3 and process chunks into atoms and ingest",
+  "StartAt": "Load File from S3",
+  "States": {
+    "Load File from S3": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('backfill_s3_load_file:{}', $.input.env)",
+        "Payload": {
+          "file_name.$": "$.input.file_name",
+          "file_length.$": "$.input.file_length",
+          "next_read_byte.$": "$.s3_load_file.Payload.next_iteration_read_byte"
+        }
+      },
+      "ResultPath": "$.s3_load_file",
+      "Next": "Backfill Data Processing Complete?",
+         "Catch": [ {
+            "ErrorEquals": ["States.ALL"],
+            "Next": "Notify Backfill Failed",
+            "ResultPath": "$.fail"
+         }]
+    },
+    "Backfill Data Processing Complete?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.s3_load_file.Payload.read_range",
+          "IsNull": true,
+          "Next": "Delete backfill data file from S3"
+        }
+      ],
+      "Default": "Process Backfill Data"
+    },
+    "Process Backfill Data": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('backfill_ingest_request:{}', $.input.env)",
+        "Payload": {
+          "vin.$": "$.input.vin",
+          "data.$": "$.s3_load_file.Payload.atoms"
+        }
+      },
+      "ResultPath": "$.ingest_request",
+      "Next": "Load File from S3",
+       "Catch": [ {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "Notify Backfill Failed",
+          "ResultPath": "$.fail"
+       }]
+    },
+    "Delete backfill data file from S3": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('backfill_s3_delete_file:{}', $.input.env)",
+        "Payload": {
+          "file_name.$": "$.input.file_name"
+        }
+      },
+      "ResultPath": "$.s3_delete_file",
+      "Next": "Notify Backfill Complete",
+         "Catch": [ {
+            "ErrorEquals": ["States.ALL"],
+            "Next": "Notify Backfill Failed",
+            "ResultPath": "$.fail"
+         }]
+    },
+    "Notify Backfill Complete": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('backfill_notify_complete:{}', $.input.env)",
+        "Payload": {
+          "vin.$": "$.input.vin",
+          "recipient.$": "$.input.initiating_user_email",
+          "file_name.$": "$.input.file_name"
+        }
+      },
+      "ResultPath": "$.notify_complete",
+      "End": true
+    },
+    "Notify Backfill Failed": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName.$": "States.Format('backfill_notify_failed:{}', $.input.env)",
+        "Payload": {
+          "vin.$": "$.input.vin",
+          "recipient.$": "$.input.initiating_user_email",
+          "file_name.$": "$.input.file_name"
+        }
+      },
+      "ResultPath": "$.notify_failed",
+      "End": true
+    }
+  }
+}

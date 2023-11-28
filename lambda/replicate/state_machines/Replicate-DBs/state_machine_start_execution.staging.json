@@ -1,0 +1,24 @@
+{
+  "input": {
+    "run_env": "dev",
+    "replication_target_env": "staging",
+    "authkey": {
+      "prod": {
+        "db_cluster_identifier": "tel-authkey-db-prod-auroradbcluster-gp0nmqa9ii2t"
+      },
+      "target": {
+        "db_cluster_identifier": "tel-authkey-db-staging-auroradbcluster-1nzlavkvjvmb2",
+        "db_instance_identifier": "taz1h40irkeopr"
+      }
+    },
+    "main": {
+      "prod": {
+        "db_cluster_identifier": "tel-main-db-prod-auroradbcluster-1kkvd236ktt8q"
+      },
+      "target": {
+        "db_cluster_identifier": "tel-main-db-staging-auroradbcluster-6ntob7x6ajn5",
+        "db_instance_identifier": "ta1rn3qhtdvcpg5"
+      }
+    }
+  }
+}
